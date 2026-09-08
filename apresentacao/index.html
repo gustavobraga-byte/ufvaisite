@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UFVAI | Pitch — A inteligência que acelera a ciência</title>
+<meta name="description" content="Pitch do UFVAI, agente aberto de IA para acelerar a pesquisa científica brasileira. Universidade Federal de Viçosa.">
+<meta name="theme-color" content="#F2F2F0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232E3242'/%3E%3Ccircle cx='32' cy='26' r='5' fill='%23C9A227'/%3E%3Ccircle cx='18' cy='44' r='4' fill='%237B3B44'/%3E%3Ccircle cx='46' cy='40' r='4' fill='%238FA382'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ══ UFVAI Pitch · identidade do logo oficial ══
+   navy #2E3242 · dourado #C9A227 · off-white #F2F2F0
+   sálvia #8FA382 · vinho #7B3B44 · Montserrat */
+:root{
+  --bg:#F2F2F0; --surface:#FFFFFF; --ink:#2E3242; --body:#4A4F5C; --muted:#646976;
+  --line:rgba(46,50,66,.14); --line-strong:rgba(46,50,66,.30);
+  --gold:#C9A227; --gold-ink:#7D6216; --wine:#7B3B44; --sage:#8FA382; --sage-ink:#5F7355;
+  --shadow:0 24px 60px -30px rgba(46,50,66,.28); --radius:12px;
+  --font:'Montserrat','Segoe UI',system-ui,-apple-system,sans-serif;
+  --mono:'DM Mono',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+*,*::before,*::after{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0; font-family:var(--font); color:var(--body); background:var(--bg);
+  overflow:hidden; -webkit-font-smoothing:antialiased;
+}
+::selection{background:var(--gold);color:#2E3242}
+button{font-family:inherit}
+button:focus-visible,a:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:4px}
+h1,h2,h3{color:var(--ink);margin:0;line-height:1.15}
+p{margin:0}
+ul,ol{margin:0;padding:0;list-style:none}
+
+/* wordmark UFV navy + AI dourado, V/A encaixados */
+.wordmark{font-weight:700;letter-spacing:-.02em;color:var(--ink);white-space:nowrap}
+.wordmark em{font-style:normal;font-weight:600;color:var(--gold);margin-left:-.075em}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold-ink);margin-bottom:18px}
+.rule{height:1px;width:88px;background:var(--gold);opacity:.85;margin:20px 0 0}
+
+/* palco */
+main{position:relative;height:100dvh;min-height:580px}
+.slide{
+  position:absolute;inset:0;display:none;
+  padding:96px 64px 110px;max-width:1440px;margin:0 auto;
+}
+.slide.active{display:flex;flex-direction:column;justify-content:center}
+.slide.enter-r{animation:slideInR .38s cubic-bezier(.22,1,.36,1)}
+.slide.enter-l{animation:slideInL .38s cubic-bezier(.22,1,.36,1)}
+@keyframes slideInR{from{opacity:0;transform:translateX(34px)}to{opacity:1;transform:none}}
+@keyframes slideInL{from{opacity:0;transform:translateX(-34px)}to{opacity:1;transform:none}}
+.grid-bg{position:absolute;inset:0;pointer-events:none;
+  background-image:linear-gradient(rgba(46,50,66,.055) 1px,transparent 1px),linear-gradient(90deg,rgba(46,50,66,.055) 1px,transparent 1px);
+  background-size:56px 56px;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 24% 78%,transparent);
+  mask-image:linear-gradient(90deg,transparent,#000 24% 78%,transparent);
+}
+.watermark{position:absolute;top:6%;right:2%;font-weight:800;font-size:15vw;line-height:1;letter-spacing:-.04em;color:rgba(46,50,66,.045);pointer-events:none;user-select:none}
+.constel{position:absolute;width:min(300px,26vw);aspect-ratio:1;pointer-events:none;opacity:.9}
+.constel--tr{top:-40px;right:-40px}
+.constel--bl{bottom:-50px;left:-50px;transform:rotate(180deg)}
+h2.display{font-size:clamp(2rem,4.6vw,3.6rem);font-weight:700;letter-spacing:-.02em;max-width:20ch}
+h2.display .gold{color:var(--gold-ink)}
+.lead{margin-top:16px;font-size:clamp(1rem,1.6vw,1.2rem);line-height:1.7;max-width:62ch}
+
+/* header */
+.topbar{position:absolute;top:0;left:0;right:0;z-index:30;display:flex;align-items:center;gap:16px;height:80px;padding:0 32px;pointer-events:none}
+.topbar>*{pointer-events:auto}
+.topbar .brand{font-size:1.25rem;text-decoration:none}
+.ver-badge{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);border:1px solid var(--line-strong);border-radius:999px;padding:3px 12px}
+.topbar .spacer{flex:1}
+.icon-btn{width:38px;height:38px;border-radius:50%;border:1px solid var(--line-strong);background:transparent;color:var(--ink);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;font-size:1rem}
+.icon-btn:hover{border-color:var(--gold);color:var(--gold-ink)}
+.icon-btn svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+/* progresso + nav inferior */
+.progress{position:absolute;top:0;left:0;z-index:40;height:2px;background:var(--gold);width:0;transition:width .35s ease}
+.navbar{position:absolute;left:0;right:0;bottom:0;z-index:30;display:flex;align-items:center;gap:18px;height:80px;padding:0 32px;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-top:1px solid var(--line)}
+.counter{font-family:var(--mono);font-size:1rem;color:var(--gold-ink);min-width:2.2em}
+.secname{font-size:.82rem;font-weight:600;letter-spacing:.08em;color:var(--muted)}
+.dots{display:flex;gap:8px;margin:0 auto}
+.dots button{height:6px;border:0;border-radius:999px;background:var(--line-strong);cursor:pointer;padding:0;transition:width .3s,background .3s}
+.dots button.dot{min-width:6px;width:6px}
+.dots button.on{width:32px;background:var(--gold)}
+.dots button:hover{background:var(--gold)}
+.nav-btn{display:inline-flex;align-items:center;gap:8px;border-radius:10px;padding:10px 18px;font-size:.88rem;font-weight:600;cursor:pointer;border:1px solid var(--line-strong);background:transparent;color:var(--ink)}
+.nav-btn:hover:not(:disabled){border-color:var(--gold);color:var(--gold-ink)}
+.nav-btn.next{background:var(--ink);color:#F2F2F0;border-color:var(--ink)}
+.nav-btn.next:hover:not(:disabled){background:var(--gold);border-color:var(--gold);color:#2E3242}
+.nav-btn:disabled{opacity:.35;cursor:default}
+.nav-btn svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+/* botões de conteúdo */
+.btn{display:inline-flex;align-items:center;gap:10px;padding:14px 28px;border-radius:10px;font-weight:600;font-size:.95rem;text-decoration:none;cursor:pointer;border:1px solid transparent;transition:transform .25s,box-shadow .25s,background .25s,color .25s,border-color .25s}
+.btn--gold{background:var(--gold);color:#2E3242;box-shadow:0 12px 26px -14px rgba(201,162,39,.65)}
+.btn--gold:hover{transform:translateY(-2px)}
+.btn--ghost{border-color:var(--line-strong);color:var(--ink)}
+.btn--ghost:hover{border-color:var(--gold);color:var(--gold-ink);transform:translateY(-2px)}
+.btn svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+/* modal atalhos */
+.modal-ov{position:fixed;inset:0;z-index:60;background:rgba(23,26,36,.55);backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center}
+.modal-ov.open{display:flex}
+.modal{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:28px;max-width:380px;width:calc(100% - 48px);box-shadow:var(--shadow)}
+.modal h3{font-size:1.05rem;margin-bottom:16px}
+.modal table{width:100%;border-collapse:collapse;font-size:.88rem}
+.modal td{padding:7px 0;color:var(--body)}
+.modal td:first-child{color:var(--ink);font-weight:600;width:55%}
+kbd{font-family:var(--mono);font-size:.78rem;border:1px solid var(--line-strong);border-bottom-width:2px;border-radius:6px;padding:1px 8px;background:var(--bg);color:var(--ink)}
+.modal .close{margin-top:18px;width:100%}
+
+/* ── slide 1 · visão ── */
+.hero-split{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+h1.mega{font-size:clamp(3.4rem,7.5vw,6.5rem);font-weight:800;letter-spacing:-.03em;line-height:.95}
+h1.mega em{font-style:normal;font-weight:600;color:var(--gold);margin-left:-.075em}
+.hero-h2{margin-top:14px;font-size:clamp(1.25rem,2.4vw,1.8rem);font-weight:600;max-width:24ch}
+.hero-cta{display:flex;gap:14px;margin-top:28px;flex-wrap:wrap}
+.mock{background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);overflow:hidden;clip-path:polygon(0 0,calc(100% - 18px) 0,100% 18px,100% 100%,0 100%)}
+.mock__bar{display:flex;align-items:center;gap:7px;padding:12px 16px;border-bottom:1px solid var(--line)}
+.dot{width:10px;height:10px;border-radius:50%}
+.dot--wine{background:var(--wine)}.dot--gold{background:var(--gold)}.dot--sage{background:var(--sage)}
+.mock__title{margin-left:8px;font-family:var(--mono);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.mock__body{padding:20px;font-size:.86rem}
+.mock__prompt{border-left:2px solid var(--gold);padding:6px 0 6px 14px;font-style:italic;color:var(--body)}
+.mock__steps{margin-top:14px;display:flex;flex-direction:column;gap:8px}
+.mstep{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:.76rem;color:var(--muted)}
+.mstep .n{color:var(--gold-ink);font-weight:500}
+.mstep .st{margin-left:auto;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase}
+.mstep.done .st{color:var(--sage-ink)}
+.mstep.run .st{color:var(--gold-ink);animation:blink 1.2s steps(2) infinite}
+.mstep.wait{opacity:.55}
+@keyframes blink{50%{opacity:.35}}
+.mock__foot{margin-top:14px;padding-top:12px;border-top:1px solid var(--line);font-size:.72rem;letter-spacing:.06em;color:var(--sage-ink)}
+
+/* ── slide 2 · problema ── */
+.fric{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-top:30px}
+.fric li{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:20px 16px}
+.fric .n{font-family:var(--mono);font-size:.75rem;color:var(--gold-ink)}
+.fric h3{font-size:.98rem;margin:8px 0 4px}
+.fric p{font-size:.8rem;color:var(--muted)}
+.fric-line{height:1px;margin-top:22px;background:linear-gradient(90deg,var(--gold),var(--sage),var(--wine))}
+.callout{margin-top:26px;padding:16px 20px;border-left:2px solid var(--wine);background:var(--surface);border-radius:0 10px 10px 0;max-width:60ch}
+.callout strong{display:block;color:var(--ink)}
+.callout em{color:var(--wine);font-style:normal;font-weight:600}
+
+/* ── slide 3 · solução ── */
+.pilares{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:30px}
+.pilar{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:26px 22px}
+.pilar:hover{border-color:var(--gold)}
+.pilar .n{font-family:var(--mono);font-size:.75rem;color:var(--gold-ink)}
+.pilar h3{margin:8px 0 6px;font-size:1.08rem}
+.pilar p{font-size:.88rem}
+.flow{margin-top:26px;font-family:var(--mono);font-size:.82rem;letter-spacing:.06em;color:var(--ink);border:1px solid var(--line);border-radius:999px;padding:12px 24px;text-align:center;background:color-mix(in srgb,var(--gold) 8%,transparent)}
+.flow b{color:var(--gold-ink)}
+
+/* ── slide 4 · entregas ── */
+.deliv{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:28px}
+.deliv li{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px}
+.deliv .n{font-family:var(--mono);font-size:.72rem;color:var(--gold-ink)}
+.deliv h3{font-size:.94rem;margin:6px 0 4px}
+.deliv p{font-size:.78rem;color:var(--muted)}
+
+/* ── slide 5 · experiência (terminal) ── */
+.term{background:#232837;color:#EDEBE6;border-radius:14px;overflow:hidden;box-shadow:var(--shadow);display:grid;grid-template-columns:1fr 230px;max-height:100%}
+.term__main{display:flex;flex-direction:column;min-width:0}
+.term__bar{display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid rgba(237,235,230,.12);font-family:var(--mono);font-size:.68rem}
+.term__bar .t-dot{width:9px;height:9px;border-radius:50%}
+.term__brand{font-weight:700;letter-spacing:-.02em}
+.term__brand em{font-style:normal;color:var(--gold);margin-left:-.06em}
+.term__ver{color:#9AA0AE}
+.term__live{margin-left:auto;display:inline-flex;align-items:center;gap:6px;color:#9DB38F;font-size:.66rem;letter-spacing:.1em;text-transform:uppercase}
+.term__live i{width:7px;height:7px;border-radius:50%;background:#9DB38F;animation:blink 1.6s infinite}
+.term__btns{display:flex;gap:8px;padding:10px 14px;border-bottom:1px solid rgba(237,235,230,.12)}
+.term__btns button{border:1px solid rgba(237,235,230,.25);background:transparent;color:#EDEBE6;border-radius:8px;font-size:.72rem;font-weight:600;padding:7px 12px;cursor:pointer}
+.term__btns button:hover,.term__btns button.on{border-color:var(--gold);color:var(--gold)}
+.term__log{padding:16px;font-family:var(--mono);font-size:.74rem;line-height:1.75;min-height:250px;max-height:300px;overflow:hidden;color:#C6C9D2}
+.term__log .u{color:#EDEBE6}
+.term__log .ok{color:#9DB38F}
+.term__log .warn{color:#D9B441}
+.term__log .dim{color:#9AA0AE}
+.term__log .src{color:#9AA0AE;font-size:.68rem}
+.sim-tag{display:inline-block;font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;border:1px solid rgba(217,180,65,.5);color:#D9B441;border-radius:999px;padding:2px 10px;margin-bottom:10px}
+.term__side{border-left:1px solid rgba(237,235,230,.12);padding:14px;font-family:var(--mono);font-size:.66rem;color:#9AA0AE;line-height:2}
+.term__side b{color:#EDEBE6;font-weight:500;display:block;margin-top:8px}
+.term__side b:first-child{margin-top:0}
+.term__input{display:flex;align-items:center;gap:10px;padding:10px 14px;border-top:1px solid rgba(237,235,230,.12);font-family:var(--mono);font-size:.74rem;color:#9AA0AE}
+.term__input .prompt{color:var(--gold)}
+.term__foot{display:flex;align-items:center;gap:14px;padding:8px 14px;border-top:1px solid rgba(237,235,230,.12);font-family:var(--mono);font-size:.64rem;color:#9AA0AE}
+.term__foot a{color:#C6C9D2;text-decoration:none}
+.term__foot a:hover{color:var(--gold)}
+.term__foot .right{margin-left:auto}
+
+@media (max-width:1100px){
+  .slide{padding:88px 28px 104px}
+  .hero-split{grid-template-columns:1fr;gap:28px}
+  .fric{grid-template-columns:repeat(2,1fr)}
+  .deliv{grid-template-columns:repeat(2,1fr)}
+  .term{grid-template-columns:1fr}
+  .term__side{display:none}
+  .secname{display:none}
+}
+@media (max-height:720px) and (min-width:1100px){
+  .slide>div{transform:scale(.92);transform-origin:center}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+}
+</style>
+</head>
+<body>
+
+<!-- constelação reutilizável (motivo do logo) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="cn" viewBox="0 0 300 300">
+    <g stroke="#C9A227" stroke-width="1" opacity=".45">
+      <line x1="290" y1="10" x2="230" y2="55"/><line x1="230" y1="55" x2="272" y2="105"/>
+      <line x1="230" y1="55" x2="185" y2="90"/><line x1="272" y1="105" x2="200" y2="150"/>
+      <line x1="185" y1="90" x2="200" y2="150"/><line x1="200" y1="150" x2="140" y2="195"/>
+      <line x1="185" y1="90" x2="120" y2="140"/><line x1="140" y1="195" x2="90" y2="230"/>
+    </g>
+    <g stroke="#7B3B44" stroke-width="1" opacity=".4">
+      <line x1="290" y1="10" x2="272" y2="105"/><line x1="272" y1="105" x2="294" y2="170"/>
+      <line x1="200" y1="150" x2="120" y2="140"/><line x1="120" y1="140" x2="140" y2="195"/>
+    </g>
+    <circle cx="290" cy="10" r="6" fill="#7B3B44"/><circle cx="230" cy="55" r="5" fill="#C9A227"/>
+    <circle cx="272" cy="105" r="5" fill="#7B3B44"/><circle cx="185" cy="90" r="4" fill="#C9A227"/>
+    <circle cx="200" cy="150" r="4.5" fill="#8FA382"/><circle cx="294" cy="170" r="4" fill="#7B3B44"/>
+    <circle cx="120" cy="140" r="4" fill="#C9A227"/><circle cx="140" cy="195" r="4" fill="#7B3B44"/>
+    <circle cx="90" cy="230" r="3.5" fill="#8FA382"/>
+  </symbol>
+</svg>
+
+<header class="topbar">
+  <a class="brand wordmark" href="#/1" id="brand-home" aria-label="UFVAI — ir para o início" style="text-decoration:none;font-size:1.25rem">UFV<em>AI</em></a>
+  <span class="ver-badge">v0.6.17</span>
+  <span class="spacer"></span>
+  <button class="icon-btn" id="btn-help" type="button" aria-label="Ver atalhos">?</button>
+  <button class="icon-btn" id="btn-full" type="button" aria-label="Entrar em tela cheia">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3H5a2 2 0 0 0-2 2v3M16 3h3a2 2 0 0 1 2 2v3M8 21H5a2 2 0 0 1-2-2v-3M16 21h3a2 2 0 0 0 2-2v-3"/></svg>
+  </button>
+</header>
+<div class="progress" id="progress" aria-hidden="true"></div>
+
+<main id="deck" aria-label="Apresentação UFVAI">
+<div class="grid-bg" aria-hidden="true"></div>
+
+<!-- ══ 1 · VISÃO ══ -->
+<section class="slide" data-sec="Visão" aria-label="Slide 1: Visão">
+  <svg class="constel constel--tr" aria-hidden="true"><use href="#cn"/></svg>
+  <div class="hero-split">
+    <div>
+      <p class="eyebrow">Pesquisa brasileira, em modo agente</p>
+      <h1 class="mega">UFV<em>AI</em></h1>
+      <p class="hero-h2">Da instrução à evidência. Com método, fontes e rastreabilidade.</p>
+      <p class="lead">Um agente aberto de IA para acelerar a pesquisa científica no Brasil.</p>
+      <div class="hero-cta">
+        <a class="btn btn--gold" href="https://colab.research.google.com/github/gustavobraga-byte/PesquisAI/blob/main/PesquisAI.ipynb" target="_blank" rel="noopener">Experimentar no Colab
+          <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <a class="btn btn--ghost" href="https://github.com/gustavobraga-byte/PesquisAI" target="_blank" rel="noopener">Ver repositório</a>
+      </div>
+    </div>
+    <div class="mock" aria-label="Janela ilustrativa de sessão de pesquisa">
+      <div class="mock__bar">
+        <span class="dot dot--wine"></span><span class="dot dot--gold"></span><span class="dot dot--sage"></span>
+        <span class="mock__title">sessão de pesquisa · v0.6.17</span>
+      </div>
+      <div class="mock__body">
+        <p class="mock__prompt">“Estruture um artigo sobre a dinâmica populacional de Viçosa (MG) e sugira referências validadas.”</p>
+        <div class="mock__steps">
+          <div class="mstep done"><span class="n">01</span> Plano de pesquisa estruturado <span class="st">concluído</span></div>
+          <div class="mstep done"><span class="n">02</span> Consulta IBGE / SIDRA — 76.430 hab. <span class="st">[dado confirmado]</span></div>
+          <div class="mstep run"><span class="n">03</span> Triagem OpenAlex / SciELO por DOI <span class="st">executando</span></div>
+          <div class="mstep wait"><span class="n">04</span> Artigo + referências ABNT <span class="st">aguardando</span></div>
+        </div>
+        <p class="mock__foot">Fontes e etapas registradas na Minha memória</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 2 · PROBLEMA ══ -->
+<section class="slide" data-sec="Problema" aria-label="Slide 2: Problema">
+  <span class="watermark" aria-hidden="true">FRICÇÃO</span>
+  <div>
+    <p class="eyebrow">O problema</p>
+    <h2 class="display">A pesquisa ainda opera em abas.</h2>
+    <p class="lead">Fontes fragmentadas, dados brutos, ferramentas isoladas e formatação manual desviam tempo do pensamento científico.</p>
+    <ol class="fric">
+      <li><span class="n">01</span><h3>Buscar</h3><p>bases e literatura</p></li>
+      <li><span class="n">02</span><h3>Tratar</h3><p>arquivos e variáveis</p></li>
+      <li><span class="n">03</span><h3>Analisar</h3><p>código e métodos</p></li>
+      <li><span class="n">04</span><h3>Escrever</h3><p>artigo e referências</p></li>
+      <li><span class="n">05</span><h3>Formatar</h3><p>normas e entrega</p></li>
+    </ol>
+    <div class="fric-line" aria-hidden="true"></div>
+    <div class="callout">
+      <strong>O gargalo não é a falta de IA.</strong>
+      <em>É a falta de integração, contexto e confiança.</em>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 3 · SOLUÇÃO ══ -->
+<section class="slide" data-sec="Solução" aria-label="Slide 3: Solução">
+  <svg class="constel constel--bl" aria-hidden="true"><use href="#cn"/></svg>
+  <div>
+    <p class="eyebrow">A solução</p>
+    <h2 class="display">Um agente que não só responde. <span class="gold">Ele executa.</span></h2>
+    <p class="lead">IA agêntica especializada no fluxo de trabalho científico, do plano à entrega.</p>
+    <div class="pilares">
+      <div class="pilar"><span class="n">01</span><h3>Entende</h3><p>Transforma uma instrução complexa em um plano de ação explícito.</p></div>
+      <div class="pilar"><span class="n">02</span><h3>Orquestra</h3><p>Aciona skills, fontes oficiais, código e métodos na ordem certa.</p></div>
+      <div class="pilar"><span class="n">03</span><h3>Entrega</h3><p>Gera dados, análises, gráficos e texto em arquivos rastreáveis.</p></div>
+    </div>
+    <p class="flow"><b>Instrução</b> → plano → fontes → execução → validação → arquivos</p>
+  </div>
+</section>
+
+<!-- ══ 4 · ENTREGAS ══ -->
+<section class="slide" data-sec="Entregas" aria-label="Slide 4: Entregas">
+  <span class="watermark" aria-hidden="true">CRIAR</span>
+  <div>
+    <p class="eyebrow">O que o UFVAI cria para você</p>
+    <h2 class="display">Entregáveis acadêmicos. <span class="gold">Não só respostas.</span></h2>
+    <p class="lead">Escrita científica, análise de dados, normas acadêmicas e fluxos agênticos em artefatos prontos para revisão humana. <span class="ver-badge">v0.6.17</span></p>
+    <ol class="deliv">
+      <li><span class="n">01</span><h3>Artigo Científico</h3><p>IMRaD completo com dados e referências</p></li>
+      <li><span class="n">02</span><h3>Revisão Sistemática</h3><p>PRISMA, critérios de inclusão, síntese narrativa</p></li>
+      <li><span class="n">03</span><h3>Meta-Análise</h3><p>Efeitos combinados, I², forest plots</p></li>
+      <li><span class="n">04</span><h3>Dissertação / Tese</h3><p>Capítulos completos normatizados</p></li>
+      <li><span class="n">05</span><h3>Proposta de Projeto</h3><p>Bolsa, edital, justificativa, cronograma</p></li>
+      <li><span class="n">06</span><h3>Relatório de Dados</h3><p>Análise estatística + visualizações</p></li>
+      <li><span class="n">07</span><h3>Análise Qualitativa</h3><p>Codificação, temas, similitude</p></li>
+      <li><span class="n">08</span><h3>Hipóteses Testáveis</h3><p>H₀, H₁, variáveis, plano de teste</p></li>
+      <li><span class="n">09</span><h3>Declaração de IA</h3><p>Modelos prontos para TCC e artigo</p></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ══ 5 · EXPERIÊNCIA ══ -->
+<section class="slide" data-sec="Experiência" aria-label="Slide 5: Experiência">
+  <div>
+    <p class="eyebrow">A interface real</p>
+    <h2 class="display">UFVAI em ação.</h2>
+    <p class="lead">Explore o fluxo do agente executado no Google Colab. Toque em um exemplo para simular: <span class="sim-tag">demonstração simulada</span></p>
+    <div class="term" style="margin-top:22px" role="group" aria-label="Terminal simulado do UFVAI">
+      <div class="term__main">
+        <div class="term__bar">
+          <span class="t-dot" style="background:#7B3B44"></span><span class="t-dot" style="background:#C9A227"></span><span class="t-dot" style="background:#8FA382"></span>
+          <span class="term__brand">UFV<em>AI</em></span>
+          <span class="term__ver">v0.6.17 · PT</span>
+          <span class="term__live"><i></i>agente ativo</span>
+        </div>
+        <div class="term__btns" role="group" aria-label="Exemplos de demonstração">
+          <button type="button" data-demo="ibge" class="on">Demo IBGE</button>
+          <button type="button" data-demo="datasus">Demo DataSUS</button>
+          <button type="button" data-demo="scientific">Demo Scientific</button>
+        </div>
+        <div class="term__log" id="term-log" aria-live="polite"></div>
+        <div class="term__input"><span class="prompt">$</span><span>Digite sua instrução científica aqui…</span></div>
+        <div class="term__foot">
+          <span class="term__brand" style="font-size:.72rem">UFV<em>AI</em></span>
+          <a href="mailto:gustavo.braga@ufv.br">gustavo.braga@ufv.br</a>
+          <a href="https://github.com/gustavobraga-byte/PesquisAI" target="_blank" rel="noopener">GitHub</a>
+          <span>UFV · Viçosa, MG</span>
+          <span class="right">Powered by OpenCode</span>
+        </div>
+      </div>
+      <aside class="term__side" aria-label="Contexto da sessão">
+        <b>Saudação e idioma</b>PT-BR
+        <b>Context</b><span id="ctx-tokens">0</span> tokens · <span id="ctx-cost">$0.00</span> spent
+        <b>Working directory</b>/content/drive/My Drive/PesquisAI
+        <b>Engine</b>● OpenCode
+        <b>Memória</b>Minha memória ativa
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 6 · BRASIL ══ -->
+<section class="slide" data-sec="Brasil" aria-label="Slide 6: Brasil">
+  <svg class="constel constel--tr" aria-hidden="true"><use href="#cn"/></svg>
+  <div>
+    <p class="eyebrow">Vantagem local</p>
+    <h2 class="display">IA global. <span class="gold">Contexto brasileiro.</span></h2>
+    <p class="lead">Conexões com dados públicos nacionais, métodos científicos e normas acadêmicas brasileiras em um único fluxo.</p>
+    <ol class="fric" style="grid-template-columns:repeat(4,1fr)">
+      <li><span class="n">IBGE</span><h3>Censo, PNAD, PIB</h3><p>SIDRA + malhas + localidades</p></li>
+      <li><span class="n">DataSUS</span><h3>Saúde pública</h3><p>139 datasets · SINAN · SIM · SIH</p></li>
+      <li><span class="n">AgroBR</span><h3>Produção e ambiente</h3><p>38+ fontes · CONAB · MapBiomas</p></li>
+      <li><span class="n">Dados Brasil</span><h3>Indicadores oficiais</h3><p>BCB · TSE · INPE · Portal da Transparência</p></li>
+    </ol>
+    <div class="callout" style="border-left-color:var(--sage)">
+      <strong>Dados nacionais primeiro.</strong>
+      <em style="color:var(--sage-ink)">Meta-busca em 7 bases acadêmicas com deduplicação por DOI.</em>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 7 · ARQUITETURA ══ -->
+<section class="slide" data-sec="Arquitetura" aria-label="Slide 7: Arquitetura">
+  <div>
+    <p class="eyebrow">Arquitetura modular</p>
+    <h2 class="display">174 skills científicas. <span class="gold">+100 bases. Brasil integrado.</span></h2>
+    <p class="lead">Módulos brasileiros sobre a biblioteca Scientific Agent Skills, com caminhos documentados para fluxos científicos. <span class="ver-badge">OpenCode → Python 3.10+ → MIT</span></p>
+    <div class="orbit" role="list" aria-label="Módulos do ecossistema">
+      <div class="orbit__core"><span class="wordmark" style="font-size:1.3rem">UFV<em>AI</em></span><small>runtime agêntico</small></div>
+      <span class="orbit__node" role="listitem" style="--a:-96deg">174 scientific skills</span>
+      <span class="orbit__node" role="listitem" style="--a:-58deg">100+ bases científicas</span>
+      <span class="orbit__node" role="listitem" style="--a:-20deg">IBGE</span>
+      <span class="orbit__node" role="listitem" style="--a:18deg">DataSUS</span>
+      <span class="orbit__node" role="listitem" style="--a:56deg">Dados Brasil</span>
+      <span class="orbit__node" role="listitem" style="--a:94deg">AgroBR</span>
+      <span class="orbit__node" role="listitem" style="--a:132deg">ABNT / UFV</span>
+      <span class="orbit__node" role="listitem" style="--a:170deg">Qualitativa</span>
+      <span class="orbit__node" role="listitem" style="--a:208deg">Memória</span>
+      <span class="orbit__node" role="listitem" style="--a:246deg">Memorial UFV</span>
+    </div>
+    <p style="margin-top:18px"><a class="btn btn--ghost" style="padding:10px 20px;font-size:.85rem" href="https://github.com/gustavobraga-byte/scientific-agent-skills" target="_blank" rel="noopener">scientific-agent-skills</a></p>
+  </div>
+</section>
+
+<!-- ══ 8 · INTEGRIDADE ══ -->
+<section class="slide" data-sec="Integridade" aria-label="Slide 8: Integridade">
+  <svg class="constel constel--bl" aria-hidden="true"><use href="#cn"/></svg>
+  <div>
+    <p class="eyebrow">Integridade científica</p>
+    <h2 class="display">Confiança não é um detalhe. <span class="gold">É a arquitetura.</span></h2>
+    <p class="lead">Guardrails tornam o nível de evidência visível e mantêm o pesquisador no controle da validação final.</p>
+    <div class="integ">
+      <div class="levels">
+        <div class="level level--ok"><code>[DADO CONFIRMADO]</code><span>Fonte primária consultada</span></div>
+        <div class="level level--est"><code>[ESTIMATIVA FUNDAMENTADA]</code><span>Método declarado</span></div>
+        <div class="level level--none"><code>[SEM DADOS SUFICIENTES]</code><span>Sem invenção</span></div>
+      </div>
+      <aside class="policy">
+        <h3>Política de zero fabricação</h3>
+        <ul>
+          <li>Não inventar dados, autores, DOIs ou referências</li>
+          <li>Informar fonte, ano e nota metodológica</li>
+          <li>Declarar incerteza quando a evidência não basta</li>
+          <li>Exigir revisão humana dos resultados</li>
+        </ul>
+        <p class="policy__foot">Ferramenta de apoio. Curadoria humana obrigatória.</p>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 9 · EVOLUÇÃO ══ -->
+<section class="slide" data-sec="Evolução" aria-label="Slide 9: Evolução">
+  <div>
+    <p class="eyebrow">Rota de evolução</p>
+    <h2 class="display">Do Colab à infraestrutura institucional. <span class="ver-badge">versão 0.6.17</span></h2>
+    <ol class="evo">
+      <li><span class="n">0.4.0</span><h3>Base sólida</h3><p>Agente via OpenCode · IBGE + DataSUS · 4 idiomas</p></li>
+      <li><span class="n">0.5.x</span><h3>Memória persistente</h3><p>Second brain Obsidian · autopilot · Memorial UFV</p></li>
+      <li><span class="n">0.6.9</span><h3>Offline + LGPD</h3><p>Pacote .deb · consentimento · GA4 opt-out</p></li>
+      <li><span class="n">0.6.17</span><h3>Memória instantânea</h3><p>Singleton + warm-up · 5 idiomas · novas skills BR</p></li>
+    </ol>
+    <div class="evo-line" aria-hidden="true"></div>
+    <p class="lead" style="margin-top:20px">Hoje: acesso aberto via Google Colab e instalação local. Open source · MIT · contribuições abertas.</p>
+  </div>
+</section>
+
+<!-- ══ 10 · CONVITE ══ -->
+<section class="slide" data-sec="Convite" aria-label="Slide 10: Convite">
+  <svg class="constel constel--tr" aria-hidden="true"><use href="#cn"/></svg>
+  <svg class="constel constel--bl" aria-hidden="true"><use href="#cn"/></svg>
+  <div class="closing">
+    <p class="wordmark" style="font-size:clamp(2.6rem,5vw,4rem)">UFV<em>AI</em></p>
+    <div class="rule" style="margin:22px auto" aria-hidden="true"></div>
+    <h2 class="display" style="max-width:26ch">A ciência brasileira já tem perguntas difíceis. Agora pode ter um agente à altura.</h2>
+    <p class="lead" style="margin-left:auto;margin-right:auto">Procuramos grupos de pesquisa, programas de pós-graduação e instituições para testar, contribuir e construir este ecossistema.</p>
+    <div class="hero-cta" style="justify-content:center">
+      <a class="btn btn--gold" href="https://colab.research.google.com/github/gustavobraga-byte/PesquisAI/blob/main/PesquisAI.ipynb" target="_blank" rel="noopener">Começar agora
+        <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      <a class="btn btn--ghost" href="https://github.com/gustavobraga-byte/PesquisAI" target="_blank" rel="noopener">github.com/gustavobraga-byte/PesquisAI</a>
+    </div>
+    <p class="credits">Gustavo Bastos Braga · Universidade Federal de Viçosa · <a href="mailto:gustavo.braga@ufv.br">gustavo.braga@ufv.br</a> · SisPPG nº 10356285004</p>
+  </div>
+</section>
+
+</main>
+
+<nav class="navbar" aria-label="Navegação da apresentação">
+  <span class="counter" id="counter">01</span>
+  <span class="secname" id="secname">Visão</span>
+  <div class="dots" id="dots" role="group" aria-label="Ir para slide"></div>
+  <button class="nav-btn" id="btn-prev" type="button" aria-label="Slide anterior">
+    <svg viewBox="0 0 24 24"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></button>
+  <button class="nav-btn next" id="btn-next" type="button" aria-label="Próximo slide">
+    <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+</nav>
+
+<div class="modal-ov" id="modal-ov">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="help-title">
+    <h3 id="help-title">Atalhos</h3>
+    <table>
+      <tr><td>Próximo slide</td><td><kbd>→</kbd> <kbd>Espaço</kbd></td></tr>
+      <tr><td>Slide anterior</td><td><kbd>←</kbd></td></tr>
+      <tr><td>Primeiro / último</td><td><kbd>Home</kbd> <kbd>End</kbd></td></tr>
+      <tr><td>Tela cheia</td><td><kbd>F</kbd></td></tr>
+      <tr><td>Abrir esta ajuda</td><td><kbd>?</kbd></td></tr>
+    </table>
+    <button class="btn btn--gold close" id="modal-close" type="button" aria-label="Fechar ajuda">Fechar</button>
+  </div>
+</div>
+<style>
+/* ── órbita arquitetura ── */
+.orbit{position:relative;width:min(430px,80vw);aspect-ratio:1;margin:26px auto 0}
+.orbit::before{content:"";position:absolute;inset:12%;border:1px dashed var(--line-strong);border-radius:50%}
+.orbit__core{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:var(--surface);border:1px solid var(--line);border-radius:50%;width:132px;height:132px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;box-shadow:var(--shadow)}
+.orbit__core small{font-family:var(--mono);font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.orbit__node{position:absolute;top:50%;left:50%;z-index:2;font-family:var(--mono);font-size:.62rem;letter-spacing:.04em;background:var(--surface);border:1px solid var(--line-strong);border-radius:999px;padding:4px 11px;white-space:nowrap;transform:rotate(var(--a)) translateX(var(--r,170px)) rotate(calc(var(--a) * -1))}
+/* dois anéis alternados: vizinhos nunca se sobrepõem */
+.orbit span:nth-of-type(odd){--r:218px}
+.orbit span:nth-of-type(even){--r:155px}
+.orbit__node:hover{border-color:var(--gold)}
+/* ── integridade ── */
+.integ{display:grid;grid-template-columns:1fr 1fr;gap:26px;margin-top:28px;align-items:start}
+.levels{display:flex;flex-direction:column;gap:12px}
+.level{display:flex;align-items:center;gap:14px;background:var(--surface);border:1px solid var(--line);border-left-width:3px;border-radius:10px;padding:14px 18px}
+.level code{font-family:var(--mono);font-size:.78rem;font-weight:500}
+.level span{font-size:.82rem;color:var(--muted)}
+.level--ok{border-left-color:var(--sage)}.level--ok code{color:var(--sage-ink)}
+.level--est{border-left-color:var(--gold)}.level--est code{color:var(--gold-ink)}
+.level--none{border-left-color:var(--wine)}.level--none code{color:var(--wine)}
+.policy{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow)}
+.policy h3{margin-bottom:12px}
+.policy li{font-size:.86rem;padding:6px 0 6px 22px;position:relative}
+.policy li::before{content:"";position:absolute;left:4px;top:13px;width:8px;height:8px;border-radius:50%;background:var(--sage)}
+.policy__foot{margin-top:14px;padding-top:12px;border-top:1px solid var(--line);font-size:.76rem;font-weight:600;letter-spacing:.06em;color:var(--gold-ink)}
+/* ── evolução ── */
+.evo{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:30px}
+.evo li{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:20px 16px}
+.evo .n{font-family:var(--mono);font-size:.78rem;font-weight:500;color:var(--gold-ink)}
+.evo h3{margin:8px 0 4px;font-size:1rem}
+.evo p{font-size:.8rem;color:var(--muted)}
+.evo-line{height:1px;margin-top:22px;background:linear-gradient(90deg,var(--gold),var(--sage),var(--wine))}
+/* ── encerramento ── */
+.closing{text-align:center}
+.credits{margin-top:34px;font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.credits a{color:var(--gold-ink);text-decoration:none}
+@media (max-width:1100px){
+  .integ{grid-template-columns:1fr}
+  .evo{grid-template-columns:repeat(2,1fr)}
+  .orbit{width:min(340px,86vw)}
+  .orbit span:nth-of-type(odd){--r:200px}
+  .orbit span:nth-of-type(even){--r:138px}
+  .orbit__node{font-size:.58rem}
+}
+</style>
+<script>
+(function(){
+'use strict';
+var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+var dotsBox = document.getElementById('dots');
+var counter = document.getElementById('counter');
+var secname = document.getElementById('secname');
+var progress = document.getElementById('progress');
+var btnPrev = document.getElementById('btn-prev');
+var btnNext = document.getElementById('btn-next');
+var cur = 0, dir = 1;
+
+/* dots */
+var dots = slides.map(function(s, i){
+  var b = document.createElement('button');
+  b.type = 'button';
+  b.setAttribute('aria-label', 'Ir para slide ' + (i+1) + ': ' + s.getAttribute('data-sec'));
+  b.addEventListener('click', function(){ go(i); });
+  dotsBox.appendChild(b);
+  return b;
+});
+
+function hash(){ return '#/' + (cur+1); }
+function fromHash(){
+  var m = location.hash.match(/#\/(\d+)/);
+  if (m) {
+    var n = parseInt(m[1], 10) - 1;
+    if (n >= 0 && n < slides.length) return n;
+  }
+  return 0;
+}
+function go(n){
+  n = Math.max(0, Math.min(slides.length - 1, n));
+  dir = n >= cur ? 1 : -1;
+  slides[cur].classList.remove('active','enter-r','enter-l');
+  cur = n;
+  var s = slides[cur];
+  s.classList.add('active');
+  if (!reduceMotion) s.classList.add(dir >= 0 ? 'enter-r' : 'enter-l');
+  dots.forEach(function(d, i){
+    d.classList.toggle('on', i === cur);
+    d.classList.toggle('dot', i !== cur);
+    if (i === cur) d.setAttribute('aria-current','step'); else d.removeAttribute('aria-current');
+  });
+  counter.textContent = String(cur+1).padStart(2,'0');
+  secname.textContent = s.getAttribute('data-sec');
+  progress.style.width = ((cur+1)/slides.length*100) + '%';
+  btnPrev.disabled = cur === 0;
+  btnNext.disabled = cur === slides.length - 1;
+  if (location.hash !== hash()) history.replaceState(null, '', hash());
+  if (cur === 4) startDemo('ibge');
+}
+function next(){ go(cur+1); }
+function prev(){ go(cur-1); }
+btnNext.addEventListener('click', next);
+btnPrev.addEventListener('click', prev);
+document.getElementById('brand-home').addEventListener('click', function(e){ e.preventDefault(); go(0); });
+
+/* modal */
+var modalOv = document.getElementById('modal-ov');
+function openModal(){ modalOv.classList.add('open'); }
+function closeModal(){ modalOv.classList.remove('open'); }
+document.getElementById('btn-help').addEventListener('click', openModal);
+document.getElementById('modal-close').addEventListener('click', closeModal);
+modalOv.addEventListener('click', function(e){ if (e.target === modalOv) closeModal(); });
+
+/* fullscreen */
+var btnFull = document.getElementById('btn-full');
+function syncFull(){
+  var fs = !!(document.fullscreenElement);
+  btnFull.setAttribute('aria-label', fs ? 'Sair da tela cheia' : 'Entrar em tela cheia');
+}
+function toggleFull(){
+  if (document.fullscreenElement) { document.exitFullscreen(); }
+  else if (document.documentElement.requestFullscreen) { document.documentElement.requestFullscreen(); }
+}
+btnFull.addEventListener('click', toggleFull);
+document.addEventListener('fullscreenchange', syncFull);
+
+/* teclado */
+document.addEventListener('keydown', function(e){
+  if (modalOv.classList.contains('open')) {
+    if (e.key === 'Escape') closeModal();
+    return;
+  }
+  if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') { e.preventDefault(); next(); }
+  else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); prev(); }
+  else if (e.key === 'Home') { e.preventDefault(); go(0); }
+  else if (e.key === 'End') { e.preventDefault(); go(slides.length-1); }
+  else if (e.key === '?' ) { openModal(); }
+  else if (e.key === 'f' || e.key === 'F') { toggleFull(); }
+  else if (e.key === 'Escape') { closeModal(); }
+});
+
+/* touch */
+var tx = null;
+document.getElementById('deck').addEventListener('touchstart', function(e){ tx = e.touches[0].clientX; }, {passive:true});
+document.getElementById('deck').addEventListener('touchend', function(e){
+  if (tx === null) return;
+  var dx = e.changedTouches[0].clientX - tx;
+  if (dx < -80) next(); else if (dx > 80) prev();
+  tx = null;
+}, {passive:true});
+
+/* ── demos do terminal (rotuladas como simulação; sem números inventados) ── */
+var termLog = document.getElementById('term-log');
+var ctxT = document.getElementById('ctx-tokens');
+var ctxC = document.getElementById('ctx-cost');
+var demoTimers = [];
+function later(fn, ms){ demoTimers.push(setTimeout(fn, ms)); }
+function clearDemo(){ demoTimers.forEach(clearTimeout); demoTimers = []; }
+
+var DEMOS = {
+  ibge: {
+    prompt: 'Artigo: dinâmica populacional de Viçosa (MG)',
+    head: 'ENTREGA · outputs-dinamica-vicosa/artigo.md',
+    lines: [
+      ['dim', '1 · PLANO — escopo Viçosa (MG) · Censo 2022 · redação ABNT'],
+      ['dim', '2 · COLETA — ibge-br (SIDRA tab. 9514, var. 93)'],
+      ['ok', '   Viçosa (MG) .... 76.430 hab.  [DADO CONFIRMADO]'],
+      ['src', '   Fonte: SIDRA (IBGE) · consultado em 07/09/2026'],
+      ['dim', '3 · SÍNTESE — seção IMRAD redigida com marcadores'],
+      ['dim', '4 · REFERÊNCIAS — citation-management (DOI/URL verificados)'],
+      ['ok', '   BRAGA (2026) — UFVAI · URL oficial verificada'],
+      ['warn', '✓ Revisão humana pendente · parâmetros na Minha memória']
+    ]
+  },
+  datasus: {
+    prompt: 'Protocolo: série de dengue na Região Sul',
+    head: 'ENTREGA · outputs-dengue-sul/protocolo.md',
+    lines: [
+      ['dim', '1 · OBJETIVO — série temporal de dengue, Região Sul'],
+      ['dim', '2 · FONTES — opendatasus: SINAN-dengue · SIH · SIM'],
+      ['dim', '3 · MÉTODO — UF + período + CID-10 A90–A91 · semana epidemiológica'],
+      ['dim', '4 · RESULTADO — protocolo + parâmetros salvos na Minha memória'],
+      ['warn', '! Série não extraída: sem UF/período → [SEM DADOS SUFICIENTES]'],
+      ['ok', '✓ Próximo passo: informar o recorte para executar a extração']
+    ]
+  },
+  scientific: {
+    prompt: 'Revisão: zoneamento agrícola no Brasil',
+    head: 'ENTREGA · outputs-zoneamento/revisao.md',
+    lines: [
+      ['dim', '1 · BUSCA — 7 bases · dedup por DOI · 2015–2026'],
+      ['dim', '2 · TRIAGEM — inclusão: texto completo · exclusão: sem DOI'],
+      ['dim', '3 · VALIDAÇÃO — citation-management antes da síntese'],
+      ['dim', '4 · SÍNTESE — eixos temáticos + lacunas de pesquisa'],
+      ['ok', '   Ex.: BRAGA (2026) — UFVAI · referência verificada'],
+      ['warn', '✓ Rascunho ABNT pronto para revisão humana']
+    ]
+  }
+};
+
+function runDemo(name){
+  clearDemo();
+  var d = DEMOS[name];
+  if (!d || !termLog) return;
+  document.querySelectorAll('.term__btns button').forEach(function(b){
+    b.classList.toggle('on', b.getAttribute('data-demo') === name);
+  });
+  termLog.innerHTML = '';
+  var p = document.createElement('div');
+  p.className = 'u';
+  p.textContent = d.head || d.prompt;
+  p.setAttribute('aria-label', 'Trabalho completo: ' + d.prompt);
+  termLog.appendChild(p);
+  var tokens = 0, cost = 0;
+  d.lines.forEach(function(line, i){
+    later(function(){
+      var div = document.createElement('div');
+      div.className = line[0];
+      div.textContent = line[1];
+      termLog.appendChild(div);
+      tokens += 1200 + i * 900;
+      cost += 0.01 + i * 0.008;
+      if (ctxT) ctxT.textContent = tokens.toLocaleString('pt-BR');
+      if (ctxC) ctxC.textContent = '$' + cost.toFixed(2);
+    }, reduceMotion ? 0 : 600 * (i + 1));
+  });
+}
+function startDemo(name){ runDemo(name); }
+document.querySelectorAll('.term__btns button').forEach(function(b){
+  b.addEventListener('click', function(){ runDemo(b.getAttribute('data-demo')); });
+});
+
+/* init */
+cur = fromHash();
+slides.forEach(function(s){ s.classList.remove('active'); });
+/* mostra o slide inicial sem animação de entrada */
+(function init(){
+  var s = slides[cur];
+  s.classList.add('active');
+  dots.forEach(function(d, i){
+    d.classList.toggle('on', i === cur);
+    d.classList.toggle('dot', i !== cur);
+  });
+  counter.textContent = String(cur+1).padStart(2,'0');
+  secname.textContent = s.getAttribute('data-sec');
+  progress.style.width = ((cur+1)/slides.length*100) + '%';
+  btnPrev.disabled = cur === 0;
+  btnNext.disabled = cur === slides.length - 1;
+  if (location.hash !== hash()) history.replaceState(null, '', hash());
+  if (cur === 4) startDemo('ibge');
+})();
+window.addEventListener('hashchange', function(){ go(fromHash()); });
+})();
+</script>
+</body>
+</html>

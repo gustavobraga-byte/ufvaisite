@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UFVAI — Inteligência Artificial para a Ciência | Universidade Federal de Viçosa</title>
+<meta name="description" content="UFVAI é o agente de inteligência artificial científica da Universidade Federal de Viçosa: análise de artigos, escrita acadêmica, estatística reprodutível e dados oficiais do Brasil com integridade e citação de fontes.">
+<meta name="author" content="Universidade Federal de Viçosa — UFVAI">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#F2F2F0" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#171A24" media="(prefers-color-scheme: dark)">
+<link rel="canonical" href="https://ufvai.ufv.br/">
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:site_name" content="UFVAI">
+<meta property="og:title" content="UFVAI — A inteligência que acelera a ciência">
+<meta property="og:description" content="Agente de IA científica da UFV: pesquisa com fontes oficiais, citações validadas e zero fabricação de dados.">
+<meta property="og:url" content="https://ufvai.ufv.br/">
+<!-- Ao publicar no GitHub Pages, trocar og:url/og:image/canonical pela URL real; mantido placeholder institucional -->
+<meta property="og:image" content="https://ufvai.ufv.br/og-logo.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="UFVAI — A inteligência que acelera a ciência">
+<meta name="twitter:description" content="Agente de IA científica da UFV: pesquisa com fontes oficiais, citações validadas e zero fabricação de dados.">
+<meta name="twitter:image" content="https://ufvai.ufv.br/og-logo.jpg">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/png" sizes="64x64" href="favicon-64.png">
+<link rel="icon" type="image/png" sizes="128x128" href="favicon-128.png">
+<link rel="apple-touch-icon" sizes="180x180" href="favicon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<script>
+/* Aplica o tema salvo antes da pintura (evita flash de tema errado). Padrão: claro. */
+(function () {
+  try {
+    if (localStorage.getItem('ufvai-theme') === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  } catch (e) { /* armazenamento indisponível: segue padrão claro */ }
+})();
+</script>
+<script>
+/* Idioma inicial antes da pintura: preferência salva > navegador > pt-BR (padrão UFVAI). */
+(function () {
+  try {
+    var s = null;
+    try { s = localStorage.getItem('ufvai-lang'); } catch (e) {}
+    var l = String(s || ((navigator.languages && navigator.languages[0]) || navigator.language || 'pt')).toLowerCase();
+    var m = l.indexOf('zh') === 0 ? 'zh-CN' : l.indexOf('en') === 0 ? 'en-US' : l.indexOf('es') === 0 ? 'es-ES' : l.indexOf('fr') === 0 ? 'fr-FR' : 'pt-BR';
+    document.documentElement.lang = m;
+  } catch (e) { /* mantém pt-BR do HTML */ }
+})();
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "UFVAI",
+  "alternateName": "UFVAI — Inteligência Artificial",
+  "applicationCategory": "ResearchApplication",
+  "operatingSystem": "Web, Google Colab, Linux (pacote .deb)",
+  "description": "Agente de inteligência artificial científica mantido pela Universidade Federal de Viçosa: análise de artigos, escrita acadêmica, estatística reprodutível, geração de hipóteses e consulta a dados oficiais do Brasil com política de zero fabricação de dados.",
+  "creator": {
+    "@type": "Organization",
+    "name": "Universidade Federal de Viçosa",
+    "url": "https://www.ufv.br"
+  },
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "BRL" },
+  "featureList": [
+    "Análise de artigos científicos",
+    "Escrita acadêmica ABNT, APA e Vancouver",
+    "Análise estatística reprodutível",
+    "Geração de hipóteses testáveis",
+    "Consulta a dados oficiais brasileiros (IBGE, DataSUS, CONAB, INPE)",
+    "Memória persistente de pesquisa"
+  ]
+}
+</script>
+</head>
+<body>
+<a class="skip-link" href="#conteudo" data-i18n="skip">Ir para o conteúdo principal</a>
+
+<!-- ══ Símbolo reutilizável: constelação de rede neural (motivo do logo oficial) ══ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="constel" viewBox="0 0 400 400">
+    <g class="cl cl--a">
+      <line x1="392" y1="10" x2="312" y2="36"/><line x1="368" y1="74" x2="330" y2="142"/>
+      <line x1="262" y1="86" x2="232" y2="142"/><line x1="396" y1="134" x2="330" y2="142"/>
+      <line x1="284" y1="184" x2="242" y2="234"/><line x1="196" y1="98" x2="162" y2="182"/>
+      <line x1="314" y1="260" x2="242" y2="234"/><line x1="162" y1="182" x2="204" y2="292"/>
+    </g>
+    <g class="cl cl--b">
+      <line x1="392" y1="10" x2="368" y2="74"/><line x1="312" y1="36" x2="368" y2="74"/>
+      <line x1="312" y1="36" x2="262" y2="86"/><line x1="368" y1="74" x2="396" y2="134"/>
+      <line x1="262" y1="86" x2="330" y2="142"/><line x1="232" y1="142" x2="284" y2="184"/>
+      <line x1="330" y1="142" x2="284" y2="184"/><line x1="330" y1="142" x2="356" y2="210"/>
+      <line x1="232" y1="142" x2="196" y2="98"/><line x1="284" y1="184" x2="356" y2="210"/>
+      <line x1="262" y1="86" x2="196" y2="98"/><line x1="242" y1="234" x2="162" y2="182"/>
+      <line x1="356" y1="210" x2="314" y2="260"/><line x1="196" y1="98" x2="120" y2="120"/>
+      <line x1="120" y1="120" x2="162" y2="182"/><line x1="204" y1="292" x2="242" y2="234"/>
+    </g>
+    <g class="nds">
+      <circle class="nd nd--wine" cx="392" cy="10"  r="6"   style="animation-delay:0s"/>
+      <circle class="nd nd--gold" cx="312" cy="36"  r="5"   style="animation-delay:.6s"/>
+      <circle class="nd nd--wine" cx="368" cy="74"  r="5"   style="animation-delay:1.2s"/>
+      <circle class="nd nd--gold" cx="262" cy="86"  r="4"   style="animation-delay:1.8s"/>
+      <circle class="nd nd--wine" cx="396" cy="134" r="5"   style="animation-delay:2.4s"/>
+      <circle class="nd nd--sage" cx="330" cy="142" r="4.5" style="animation-delay:.9s"/>
+      <circle class="nd nd--gold" cx="232" cy="142" r="4"   style="animation-delay:1.5s"/>
+      <circle class="nd nd--wine" cx="284" cy="184" r="4"   style="animation-delay:2.1s"/>
+      <circle class="nd nd--gold" cx="356" cy="210" r="5"   style="animation-delay:2.7s"/>
+      <circle class="nd nd--sage" cx="196" cy="98"  r="3.5" style="animation-delay:3.3s"/>
+      <circle class="nd nd--gold" cx="242" cy="234" r="3.5" style="animation-delay:.3s"/>
+      <circle class="nd nd--wine" cx="314" cy="260" r="4"   style="animation-delay:1.1s"/>
+      <circle class="nd nd--wine" cx="162" cy="182" r="3.5" style="animation-delay:1.7s"/>
+      <circle class="nd nd--sage" cx="204" cy="292" r="3.5" style="animation-delay:2.3s"/>
+      <circle class="nd nd--gold" cx="120" cy="120" r="3"   style="animation-delay:2.9s"/>
+    </g>
+  </symbol>
+</svg>
+
+<!-- ══════════════════════════════ HEADER ══════════════════════════════ -->
+<header class="topbar" id="topo">
+  <div class="container topbar__inner">
+    <a class="brand" href="#topo" aria-label="UFVAI — página inicial">
+      <span class="brand__word">UFV<em>AI</em></span>
+    </a>
+    <nav class="nav" id="nav-principal" aria-label="Navegação principal">
+      <ul>
+        <li><a href="#sobre" data-i18n="nav.sobre">Sobre</a></li>
+        <li><a href="#funcionalidades" data-i18n="nav.func">Funcionalidades</a></li>
+        <li><a href="#novidades" data-i18n="nav.nov">Novidades</a></li>
+        <li><a href="#como-funciona" data-i18n="nav.como">Como funciona</a></li>
+        <li><a href="#casos" data-i18n="nav.casos">Casos de uso</a></li>
+        <li><a href="#faq" data-i18n="nav.faq">FAQ</a></li>
+        <li><a href="#apresentacao" data-i18n="nav.apres">Apresentação</a></li>
+      </ul>
+    </nav>
+    <div class="topbar__actions">
+      <div class="lang-switch" id="lang-switch">
+        <button class="lang-btn" id="lang-btn" type="button" aria-haspopup="true" aria-expanded="false" aria-label="Idioma / Language">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.7 3.8 9S14.5 18.4 12 21c-2.5-2.6-3.8-5.7-3.8-9S9.5 5.6 12 3Z"/></svg>
+          <span id="lang-current">PT</span>
+        </button>
+        <div class="lang-menu" id="lang-menu" role="menu" aria-label="Idioma / Language">
+          <button type="button" role="menuitemradio" aria-checked="true" data-lang="pt"><span>Português</span><span class="lang-code">PT</span></button>
+          <button type="button" role="menuitemradio" aria-checked="false" data-lang="en"><span>English</span><span class="lang-code">EN</span></button>
+          <button type="button" role="menuitemradio" aria-checked="false" data-lang="es"><span>Español</span><span class="lang-code">ES</span></button>
+          <button type="button" role="menuitemradio" aria-checked="false" data-lang="fr"><span>Français</span><span class="lang-code">FR</span></button>
+          <button type="button" role="menuitemradio" aria-checked="false" data-lang="zh"><span>中文</span><span class="lang-code">ZH</span></button>
+        </div>
+      </div>
+      <button class="theme-toggle" id="theme-toggle" type="button" aria-pressed="false" aria-label="Ativar modo escuro">
+        <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.4"/><g stroke-linecap="round"><line x1="12" y1="2.5" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="21.5"/><line x1="2.5" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="21.5" y2="12"/><line x1="5.2" y1="5.2" x2="7" y2="7"/><line x1="17" y1="17" x2="18.8" y2="18.8"/><line x1="5.2" y1="18.8" x2="7" y2="17"/><line x1="17" y1="7" x2="18.8" y2="5.2"/></g></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z"/></svg>
+      </button>
+      <a class="btn btn--gold btn--sm" href="https://colab.research.google.com/github/gustavobraga-byte/PesquisAI/blob/main/PesquisAI.ipynb" target="_blank" rel="noopener" data-i18n="cta.start">Começar agora</a>
+      <button class="nav-toggle" id="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-principal" aria-label="Abrir menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="conteudo">
+
+  <!-- ══════════════════════════════ HERO ══════════════════════════════ -->
+  <section class="hero" aria-labelledby="hero-titulo">
+    <svg class="constel constel--tr" aria-hidden="true" focusable="false"><use href="#constel"/></svg>
+    <svg class="constel constel--bl" aria-hidden="true" focusable="false"><use href="#constel"/></svg>
+
+    <div class="container hero__grid">
+      <div class="hero__copy">
+        <p class="eyebrow" data-i18n="hero.eyebrow">Universidade Federal de Viçosa · Inteligência Artificial</p>
+        <h1 class="hero__title" id="hero-titulo">
+          <span class="wordmark wordmark--xl" aria-label="UFVAI">UFV<em>AI</em></span>
+          <span class="hero__typed-line">
+            <span class="sr-only" data-i18n="hero.typedSr">A inteligência que acelera a ciência.</span>
+            <span id="typed" aria-hidden="true"></span><span class="caret" aria-hidden="true"></span>
+          </span>
+        </h1>
+        <div class="rule" role="presentation"></div>
+        <p class="hero__sub" data-i18n="hero.sub">
+          Um agente de pesquisa científica que consulta dados oficiais do Brasil e literatura
+          validada, cita cada fonte e declara honestamente quando não há evidência suficiente.
+          Rigor, elegância e precisão — do projeto à publicação.
+        </p>
+        <div class="hero__cta" id="comecar">
+          <a class="btn btn--gold" href="https://colab.research.google.com/github/gustavobraga-byte/PesquisAI/blob/main/PesquisAI.ipynb" target="_blank" rel="noopener" data-i18n="cta.start">Começar agora</a>
+          <a class="btn btn--ghost" href="#sobre" data-i18n="hero.more">Saiba mais</a>
+        </div>
+
+        <dl class="stats" aria-label="Números do UFVAI">
+          <div class="stat reveal">
+            <dt class="sr-only" data-i18n="stats.skills">Skills científicas integradas</dt>
+            <dd class="stat__value"><span data-count="174">0</span></dd>
+            <dd class="stat__label" data-i18n="stats.skills">skills científicas integradas</dd>
+          </div>
+          <div class="stat reveal">
+            <dt class="sr-only" data-i18n="stats.datasus">Datasets de saúde pública</dt>
+            <dd class="stat__value"><span data-count="139">0</span></dd>
+            <dd class="stat__label" data-i18n="stats.datasus">datasets de saúde pública</dd>
+          </div>
+          <div class="stat reveal">
+            <dt class="sr-only" data-i18n="stats.agro">Fontes de dados do agronegócio</dt>
+            <dd class="stat__value"><span data-count="38">0</span><span class="stat__plus">+</span></dd>
+            <dd class="stat__label" data-i18n="stats.agro">fontes de dados do agro</dd>
+          </div>
+          <div class="stat reveal">
+            <dt class="sr-only" data-i18n="stats.bases">Bases acadêmicas na meta-busca</dt>
+            <dd class="stat__value"><span data-count="7">0</span></dd>
+            <dd class="stat__label" data-i18n="stats.bases">bases acadêmicas na meta-busca</dd>
+          </div>
+        </dl>
+      </div>
+
+      <!-- Demo animada: boot → Termos (e-mail + aceite) → tela principal -->
+      <div class="hero__demo reveal">
+        <div class="screen" id="screen-demo" role="group" data-i18n-aria="hero.demoAria"
+             aria-label="Demonstração animada do fluxo de abertura do UFVAI: tela de carregamento, aceite dos Termos de Uso e tela principal com o agente ativo">
+          <p class="sr-only" data-i18n="hero.demoSr">
+            Sequência ilustrativa da abertura real do UFVAI: tela de carregamento com etapas,
+            janela de Termos de Uso com nome e e-mail e aceite conforme a LGPD, e tela principal
+            com o agente ativo, a versão 0.6.17 e uma conversa de exemplo com marcadores de evidência.
+          </p>
+
+          <!-- Estágio 1 · tela de carregamento -->
+          <section class="screen__panel panel--boot is-active" id="panel-boot" aria-hidden="false">
+            <span class="wordmark wordmark--sm" aria-hidden="true">UFV<em>AI</em></span>
+            <div class="boot__bar" aria-hidden="true"><span id="boot-fill"></span></div>
+            <p class="boot__pct" aria-hidden="true"><span id="boot-pct">0</span>%</p>
+            <ul class="boot__list" id="boot-list" aria-hidden="true">
+              <li data-i18n="demo.boot1">Verificando dependências</li>
+              <li data-i18n="demo.boot2">Carregando chaves de API</li>
+              <li data-i18n="demo.boot3">Iniciando terminal interativo (ttyd)</li>
+              <li data-i18n="demo.boot4">Iniciando o servidor web</li>
+            </ul>
+            <span class="btn btn--gold btn--sm boot__open" id="boot-open" aria-hidden="true" data-i18n="demo.open">ABRIR O UFVAI</span>
+          </section>
+
+          <!-- Estágio 2 · Termos de Uso (nome, e-mail, aceite) -->
+          <section class="screen__panel panel--terms" id="panel-terms" aria-hidden="true">
+            <h3 class="terms__title" data-i18n="demo.termsTitle">Termos de Uso</h3>
+            <div class="terms__box" aria-hidden="true">
+              <p data-i18n="demo.termsP1">Seus dados (nome e e-mail) permanecem no seu Drive ou na sua máquina.</p>
+              <p data-i18n="demo.termsP2">Telemetria anônima opcional (LGPD, opt-out). Revogação a qualquer momento.</p>
+            </div>
+            <label class="field"><span data-i18n="demo.name">Nome</span><input id="t-name" type="text" readonly value="" autocomplete="off" tabindex="-1"></label>
+            <label class="field"><span data-i18n="demo.email">E-mail</span><input id="t-email" type="text" readonly value="" autocomplete="off" tabindex="-1"></label>
+            <label class="check"><input type="checkbox" id="chk-terms" disabled tabindex="-1"><span aria-hidden="true"></span><span data-i18n="demo.accept">Li e aceito os Termos de Uso</span></label>
+            <label class="check"><input type="checkbox" id="chk-ga" disabled checked tabindex="-1"><span aria-hidden="true"></span><span data-i18n="demo.ga">Estatísticas anônimas (GA4)</span></label>
+            <span class="btn btn--gold btn--sm terms__btn" id="terms-btn" aria-hidden="true" data-i18n="demo.activate">ATIVAR O UFVAI</span>
+          </section>
+
+          <!-- Estágio 3 · tela principal (wrapper real, v0.6.17) -->
+          <section class="screen__panel panel--app" id="panel-app" aria-hidden="true">
+            <div class="chat__bar">
+              <span class="wordmark wordmark--xs" aria-hidden="true">UFV<em>AI</em></span>
+              <span class="chip-v">v0.6.17</span>
+              <span class="status"><span class="status-dot" aria-hidden="true"></span><span data-i18n="demo.active">agente ativo</span></span>
+              <span class="tb-chips" aria-hidden="true">
+                <span class="tb-chip" data-i18n="demo.chipMem">memória</span>
+                <span class="tb-chip" id="demo-lang-chip">pt-BR</span>
+                <span class="tb-chip" data-i18n="demo.chipTheme">tema</span>
+              </span>
+            </div>
+            <div class="chat__body" id="chat-body"></div>
+            <div class="chat__input" aria-hidden="true">
+              <span data-i18n="demo.synced">Minha memória sincronizada · política zero-fabricação</span>
+              <span class="chat__send">
+                <svg viewBox="0 0 24 24"><path d="M4 12 20 4l-4 8 4 8Z"/></svg>
+              </span>
+            </div>
+          </section>
+
+          <button class="screen__replay" id="screen-replay" type="button" aria-label="Rever a demonstração" title="Rever a demonstração">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+          </button>
+        </div>
+        <p class="demo__caption" data-i18n="hero.caption">Demonstração simulada da abertura real do UFVAI — nenhum dado é enviado.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════ SOBRE ══════════════════════════════ -->
+  <section class="section" id="sobre" aria-labelledby="sobre-titulo">
+    <div class="container">
+      <p class="eyebrow reveal" data-i18n="sobre.eyebrow">Sobre o UFVAI</p>
+      <h2 class="section__title reveal" id="sobre-titulo" data-i18n="sobre.title">Ciência de precisão, <span class="accent">integridade</span> por padrão</h2>
+      <div class="rule rule--short reveal" role="presentation"></div>
+      <div class="sobre__grid">
+        <div class="sobre__text reveal">
+          <p data-i18n="sobre.p1">
+            O <strong>UFVAI</strong> é um agente de inteligência artificial especializado em pesquisa
+            científica, desenvolvido e mantido pela <strong>Universidade Federal de Viçosa</strong>.
+            Treinado sobre um núcleo de competências científicas e conectado a fontes oficiais de
+            dados brasileiros, ele atua como um pesquisador sênior remoto: metódico, transparente
+            sobre incertezas e comprometido com a integridade científica.
+          </p>
+          <p data-i18n="sobre.p2">
+            Cada afirmação quantitativa recebe um marcador de evidência. Cada referência bibliográfica
+            passa por validação de identificadores persistentes. Cada análise guarda parâmetros,
+            código e proveniência na <em>memória de pesquisa</em> do usuário — para que qualquer
+            resultado possa ser reexecutado, auditado e citado.
+          </p>
+          <p class="sobre__markers" role="list" aria-label="Marcadores de evidência">
+            <span class="marker marker--ok" role="listitem" data-i18n="sobre.m1">[DADO CONFIRMADO]</span>
+            <span class="marker marker--est" role="listitem" data-i18n="sobre.m2">[ESTIMATIVA FUNDAMENTADA]</span>
+            <span class="marker marker--none" role="listitem" data-i18n="sobre.m3">[SEM DADOS SUFICIENTES]</span>
+          </p>
+        </div>
+        <ul class="sobre__list">
+          <li class="reveal">
+            <span class="sobre__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.4" y1="15.4" x2="21" y2="21"/><path class="gold-stroke" d="M8 10.6l1.9 1.9 3.4-3.6"/></svg>
+            </span>
+            <div>
+              <h3 data-i18n="sobre.i1h">Precisão verificável</h3>
+              <p data-i18n="sobre.i1p">Política de zero fabricação: nada de dados, DOIs ou autores inventados. Sem evidência, o UFVAI declara a ausência.</p>
+            </div>
+          </li>
+          <li class="reveal">
+            <span class="sobre__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6Z"/><path d="M15 3v4h4"/><path class="gold-stroke" d="M9 12h7M9 16h5"/></svg>
+            </span>
+            <div>
+              <h3 data-i18n="sobre.i2h">Citação de fontes</h3>
+              <p data-i18n="sobre.i2p">Referências normalizadas em ABNT, APA ou Vancouver, com validação de DOI, ISBN e ISSN antes de qualquer uso.</p>
+            </div>
+          </li>
+          <li class="reveal">
+            <span class="sobre__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M4 20V6"/><path d="M4 20h16"/><path class="gold-stroke" d="M8 16v-4M12 16V8M16 16v-6M20 16v-9"/></svg>
+            </span>
+            <div>
+              <h3 data-i18n="sobre.i3h">Análise de dados</h3>
+              <p data-i18n="sobre.i3p">Do IBGE ao DataSUS, do sensoriamento remoto à estatística bayesiana: pipelines reprodutíveis com código aberto.</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════ FUNCIONALIDADES ══════════════════════════ -->
+  <section class="section section--alt" id="funcionalidades" aria-labelledby="func-titulo">
+    <div class="container">
+      <p class="eyebrow reveal" data-i18n="func.eyebrow">Funcionalidades</p>
+      <h2 class="section__title reveal" id="func-titulo" data-i18n="func.title">Um laboratório completo em linguagem natural</h2>
+      <div class="rule rule--short reveal" role="presentation"></div>
+      <div class="cards">
+        <article class="card reveal">
+          <span class="card__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 3h10l4 4v14H5Z"/><path d="M15 3v4h4"/><circle class="gold-stroke" cx="11" cy="13" r="3"/><line class="gold-stroke" x1="13.2" y1="15.2" x2="16" y2="18"/></svg></span>
+          <h3 data-i18n="func.c1h">Análise de artigos</h3>
+          <p data-i18n="func.c1p">Extraia método, resultados, limitações e qualidade de evidência de papers e preprints, com trechos rastreáveis.</p>
+        </article>
+        <article class="card reveal">
+          <span class="card__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 20l3.5-1 11-11a2.1 2.1 0 0 0-3-3l-11 11Z"/><path class="gold-stroke" d="M13.5 6.5l3 3"/></svg></span>
+          <h3 data-i18n="func.c2h">Escrita acadêmica</h3>
+          <p data-i18n="func.c2p">Resumos, revisões e artigos em estrutura IMRAD, normalizados pelas normas ABNT/UFV ou pelos estilos APA e Vancouver.</p>
+        </article>
+        <article class="card reveal">
+          <span class="card__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3.5" y="4" width="17" height="14" rx="2"/><path class="gold-stroke" d="M7 14l3-3.5 2.5 2.5L17 8.5"/><path d="M8 21h8"/></svg></span>
+          <h3 data-i18n="func.c3h">Estatística reprodutível</h3>
+          <p data-i18n="func.c3p">Testes, modelos e poder estatístico com pressupostos verificados, tamanho de efeito e relatório no padrão APA.</p>
+        </article>
+        <article class="card reveal">
+          <span class="card__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 1 3.6 10.8c-.7.6-1.1 1.3-1.2 2.2h-4.8c-.1-.9-.5-1.6-1.2-2.2A6 6 0 0 1 12 3Z"/><circle class="gold-stroke" cx="12" cy="9" r="1.6"/></svg></span>
+          <h3 data-i18n="func.c4h">Geração de hipóteses</h3>
+          <p data-i18n="func.c4p">Hipóteses testáveis com H₀ e H₁ explícitos, variáveis definidas e previsões discriminantes entre explicações rivais.</p>
+        </article>
+        <article class="card reveal">
+          <span class="card__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6"/><path d="M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/><path class="gold-stroke" d="M12 9v12"/></svg></span>
+          <h3 data-i18n="func.c5h">Dados oficiais do Brasil</h3>
+          <p data-i18n="func.c5p">IBGE e SIDRA, OpenDataSUS, CONAB, INPE, Banco Central e dezenas de APIs públicas consultadas em tempo real.</p>
+        </article>
+        <article class="card reveal">
+          <span class="card__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="2.4"/><circle cx="18" cy="8" r="2.4"/><circle cx="9" cy="18" r="2.4"/><path class="gold-stroke" d="M8.2 6.8l7.5 1M7 8.2l1.4 7.4M16.4 9.9l-5.6 6.4"/></svg></span>
+          <h3 data-i18n="func.c6h">Múltiplas áreas do saber</h3>
+          <p data-i18n="func.c6p">Das ciências agrárias e da saúde às humanas e exatas: um núcleo orquestrado de competências científicas multidisciplinares.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════ NOVIDADES ══════════════════════════════ -->
+  <section class="section" id="novidades" aria-labelledby="nov-titulo">
+    <div class="container">
+      <p class="eyebrow reveal" data-i18n="nov.eyebrow">Novidades · ciclo 0.6.x</p>
+      <h2 class="section__title reveal" id="nov-titulo" data-i18n="nov.title">O que chegou desde a última versão do site</h2>
+      <div class="rule rule--short reveal" role="presentation"></div>
+      <div class="novidades__grid">
+        <div>
+          <h3 class="novidades__sub reveal" data-i18n="nov.sub">Novas ferramentas</h3>
+          <div class="tools">
+            <article class="tool reveal">
+              <h4>cep-ufv</h4>
+              <p data-i18n="nov.t1p">Pacote documental do CEP/UFV: TCLE, TALE, anuências e checklists fielmente nos modelos oficiais.</p>
+            </article>
+            <article class="tool reveal">
+              <h4>BR-DWGD</h4>
+              <p data-i18n="nov.t2p">Dados climáticos gradeados do Brasil: normais climatológicas, acumulados por município e graus-dia.</p>
+            </article>
+            <article class="tool reveal">
+              <h4>meta-search-br</h4>
+              <p data-i18n="nov.t3p">Meta-busca em 7 bases acadêmicas — PubMed, SciELO, LILACS, BDTD, OpenAlex, arXiv e bioRxiv/medRxiv — com deduplicação por DOI.</p>
+            </article>
+            <article class="tool reveal">
+              <h4>grant-finder</h4>
+              <p data-i18n="nov.t4p">Busca e análise de editais de fomento à pesquisa brasileiros e internacionais.</p>
+            </article>
+          </div>
+          <p class="novidades__note reveal" data-i18n="nov.note">Também no ciclo: integração Zotero, conversão de documentos (markitdown), editor de memória no navegador e interface em 5 idiomas (pt, en, es, fr, zh).</p>
+        </div>
+        <div>
+          <h3 class="novidades__sub reveal" data-i18n="nov.sub2">Histórico de versões</h3>
+          <ol class="timeline reveal">
+            <li>
+              <span class="timeline__ver">0.6.17</span>
+              <span class="timeline__date">01/09/2026</span>
+              <p data-i18n="nov.v1">Memória abre instantânea pelo menu (singleton + warm-up + prefetch).</p>
+            </li>
+            <li>
+              <span class="timeline__ver">0.6.16</span>
+              <span class="timeline__date">01/09/2026</span>
+              <p data-i18n="nov.v2">Retorno de usuário registra exatamente 1 linha por clique na planilha.</p>
+            </li>
+            <li>
+              <span class="timeline__ver">0.6.15</span>
+              <span class="timeline__date">01/09/2026</span>
+              <p data-i18n="nov.v3">Prompt inicial respeita o idioma detectado do sistema e do navegador.</p>
+            </li>
+            <li>
+              <span class="timeline__ver">0.6.14</span>
+              <span class="timeline__date">01/09/2026</span>
+              <p data-i18n="nov.v4">IP real do cliente e todo acesso registrado (LGPD, planilha de contatos).</p>
+            </li>
+            <li>
+              <span class="timeline__ver">0.6.10</span>
+              <span class="timeline__date">01/09/2026</span>
+              <p data-i18n="nov.v5">Memória otimizada com cache BM25 em disco e interface responsiva no mobile.</p>
+            </li>
+            <li>
+              <span class="timeline__ver">0.6.9</span>
+              <span class="timeline__date">25/08/2026</span>
+              <p data-i18n="nov.v6">Pacote .deb offline, consentimento LGPD com e-mail e telemetria GA4 opt-out.</p>
+            </li>
+          </ol>
+          <p class="novidades__note reveal" data-i18n="nov.note2">
+            Histórico completo no
+            <a href="https://github.com/gustavobraga-byte/PesquisAI/blob/main/CHANGELOG.md" target="_blank" rel="noopener">CHANGELOG.md do repositório</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════ COMO FUNCIONA ══════════════════════════ -->
+  <section class="section section--alt" id="como-funciona" aria-labelledby="como-titulo">
+    <div class="container">
+      <p class="eyebrow reveal" data-i18n="como.eyebrow">Como funciona</p>
+      <h2 class="section__title reveal" id="como-titulo" data-i18n="como.title">Três passos, uma trilha auditável</h2>
+      <div class="rule rule--short reveal" role="presentation"></div>
+      <ol class="steps">
+        <li class="step reveal">
+          <span class="step__node" aria-hidden="true"><span class="step__num">1</span></span>
+          <h3 data-i18n="como.s1h">Instrua</h3>
+          <p data-i18n="como.s1p">Dê uma instrução em linguagem natural — da pergunta de pesquisa ao recorte territorial e período de análise.</p>
+        </li>
+        <li class="step reveal">
+          <span class="step__node" aria-hidden="true"><span class="step__num">2</span></span>
+          <h3 data-i18n="como.s2h">Verifique</h3>
+          <p data-i18n="como.s2p">O UFVAI consulta fontes oficiais e literatura validada, cruza evidências e aponta divergências entre bases.</p>
+        </li>
+        <li class="step reveal">
+          <span class="step__node" aria-hidden="true"><span class="step__num">3</span></span>
+          <h3 data-i18n="como.s3h">Publique com confiança</h3>
+          <p data-i18n="como.s3p">Receba texto, tabelas e figuras com marcadores de evidência, referências conferidas e código reprodutível.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════ CASOS DE USO ══════════════════════════ -->
+  <section class="section" id="casos" aria-labelledby="casos-titulo">
+    <div class="container">
+      <p class="eyebrow reveal" data-i18n="casos.eyebrow">Casos de uso</p>
+      <h2 class="section__title reveal" id="casos-titulo" data-i18n="casos.title">Quem pesquisa, reconhece</h2>
+      <div class="rule rule--short reveal" role="presentation"></div>
+      <div class="quotes">
+        <figure class="quote reveal">
+          <span class="quote__mark" aria-hidden="true">&ldquo;</span>
+          <blockquote>O UFVAI entregou geoprocessamento de alto nível e em velocidade surpreendente. Em duas semanas, consegui processar dados suficientes para toda minha dissertação.</blockquote>
+          <figcaption>A. C. · Estudante de pós-graduação, Extensão Rural — UFV</figcaption>
+        </figure>
+        <figure class="quote reveal">
+          <span class="quote__mark" aria-hidden="true">&ldquo;</span>
+          <blockquote>Fiz análises utilizando dados geoespaciais, assim como análises em softwares GIS, e em alguns minutos os dados foram revisados e aprimorados, com produção de tabelas, mapas e texto coeso e com muita confiabilidade nas referências bibliográficas.</blockquote>
+          <figcaption>D. I. · Professor pesquisador, Engenharia — IF Baiano</figcaption>
+        </figure>
+        <figure class="quote reveal">
+          <span class="quote__mark" aria-hidden="true">&ldquo;</span>
+          <blockquote>O programa é ótimo para busca e estruturação de artigos, dissertações e teses. A IA realiza as buscas sem alucinações e mostra as fontes consultadas.</blockquote>
+          <figcaption>I. B. · Doutora, Química — Unicamp</figcaption>
+        </figure>
+      </div>
+      <p class="footnote reveal" data-i18n="casos.note">Depoimentos reais de usuários, reproduzidos com iniciais e instituição (mantidos no original em português).</p>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════ FAQ ══════════════════════════════ -->
+  <section class="section section--alt" id="faq" aria-labelledby="faq-titulo">
+    <div class="container container--narrow">
+      <p class="eyebrow reveal" data-i18n="faq.eyebrow">Perguntas frequentes</p>
+      <h2 class="section__title reveal" id="faq-titulo" data-i18n="faq.title">Transparência antes de tudo</h2>
+      <div class="rule rule--short reveal" role="presentation"></div>
+
+      <div class="faq reveal">
+        <h3>
+          <button class="faq__q" type="button" aria-expanded="false" aria-controls="faq-1" id="faq-1-btn" data-i18n="faq.q1">
+            O que é o UFVAI?
+            <span class="faq__sign" aria-hidden="true"></span>
+          </button>
+        </h3>
+        <div class="faq__a" id="faq-1" role="region" aria-labelledby="faq-1-btn" hidden>
+          <p data-i18n="faq.a1">É um agente de inteligência artificial especializado em pesquisa científica, mantido pela Universidade Federal de Viçosa. Ele combina um núcleo de competências científicas com acesso a dados oficiais brasileiros e bases acadêmicas, atuando como assistente de pesquisa em todo o ciclo: pergunta, coleta, validação, síntese e redação.</p>
+        </div>
+      </div>
+
+      <div class="faq reveal">
+        <h3>
+          <button class="faq__q" type="button" aria-expanded="false" aria-controls="faq-2" id="faq-2-btn" data-i18n="faq.q2">
+            O UFVAI inventa dados ou referências?
+            <span class="faq__sign" aria-hidden="true"></span>
+          </button>
+        </h3>
+        <div class="faq__a" id="faq-2" role="region" aria-labelledby="faq-2-btn" hidden>
+          <p data-i18n="faq.a2">Não. Vale uma política de zero fabricação: toda referência exige identificador persistente validado (DOI, ISBN, ISSN ou URL oficial) e toda afirmação quantitativa porta um marcador de evidência. Quando as fontes não sustentam uma resposta, o agente declara <strong>[SEM DADOS SUFICIENTES]</strong> — a ausência honesta prefere-se ao número inventado.</p>
+        </div>
+      </div>
+
+      <div class="faq reveal">
+        <h3>
+          <button class="faq__q" type="button" aria-expanded="false" aria-controls="faq-3" id="faq-3-btn" data-i18n="faq.q3">
+            Quais fontes de dados ele consulta?
+            <span class="faq__sign" aria-hidden="true"></span>
+          </button>
+        </h3>
+        <div class="faq__a" id="faq-3" role="region" aria-labelledby="faq-3-btn" hidden>
+          <p data-i18n="faq.a3">Fontes oficiais brasileiras — IBGE e SIDRA, OpenDataSUS, CONAB, INPE, Banco Central, TSE, ANA e outras APIs públicas — além de bases acadêmicas como PubMed, SciELO, LILACS, BDTD, OpenAlex, arXiv e bioRxiv/medRxiv, com deduplicação por DOI.</p>
+        </div>
+      </div>
+
+      <div class="faq reveal">
+        <h3>
+          <button class="faq__q" type="button" aria-expanded="false" aria-controls="faq-4" id="faq-4-btn" data-i18n="faq.q4">
+            Preciso saber programar para usar?
+            <span class="faq__sign" aria-hidden="true"></span>
+          </button>
+        </h3>
+        <div class="faq__a" id="faq-4" role="region" aria-labelledby="faq-4-btn" hidden>
+          <p data-i18n="faq.a4">Não. A interação é em linguagem natural, em português ou em outros idiomas. Quando a análise exige código, o UFVAI o gera, executa e guarda os parâmetros na memória do projeto — quem programa ganha reprodutibilidade; quem não programa ganha resultados auditáveis.</p>
+        </div>
+      </div>
+
+      <div class="faq reveal">
+        <h3>
+          <button class="faq__q" type="button" aria-expanded="false" aria-controls="faq-5" id="faq-5-btn" data-i18n="faq.q5">
+            Onde ficam armazenados os meus dados de pesquisa?
+            <span class="faq__sign" aria-hidden="true"></span>
+          </button>
+        </h3>
+        <div class="faq__a" id="faq-5" role="region" aria-labelledby="faq-5-btn" hidden>
+          <p data-i18n="faq.a5">Na sua própria <em>memória de pesquisa</em>: um cofre de notas no seu Google Drive (no Colab) ou na sua máquina (no modo offline). Nada é enviado a serviços de terceiros sem consentimento, e dados pessoais sensíveis são recusados até serem anonimizados, em conformidade com a LGPD.</p>
+        </div>
+      </div>
+
+      <div class="faq reveal">
+        <h3>
+          <button class="faq__q" type="button" aria-expanded="false" aria-controls="faq-6" id="faq-6-btn" data-i18n="faq.q6">
+            Posso usar em TCCs, dissertações e artigos?
+            <span class="faq__sign" aria-hidden="true"></span>
+          </button>
+        </h3>
+        <div class="faq__a" id="faq-6" role="region" aria-labelledby="faq-6-btn" hidden>
+          <p data-i18n="faq.a6">Sim, como ferramenta de apoio com revisão humana obrigatória: o UFVAI não substitui a revisão por pares nem o julgamento do pesquisador. Recomenda-se incluir a declaração de uso de IA na entrega final, conforme as políticas institucionais e as normas de integridade científica da CAPES e do CNPq.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════ COMO CITAR ══════════════════════════════ -->
+  <section class="section" id="citar" aria-labelledby="citar-titulo">
+    <div class="container container--narrow">
+      <p class="eyebrow reveal" data-i18n="citar.eyebrow">Como citar</p>
+      <h2 class="section__title reveal" id="citar-titulo" data-i18n="citar.title">Use o UFVAI com crédito</h2>
+      <div class="rule rule--short reveal" role="presentation"></div>
+      <p class="reveal cite__intro" data-i18n="citar.intro">
+        O uso do UFVAI em trabalhos acadêmicos deve ser declarado conforme as diretrizes do COPE,
+        da CAPES e dos principais periódicos. Copie a referência no formato desejado:
+      </p>
+      <div class="cite__grid">
+        <figure class="cite reveal">
+          <figcaption data-i18n="citar.capAbnt">ABNT NBR 6023</figcaption>
+          <pre><code>BRAGA, Gustavo Bastos. UFVAI: agente de inteligência
+artificial para pesquisa científica. Versão 0.6.17.
+Viçosa: Universidade Federal de Viçosa, 2026.
+Disponível em: https://colab.research.google.com/
+github/gustavobraga-byte/PesquisAI/.
+Acesso em: DD mês. AAAA.
+Projeto registrado no SisPPG/UFV sob nº 10356285004.</code></pre>
+        </figure>
+        <figure class="cite reveal">
+          <figcaption>BibTeX</figcaption>
+          <pre><code>@software{braga2026ufvai,
+  author      = {Gustavo Bastos Braga},
+  title       = {{UFVAI}: Agente de Intelig{\^e}ncia
+               Artificial para Pesquisa Cient{\'\i}fica},
+  year        = {2026},
+  version     = {0.6.17},
+  institution = {Universidade Federal de Vi{\c{c}}osa
+               (UFV)},
+  url         = {https://colab.research.google.com/
+               github/gustavobraga-byte/PesquisAI/}
+}</code></pre>
+        </figure>
+      </div>
+      <p class="novidades__note reveal" data-i18n="citar.note">
+        Modelos prontos de declaração de uso de IA (ABNT, ICMJE, Nature, Science, Elsevier, Springer)
+        estão no arquivo
+        <a href="https://github.com/gustavobraga-byte/PesquisAI/blob/main/declaracao_uso_ia.md" target="_blank" rel="noopener">declaracao_uso_ia.md</a>
+        do repositório.
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════ APRESENTAÇÃO ═══════════════════════════ -->
+  <section class="section section--alt" id="apresentacao" aria-labelledby="apres-titulo">
+    <div class="container">
+      <p class="eyebrow reveal" data-i18n="apres.eyebrow">Apresentação</p>
+      <h2 class="section__title reveal" id="apres-titulo" data-i18n="apres.title">O pitch do UFVAI em slides</h2>
+      <div class="rule rule--short reveal" role="presentation"></div>
+      <p class="reveal apres__lead" data-i18n="apres.lead">Problema, solução, entregas, dados do Brasil, arquitetura e integridade em 10 slides navegáveis — direto no navegador, com opção de tela cheia.</p>
+      <div class="deck-player reveal" id="deck-player">
+        <iframe id="deck-frame" src="apresentacao/index.html"
+                title="Apresentação UFVAI" data-i18n-title="apres.frameTitle"
+                loading="lazy" allowfullscreen allow="fullscreen"></iframe>
+        <div class="deck-cover" id="deck-cover">
+          <span class="wordmark wordmark--sm" aria-hidden="true">UFV<em>AI</em></span>
+          <button class="deck-play" id="deck-play" type="button" data-i18n-aria="apres.play">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7Z"/></svg>
+            <span data-i18n="apres.play">Assistir à apresentação</span>
+          </button>
+          <a class="deck-open" href="apresentacao/index.html" target="_blank" rel="noopener" data-i18n="apres.openTab">ou abrir em nova aba</a>
+        </div>
+      </div>
+      <div class="deck-controls reveal">
+        <button class="btn btn--gold btn--sm" id="deck-play-2" type="button" data-i18n="apres.play">Assistir à apresentação</button>
+        <button class="btn btn--ghost btn--sm" id="deck-full" type="button" data-i18n="apres.full">Tela cheia</button>
+        <a class="btn btn--ghost btn--sm" href="apresentacao/index.html" target="_blank" rel="noopener" data-i18n="apres.openTab">ou abrir em nova aba</a>
+      </div>
+      <p class="footnote reveal" data-i18n="apres.note">Navegue com as setas ← →, gestos ou pontos; pressione F dentro da apresentação para tela cheia.</p>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════ CTA FINAL ══════════════════════════════ -->
+  <section class="cta" aria-labelledby="cta-titulo">
+    <svg class="constel constel--cta" aria-hidden="true" focusable="false"><use href="#constel"/></svg>
+    <div class="container cta__inner reveal">
+      <h2 id="cta-titulo" data-i18n="cta.title">Pronto para acelerar a sua pesquisa?</h2>
+      <p data-i18n="cta.p">Abra o UFVAI no Google Colab ou instale o pacote offline e comece em minutos — com a mesma integridade de sempre.</p>
+      <div class="hero__cta">
+        <a class="btn btn--gold" href="https://colab.research.google.com/github/gustavobraga-byte/PesquisAI/blob/main/PesquisAI.ipynb" target="_blank" rel="noopener" data-i18n="cta.start">Começar agora</a>
+        <a class="btn btn--ghost btn--ghost-inv" href="#faq" data-i18n="cta.help">Tirar dúvidas</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ══════════════════════════════ FOOTER ══════════════════════════════ -->
+<footer class="footer" id="contato" aria-labelledby="footer-titulo">
+  <svg class="constel constel--footer" aria-hidden="true" focusable="false"><use href="#constel"/></svg>
+  <h2 class="sr-only" id="footer-titulo">Rodapé — informações institucionais</h2>
+  <div class="container footer__grid">
+    <div class="footer__brand">
+      <span class="brand__word brand__word--inv">UFV<em>AI</em></span>
+      <div class="rule rule--footer" role="presentation"></div>
+      <p class="footer__tagline" data-i18n="foot.tagline">Inteligência Artificial</p>
+      <p class="footer__desc" data-i18n="foot.desc">Agente de pesquisa científica mantido pela Universidade Federal de Viçosa.</p>
+      <p class="footer__contact">
+        <a href="mailto:gustavo.braga@ufv.br">gustavo.braga@ufv.br</a>
+      </p>
+    </div>
+    <nav class="footer__col" aria-label="Navegação do rodapé" data-i18n-aria="foot.navAria">
+      <h3 data-i18n="foot.nav">Navegação</h3>
+      <ul>
+        <li><a href="#sobre">Sobre o UFVAI</a></li>
+        <li><a href="#funcionalidades">Funcionalidades</a></li>
+        <li><a href="#novidades">Novidades</a></li>
+        <li><a href="#casos">Casos de uso</a></li>
+        <li><a href="#citar">Como citar</a></li>
+        <li><a href="#faq">Perguntas frequentes</a></li>
+        <li><a href="#apresentacao">Apresentação</a></li>
+      </ul>
+    </nav>
+    <nav class="footer__col" aria-label="Recursos do projeto" data-i18n-aria="foot.resAria">
+      <h3 data-i18n="foot.res">Recursos</h3>
+      <ul>
+        <li><a href="https://github.com/gustavobraga-byte/PesquisAI" target="_blank" rel="noopener" data-i18n="foot.resCode">Código fonte (GitHub)</a></li>
+        <li><a href="https://colab.research.google.com/github/gustavobraga-byte/PesquisAI/blob/main/PesquisAI.ipynb" target="_blank" rel="noopener" data-i18n="foot.resColab">Notebook no Google Colab</a></li>
+        <li><a href="https://www.youtube.com/watch?v=8e8spp_7Gq4" target="_blank" rel="noopener" data-i18n="foot.resVideo">Tutorial em vídeo (YouTube)</a></li>
+        <li><a href="https://github.com/gustavobraga-byte/PesquisAI/blob/main/MANUAL.md" target="_blank" rel="noopener" data-i18n="foot.resManual">Manual completo</a></li>
+        <!-- Deck UFVAI: cópia autocontida em ./apresentacao/ (publicável no GitHub Pages) -->
+        <li><a href="apresentacao/index.html" target="_blank" rel="noopener" data-i18n="foot.resDeck">Apresentação UFVAI (slides)</a></li>
+        <li><a href="https://github.com/gustavobraga-byte/PesquisAI/blob/main/LICENSE" target="_blank" rel="noopener" data-i18n="foot.resLicense">Licença (MIT)</a></li>
+        <li><a href="https://github.com/gustavobraga-byte/PesquisAI/blob/main/declaracao_uso_ia.md" target="_blank" rel="noopener" data-i18n="foot.resAiDecl">Declaração de uso de IA</a></li>
+        <li><a href="https://github.com/gustavobraga-byte/PesquisAI/blob/main/CHANGELOG.md" target="_blank" rel="noopener" data-i18n="foot.resChangelog">Histórico de versões</a></li>
+      </ul>
+    </nav>
+    <div class="footer__col">
+      <h3 data-i18n="foot.src">Fontes e uso responsável</h3>
+      <ul>
+        <li><a href="https://www.ufv.br" rel="noopener" target="_blank" data-i18n="foot.srcUfv">Universidade Federal de Viçosa</a></li>
+        <li><a href="https://www.ibge.gov.br" rel="noopener" target="_blank">IBGE</a></li>
+        <li><a href="https://datasus.saude.gov.br" rel="noopener" target="_blank">DataSUS</a></li>
+        <li><a href="https://scielo.org" rel="noopener" target="_blank">SciELO</a></li>
+      </ul>
+      <p class="footer__disclaimer" data-i18n="foot.disclaimer">O UFVAI não substitui a revisão por pares nem o julgamento de pesquisadores humanos. Valide sempre as saídas antes de usá-las em decisões acadêmicas, clínicas ou jurídicas.</p>
+      <p class="footer__disclaimer" data-i18n="foot.termsNote">Termos de Uso e Privacidade são apresentados no aplicativo, no primeiro acesso, conforme a LGPD.</p>
+    </div>
+  </div>
+  <div class="container footer__bottom">
+    <p data-i18n="foot.rights">© <span id="ano">2026</span> UFVAI · Universidade Federal de Viçosa</p>
+    <p class="footer__ver" data-i18n="foot.ver">v0.6.17 · Registro SisPPG/UFV nº 10356285004</p>
+    <p class="footer__motto" data-i18n="foot.motto">Ciência de precisão, feita com integridade.</p>
+  </div>
+</footer>
+
+<script src="i18n.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
