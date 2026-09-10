@@ -406,9 +406,22 @@
   document.addEventListener('fullscreenchange', syncFullBtn);
   document.addEventListener('webkitfullscreenchange', syncFullBtn);
 
-  /* ── Ano corrente no rodapé ──────────────────────────────────────── */
-  var yearEl = document.getElementById('ano');
-  if (yearEl) yearEl.textContent = String(new Date().getFullYear());
+  /* ── Pular ao topo (considerando header sticky) ────────────────────── */
+  function scrollToTop() {
+    var headerHeight = 70; // altura do .topbar em px
+    window.scrollTo({
+      top: 0,
+      behavior: reduceMotion ? 'auto' : 'smooth',
+    });
+  }
+  /* Garante que o link da marca (#topo) funcione mesmo com header sticky */
+  document.addEventListener('click', function (ev) {
+    var link = ev.target.closest('a[href="#topo"]');
+    if (link) {
+      ev.preventDefault();
+      scrollToTop();
+    }
+  });
 
   /* ── Troca de idioma: re-digita a frase, atualiza rótulos e reinicia a demo */
   try {
