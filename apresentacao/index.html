@@ -234,17 +234,17 @@ h1.mega em{font-style:normal;font-weight:600;color:var(--gold);margin-left:-.075
 </svg>
 
 <header class="topbar">
-  <a class="brand wordmark" href="#/1" id="brand-home" aria-label="UFVAI — ir para o início" style="text-decoration:none;font-size:1.25rem">UFV<em>AI</em></a>
-  <span class="ver-badge">v0.6.17</span>
+  <a class="brand wordmark" href="#/1" id="brand-home" data-i18n-aria="top.brand" aria-label="UFVAI — ir para o início" style="text-decoration:none;font-size:1.25rem">UFV<em>AI</em></a>
+  <span class="ver-badge" id="ver-badge">v0.6.20</span>
   <span class="spacer"></span>
-  <button class="icon-btn" id="btn-help" type="button" aria-label="Ver atalhos">?</button>
-  <button class="icon-btn" id="btn-full" type="button" aria-label="Entrar em tela cheia">
+  <button class="icon-btn" id="btn-help" type="button" data-i18n-aria="top.help" aria-label="Ver atalhos">?</button>
+  <button class="icon-btn" id="btn-full" type="button" data-i18n-aria="top.full" aria-label="Entrar em tela cheia">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3H5a2 2 0 0 0-2 2v3M16 3h3a2 2 0 0 1 2 2v3M8 21H5a2 2 0 0 1-2-2v-3M16 21h3a2 2 0 0 0 2-2v-3"/></svg>
   </button>
 </header>
 <div class="progress" id="progress" aria-hidden="true"></div>
 
-<main id="deck" aria-label="Apresentação UFVAI">
+<main id="deck" data-i18n-aria="top.main" aria-label="Apresentação UFVAI">
 <div class="grid-bg" aria-hidden="true"></div>
 
 <!-- ══ 1 · VISÃO ══ -->
@@ -252,30 +252,30 @@ h1.mega em{font-style:normal;font-weight:600;color:var(--gold);margin-left:-.075
   <svg class="constel constel--tr" aria-hidden="true"><use href="#cn"/></svg>
   <div class="hero-split">
     <div>
-      <p class="eyebrow">Pesquisa brasileira, em modo agente</p>
+      <p class="eyebrow" data-i18n="s1.eyebrow">Pesquisa brasileira, em modo agente</p>
       <h1 class="mega">UFV<em>AI</em></h1>
-      <p class="hero-h2">Da instrução à evidência. Com método, fontes e rastreabilidade.</p>
-      <p class="lead">Um agente aberto de IA para acelerar a pesquisa científica no Brasil.</p>
+      <p class="hero-h2" data-i18n="s1.h2">Da instrução à evidência. Com método, fontes e rastreabilidade.</p>
+      <p class="lead" data-i18n="s1.lead">Um agente aberto de IA para acelerar a pesquisa científica no Brasil.</p>
       <div class="hero-cta">
-        <a class="btn btn--gold" href="https://colab.research.google.com/github/gustavobraga-byte/PesquisAI/blob/main/PesquisAI.ipynb" target="_blank" rel="noopener">Experimentar no Colab
+        <a class="btn btn--gold" href="https://colab.research.google.com/github/gustavobraga-byte/PesquisAI/blob/main/PesquisAI.ipynb" target="_blank" rel="noopener"><span data-i18n="s1.cta1">Experimentar no Colab</span>
           <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-        <a class="btn btn--ghost" href="https://github.com/gustavobraga-byte/PesquisAI" target="_blank" rel="noopener">Ver repositório</a>
+        <a class="btn btn--ghost" href="https://github.com/gustavobraga-byte/PesquisAI" target="_blank" rel="noopener" data-i18n="s1.cta2">Ver repositório</a>
       </div>
     </div>
-    <div class="mock" aria-label="Janela ilustrativa de sessão de pesquisa">
+    <div class="mock" data-i18n-aria="s1.mockAria" aria-label="Janela ilustrativa de sessão de pesquisa">
       <div class="mock__bar">
         <span class="dot dot--wine"></span><span class="dot dot--gold"></span><span class="dot dot--sage"></span>
-        <span class="mock__title">sessão de pesquisa · v0.6.17</span>
+        <span class="mock__title" data-i18n="s1.mockTitle">sessão de pesquisa · v0.6.20</span>
       </div>
       <div class="mock__body">
-        <p class="mock__prompt">“Estruture um artigo sobre a dinâmica populacional de Viçosa (MG) e sugira referências validadas.”</p>
+        <p class="mock__prompt" data-i18n="s1.prompt">“Estruture um artigo sobre a dinâmica populacional de Viçosa (MG) e sugira referências validadas.”</p>
         <div class="mock__steps">
-          <div class="mstep done"><span class="n">01</span> Plano de pesquisa estruturado <span class="st">concluído</span></div>
-          <div class="mstep done"><span class="n">02</span> Consulta IBGE / SIDRA — 76.430 hab. <span class="st">[dado confirmado]</span></div>
-          <div class="mstep run"><span class="n">03</span> Triagem OpenAlex / SciELO por DOI <span class="st">executando</span></div>
-          <div class="mstep wait"><span class="n">04</span> Artigo + referências ABNT <span class="st">aguardando</span></div>
+          <div class="mstep done"><span class="n">01</span><span data-i18n="s1.st1">Plano de pesquisa estruturado</span><span class="st" data-i18n="s1.st1s">concluído</span></div>
+          <div class="mstep done"><span class="n">02</span><span data-i18n="s1.st2">Consulta IBGE / SIDRA — 76.430 hab.</span><span class="st" data-i18n="s1.st2s">[dado confirmado]</span></div>
+          <div class="mstep run"><span class="n">03</span><span data-i18n="s1.st3">Triagem OpenAlex / SciELO por DOI</span><span class="st" data-i18n="s1.st3s">executando</span></div>
+          <div class="mstep wait"><span class="n">04</span><span data-i18n="s1.st4">Artigo + referências ABNT</span><span class="st" data-i18n="s1.st4s">aguardando</span></div>
         </div>
-        <p class="mock__foot">Fontes e etapas registradas na Minha memória</p>
+        <p class="mock__foot" data-i18n="s1.foot">Fontes e etapas registradas na Minha memória</p>
       </div>
     </div>
   </div>
@@ -283,22 +283,22 @@ h1.mega em{font-style:normal;font-weight:600;color:var(--gold);margin-left:-.075
 
 <!-- ══ 2 · PROBLEMA ══ -->
 <section class="slide" data-sec="Problema" aria-label="Slide 2: Problema">
-  <span class="watermark" aria-hidden="true">FRICÇÃO</span>
+  <span class="watermark" aria-hidden="true" data-i18n="s2.wm">FRICÇÃO</span>
   <div>
-    <p class="eyebrow">O problema</p>
-    <h2 class="display">A pesquisa ainda opera em abas.</h2>
-    <p class="lead">Fontes fragmentadas, dados brutos, ferramentas isoladas e formatação manual desviam tempo do pensamento científico.</p>
+    <p class="eyebrow" data-i18n="s2.eyebrow">O problema</p>
+    <h2 class="display" data-i18n="s2.h2">A pesquisa ainda opera em abas.</h2>
+    <p class="lead" data-i18n="s2.lead">Fontes fragmentadas, dados brutos, ferramentas isoladas e formatação manual desviam tempo do pensamento científico.</p>
     <ol class="fric">
-      <li><span class="n">01</span><h3>Buscar</h3><p>bases e literatura</p></li>
-      <li><span class="n">02</span><h3>Tratar</h3><p>arquivos e variáveis</p></li>
-      <li><span class="n">03</span><h3>Analisar</h3><p>código e métodos</p></li>
-      <li><span class="n">04</span><h3>Escrever</h3><p>artigo e referências</p></li>
-      <li><span class="n">05</span><h3>Formatar</h3><p>normas e entrega</p></li>
+      <li><span class="n">01</span><h3 data-i18n="s2.i1h">Buscar</h3><p data-i18n="s2.i1p">bases e literatura</p></li>
+      <li><span class="n">02</span><h3 data-i18n="s2.i2h">Tratar</h3><p data-i18n="s2.i2p">arquivos e variáveis</p></li>
+      <li><span class="n">03</span><h3 data-i18n="s2.i3h">Analisar</h3><p data-i18n="s2.i3p">código e métodos</p></li>
+      <li><span class="n">04</span><h3 data-i18n="s2.i4h">Escrever</h3><p data-i18n="s2.i4p">artigo e referências</p></li>
+      <li><span class="n">05</span><h3 data-i18n="s2.i5h">Formatar</h3><p data-i18n="s2.i5p">normas e entrega</p></li>
     </ol>
     <div class="fric-line" aria-hidden="true"></div>
     <div class="callout">
-      <strong>O gargalo não é a falta de IA.</strong>
-      <em>É a falta de integração, contexto e confiança.</em>
+      <strong data-i18n="s2.call1">O gargalo não é a falta de IA.</strong>
+      <em data-i18n="s2.call2">É a falta de integração, contexto e confiança.</em>
     </div>
   </div>
 </section>
@@ -307,35 +307,35 @@ h1.mega em{font-style:normal;font-weight:600;color:var(--gold);margin-left:-.075
 <section class="slide" data-sec="Solução" aria-label="Slide 3: Solução">
   <svg class="constel constel--bl" aria-hidden="true"><use href="#cn"/></svg>
   <div>
-    <p class="eyebrow">A solução</p>
-    <h2 class="display">Um agente que não só responde. <span class="gold">Ele executa.</span></h2>
-    <p class="lead">IA agêntica especializada no fluxo de trabalho científico, do plano à entrega.</p>
+    <p class="eyebrow" data-i18n="s3.eyebrow">A solução</p>
+    <h2 class="display"><span data-i18n="s3.h2a">Um agente que não só responde.</span> <span class="gold" data-i18n="s3.h2b">Ele executa.</span></h2>
+    <p class="lead" data-i18n="s3.lead">IA agêntica especializada no fluxo de trabalho científico, do plano à entrega.</p>
     <div class="pilares">
-      <div class="pilar"><span class="n">01</span><h3>Entende</h3><p>Transforma uma instrução complexa em um plano de ação explícito.</p></div>
-      <div class="pilar"><span class="n">02</span><h3>Orquestra</h3><p>Aciona skills, fontes oficiais, código e métodos na ordem certa.</p></div>
-      <div class="pilar"><span class="n">03</span><h3>Entrega</h3><p>Gera dados, análises, gráficos e texto em arquivos rastreáveis.</p></div>
+      <div class="pilar"><span class="n">01</span><h3 data-i18n="s3.i1h">Entende</h3><p data-i18n="s3.i1p">Transforma uma instrução complexa em um plano de ação explícito.</p></div>
+      <div class="pilar"><span class="n">02</span><h3 data-i18n="s3.i2h">Orquestra</h3><p data-i18n="s3.i2p">Aciona skills, fontes oficiais, código e métodos na ordem certa.</p></div>
+      <div class="pilar"><span class="n">03</span><h3 data-i18n="s3.i3h">Entrega</h3><p data-i18n="s3.i3p">Gera dados, análises, gráficos e texto em arquivos rastreáveis.</p></div>
     </div>
-    <p class="flow"><b>Instrução</b> → plano → fontes → execução → validação → arquivos</p>
+    <p class="flow" data-i18n-html="s3.flow"><b>Instrução</b> → plano → fontes → execução → validação → arquivos</p>
   </div>
 </section>
 
 <!-- ══ 4 · ENTREGAS ══ -->
 <section class="slide" data-sec="Entregas" aria-label="Slide 4: Entregas">
-  <span class="watermark" aria-hidden="true">CRIAR</span>
+  <span class="watermark" aria-hidden="true" data-i18n="s4.wm">CRIAR</span>
   <div>
-    <p class="eyebrow">O que o UFVAI cria para você</p>
-    <h2 class="display">Entregáveis acadêmicos. <span class="gold">Não só respostas.</span></h2>
-    <p class="lead">Escrita científica, análise de dados, normas acadêmicas e fluxos agênticos em artefatos prontos para revisão humana. <span class="ver-badge">v0.6.17</span></p>
+    <p class="eyebrow" data-i18n="s4.eyebrow">O que o UFVAI cria para você</p>
+    <h2 class="display"><span data-i18n="s4.h2a">Entregáveis acadêmicos.</span> <span class="gold" data-i18n="s4.h2b">Não só respostas.</span></h2>
+    <p class="lead"><span data-i18n="s4.lead">Escrita científica, análise de dados, normas acadêmicas e fluxos agênticos em artefatos prontos para revisão humana.</span> <span class="ver-badge">v0.6.20</span></p>
     <ol class="deliv">
-      <li><span class="n">01</span><h3>Artigo Científico</h3><p>IMRaD completo com dados e referências</p></li>
-      <li><span class="n">02</span><h3>Revisão Sistemática</h3><p>PRISMA, critérios de inclusão, síntese narrativa</p></li>
-      <li><span class="n">03</span><h3>Meta-Análise</h3><p>Efeitos combinados, I², forest plots</p></li>
-      <li><span class="n">04</span><h3>Dissertação / Tese</h3><p>Capítulos completos normatizados</p></li>
-      <li><span class="n">05</span><h3>Proposta de Projeto</h3><p>Bolsa, edital, justificativa, cronograma</p></li>
-      <li><span class="n">06</span><h3>Relatório de Dados</h3><p>Análise estatística + visualizações</p></li>
-      <li><span class="n">07</span><h3>Análise Qualitativa</h3><p>Codificação, temas, similitude</p></li>
-      <li><span class="n">08</span><h3>Hipóteses Testáveis</h3><p>H₀, H₁, variáveis, plano de teste</p></li>
-      <li><span class="n">09</span><h3>Declaração de IA</h3><p>Modelos prontos para TCC e artigo</p></li>
+      <li><span class="n">01</span><h3 data-i18n="s4.i1h">Artigo Científico</h3><p data-i18n="s4.i1p">IMRaD completo com dados e referências</p></li>
+      <li><span class="n">02</span><h3 data-i18n="s4.i2h">Revisão Sistemática</h3><p data-i18n="s4.i2p">PRISMA, critérios de inclusão, síntese narrativa</p></li>
+      <li><span class="n">03</span><h3 data-i18n="s4.i3h">Meta-Análise</h3><p data-i18n="s4.i3p">Efeitos combinados, I², forest plots</p></li>
+      <li><span class="n">04</span><h3 data-i18n="s4.i4h">Dissertação / Tese</h3><p data-i18n="s4.i4p">Capítulos completos normatizados</p></li>
+      <li><span class="n">05</span><h3 data-i18n="s4.i5h">Proposta de Projeto</h3><p data-i18n="s4.i5p">Bolsa, edital, justificativa, cronograma</p></li>
+      <li><span class="n">06</span><h3 data-i18n="s4.i6h">Relatório de Dados</h3><p data-i18n="s4.i6p">Análise estatística + visualizações</p></li>
+      <li><span class="n">07</span><h3 data-i18n="s4.i7h">Análise Qualitativa</h3><p data-i18n="s4.i7p">Codificação, temas, similitude</p></li>
+      <li><span class="n">08</span><h3 data-i18n="s4.i8h">Hipóteses Testáveis</h3><p data-i18n="s4.i8p">H₀, H₁, variáveis, plano de teste</p></li>
+      <li><span class="n">09</span><h3 data-i18n="s4.i9h">Declaração de IA</h3><p data-i18n="s4.i9p">Modelos prontos para TCC e artigo</p></li>
     </ol>
   </div>
 </section>
@@ -343,24 +343,24 @@ h1.mega em{font-style:normal;font-weight:600;color:var(--gold);margin-left:-.075
 <!-- ══ 5 · EXPERIÊNCIA ══ -->
 <section class="slide" data-sec="Experiência" aria-label="Slide 5: Experiência">
   <div>
-    <p class="eyebrow">A interface real</p>
-    <h2 class="display">UFVAI em ação.</h2>
-    <p class="lead">Explore o fluxo do agente executado no Google Colab. Toque em um exemplo para simular: <span class="sim-tag">demonstração simulada</span></p>
-    <div class="term" style="margin-top:22px" role="group" aria-label="Terminal simulado do UFVAI">
+    <p class="eyebrow" data-i18n="s5.eyebrow">A interface real</p>
+    <h2 class="display" data-i18n="s5.h2">UFVAI em ação.</h2>
+    <p class="lead"><span data-i18n="s5.lead">Explore o fluxo do agente executado no Google Colab. Toque em um exemplo para simular:</span> <span class="sim-tag" data-i18n="s5.tag">demonstração simulada</span></p>
+    <div class="term" style="margin-top:22px" data-i18n-aria="s5.termAria" role="group" aria-label="Terminal simulado do UFVAI">
       <div class="term__main">
         <div class="term__bar">
           <span class="t-dot" style="background:#7B3B44"></span><span class="t-dot" style="background:#C9A227"></span><span class="t-dot" style="background:#8FA382"></span>
           <span class="term__brand">UFV<em>AI</em></span>
-          <span class="term__ver">v0.6.17 · PT</span>
-          <span class="term__live"><i></i>agente ativo</span>
+          <span class="term__ver"><span id="term-ver">v0.6.20</span> · <span id="term-lang">PT</span></span>
+          <span class="term__live"><i></i><span data-i18n="s5.live">agente ativo</span></span>
         </div>
-        <div class="term__btns" role="group" aria-label="Exemplos de demonstração">
-          <button type="button" data-demo="ibge" class="on">Demo IBGE</button>
-          <button type="button" data-demo="datasus">Demo DataSUS</button>
-          <button type="button" data-demo="scientific">Demo Scientific</button>
+        <div class="term__btns" data-i18n-aria="s5.btnsAria" role="group" aria-label="Exemplos de demonstração">
+          <button type="button" data-demo="ibge" class="on" data-i18n="s5.b1">Demo IBGE</button>
+          <button type="button" data-demo="datasus" data-i18n="s5.b2">Demo DataSUS</button>
+          <button type="button" data-demo="scientific" data-i18n="s5.b3">Demo Scientific</button>
         </div>
         <div class="term__log" id="term-log" aria-live="polite"></div>
-        <div class="term__input"><span class="prompt">$</span><span>Digite sua instrução científica aqui…</span></div>
+        <div class="term__input"><span class="prompt">$</span><span data-i18n="s5.input">Digite sua instrução científica aqui…</span></div>
         <div class="term__foot">
           <span class="term__brand" style="font-size:.72rem">UFV<em>AI</em></span>
           <a href="mailto:gustavo.braga@ufv.br">gustavo.braga@ufv.br</a>
@@ -369,12 +369,12 @@ h1.mega em{font-style:normal;font-weight:600;color:var(--gold);margin-left:-.075
           <span class="right">Powered by OpenCode</span>
         </div>
       </div>
-      <aside class="term__side" aria-label="Contexto da sessão">
-        <b>Saudação e idioma</b>PT-BR
-        <b>Context</b><span id="ctx-tokens">0</span> tokens · <span id="ctx-cost">$0.00</span> spent
-        <b>Working directory</b>/content/drive/My Drive/PesquisAI
+      <aside class="term__side" data-i18n-aria="s5.sideAria" aria-label="Contexto da sessão">
+        <b data-i18n="s5.k1">Saudação e idioma</b><span data-i18n="s5.k1v">PT-BR</span>
+        <b data-i18n="s5.k2">Context</b><span id="ctx-tokens">0</span> tokens · <span id="ctx-cost">$0.00</span> spent
+        <b data-i18n="s5.k3">Working directory</b>/content/drive/My Drive/PesquisAI
         <b>Engine</b>● OpenCode
-        <b>Memória</b>Minha memória ativa
+        <b data-i18n="s5.k5">Memória</b><span data-i18n="s5.v5">Minha memória ativa</span>
       </aside>
     </div>
   </div>
@@ -384,18 +384,18 @@ h1.mega em{font-style:normal;font-weight:600;color:var(--gold);margin-left:-.075
 <section class="slide" data-sec="Brasil" aria-label="Slide 6: Brasil">
   <svg class="constel constel--tr" aria-hidden="true"><use href="#cn"/></svg>
   <div>
-    <p class="eyebrow">Vantagem local</p>
-    <h2 class="display">IA global. <span class="gold">Contexto brasileiro.</span></h2>
-    <p class="lead">Conexões com dados públicos nacionais, métodos científicos e normas acadêmicas brasileiras em um único fluxo.</p>
+    <p class="eyebrow" data-i18n="s6.eyebrow">Vantagem local</p>
+    <h2 class="display"><span data-i18n="s6.h2a">IA global.</span> <span class="gold" data-i18n="s6.h2b">Contexto brasileiro.</span></h2>
+    <p class="lead" data-i18n="s6.lead">Conexões com dados públicos nacionais, métodos científicos e normas acadêmicas brasileiras em um único fluxo.</p>
     <ol class="fric" style="grid-template-columns:repeat(4,1fr)">
-      <li><span class="n">IBGE</span><h3>Censo, PNAD, PIB</h3><p>SIDRA + malhas + localidades</p></li>
-      <li><span class="n">DataSUS</span><h3>Saúde pública</h3><p>139 datasets · SINAN · SIM · SIH</p></li>
-      <li><span class="n">AgroBR</span><h3>Produção e ambiente</h3><p>38+ fontes · CONAB · MapBiomas</p></li>
-      <li><span class="n">Dados Brasil</span><h3>Indicadores oficiais</h3><p>BCB · TSE · INPE · Portal da Transparência</p></li>
+      <li><span class="n">IBGE</span><h3 data-i18n="s6.i1h">Censo, PNAD, PIB</h3><p data-i18n="s6.i1p">SIDRA + malhas + localidades</p></li>
+      <li><span class="n">DataSUS</span><h3 data-i18n="s6.i2h">Saúde pública</h3><p data-i18n="s6.i2p">139 datasets · SINAN · SIM · SIH</p></li>
+      <li><span class="n">AgroBR</span><h3 data-i18n="s6.i3h">Produção e ambiente</h3><p data-i18n="s6.i3p">38+ fontes · CONAB · MapBiomas</p></li>
+      <li><span class="n">Dados Brasil</span><h3 data-i18n="s6.i4h">Indicadores oficiais</h3><p data-i18n="s6.i4p">BCB · TSE · INPE · Portal da Transparência</p></li>
     </ol>
     <div class="callout" style="border-left-color:var(--sage)">
-      <strong>Dados nacionais primeiro.</strong>
-      <em style="color:var(--sage-ink)">Meta-busca em 7 bases acadêmicas com deduplicação por DOI.</em>
+      <strong data-i18n="s6.call1">Dados nacionais primeiro.</strong>
+      <em style="color:var(--sage-ink)" data-i18n="s6.call2">Meta-busca em 7 bases acadêmicas com deduplicação por DOI.</em>
     </div>
   </div>
 </section>
@@ -403,20 +403,20 @@ h1.mega em{font-style:normal;font-weight:600;color:var(--gold);margin-left:-.075
 <!-- ══ 7 · ARQUITETURA ══ -->
 <section class="slide" data-sec="Arquitetura" aria-label="Slide 7: Arquitetura">
   <div>
-    <p class="eyebrow">Arquitetura modular</p>
-    <h2 class="display">174 skills científicas. <span class="gold">+100 bases. Brasil integrado.</span></h2>
-    <p class="lead">Módulos brasileiros sobre a biblioteca Scientific Agent Skills, com caminhos documentados para fluxos científicos. <span class="ver-badge">OpenCode → Python 3.10+ → MIT</span></p>
-    <div class="orbit" role="list" aria-label="Módulos do ecossistema">
-      <div class="orbit__core"><span class="wordmark" style="font-size:1.3rem">UFV<em>AI</em></span><small>runtime agêntico</small></div>
+    <p class="eyebrow" data-i18n="s7.eyebrow">Arquitetura modular</p>
+    <h2 class="display"><span data-i18n="s7.h2a">174 skills científicas.</span> <span class="gold" data-i18n="s7.h2b">+100 bases. Brasil integrado.</span></h2>
+    <p class="lead"><span data-i18n="s7.lead">Módulos brasileiros sobre a biblioteca Scientific Agent Skills, com caminhos documentados para fluxos científicos.</span> <span class="ver-badge">OpenCode → Python 3.10+ → MIT</span></p>
+    <div class="orbit" data-i18n-aria="s7.orbitAria" role="list" aria-label="Módulos do ecossistema">
+      <div class="orbit__core"><span class="wordmark" style="font-size:1.3rem">UFV<em>AI</em></span><small data-i18n="s7.core">runtime agêntico</small></div>
       <span class="orbit__node" role="listitem" style="--a:-96deg">174 scientific skills</span>
-      <span class="orbit__node" role="listitem" style="--a:-58deg">100+ bases científicas</span>
+      <span class="orbit__node" role="listitem" style="--a:-58deg" data-i18n="s7.n2">100+ bases científicas</span>
       <span class="orbit__node" role="listitem" style="--a:-20deg">IBGE</span>
       <span class="orbit__node" role="listitem" style="--a:18deg">DataSUS</span>
       <span class="orbit__node" role="listitem" style="--a:56deg">Dados Brasil</span>
       <span class="orbit__node" role="listitem" style="--a:94deg">AgroBR</span>
       <span class="orbit__node" role="listitem" style="--a:132deg">ABNT / UFV</span>
-      <span class="orbit__node" role="listitem" style="--a:170deg">Qualitativa</span>
-      <span class="orbit__node" role="listitem" style="--a:208deg">Memória</span>
+      <span class="orbit__node" role="listitem" style="--a:170deg" data-i18n="s7.n8">Qualitativa</span>
+      <span class="orbit__node" role="listitem" style="--a:208deg" data-i18n="s7.n9">Memória</span>
       <span class="orbit__node" role="listitem" style="--a:246deg">Memorial UFV</span>
     </div>
     <p style="margin-top:18px"><a class="btn btn--ghost" style="padding:10px 20px;font-size:.85rem" href="https://github.com/gustavobraga-byte/scientific-agent-skills" target="_blank" rel="noopener">scientific-agent-skills</a></p>
@@ -427,24 +427,24 @@ h1.mega em{font-style:normal;font-weight:600;color:var(--gold);margin-left:-.075
 <section class="slide" data-sec="Integridade" aria-label="Slide 8: Integridade">
   <svg class="constel constel--bl" aria-hidden="true"><use href="#cn"/></svg>
   <div>
-    <p class="eyebrow">Integridade científica</p>
-    <h2 class="display">Confiança não é um detalhe. <span class="gold">É a arquitetura.</span></h2>
-    <p class="lead">Guardrails tornam o nível de evidência visível e mantêm o pesquisador no controle da validação final.</p>
+    <p class="eyebrow" data-i18n="s8.eyebrow">Integridade científica</p>
+    <h2 class="display"><span data-i18n="s8.h2a">Confiança não é um detalhe.</span> <span class="gold" data-i18n="s8.h2b">É a arquitetura.</span></h2>
+    <p class="lead" data-i18n="s8.lead">Guardrails tornam o nível de evidência visível e mantêm o pesquisador no controle da validação final.</p>
     <div class="integ">
       <div class="levels">
-        <div class="level level--ok"><code>[DADO CONFIRMADO]</code><span>Fonte primária consultada</span></div>
-        <div class="level level--est"><code>[ESTIMATIVA FUNDAMENTADA]</code><span>Método declarado</span></div>
-        <div class="level level--none"><code>[SEM DADOS SUFICIENTES]</code><span>Sem invenção</span></div>
+        <div class="level level--ok"><code>[DADO CONFIRMADO]</code><span data-i18n="s8.l1">Fonte primária consultada</span></div>
+        <div class="level level--est"><code>[ESTIMATIVA FUNDAMENTADA]</code><span data-i18n="s8.l2">Método declarado</span></div>
+        <div class="level level--none"><code>[SEM DADOS SUFICIENTES]</code><span data-i18n="s8.l3">Sem invenção</span></div>
       </div>
       <aside class="policy">
-        <h3>Política de zero fabricação</h3>
+        <h3 data-i18n="s8.ph">Política de zero fabricação</h3>
         <ul>
-          <li>Não inventar dados, autores, DOIs ou referências</li>
-          <li>Informar fonte, ano e nota metodológica</li>
-          <li>Declarar incerteza quando a evidência não basta</li>
-          <li>Exigir revisão humana dos resultados</li>
+          <li data-i18n="s8.li1">Não inventar dados, autores, DOIs ou referências</li>
+          <li data-i18n="s8.li2">Informar fonte, ano e nota metodológica</li>
+          <li data-i18n="s8.li3">Declarar incerteza quando a evidência não basta</li>
+          <li data-i18n="s8.li4">Exigir revisão humana dos resultados</li>
         </ul>
-        <p class="policy__foot">Ferramenta de apoio. Curadoria humana obrigatória.</p>
+        <p class="policy__foot" data-i18n="s8.pf">Ferramenta de apoio. Curadoria humana obrigatória.</p>
       </aside>
     </div>
   </div>
@@ -453,16 +453,17 @@ h1.mega em{font-style:normal;font-weight:600;color:var(--gold);margin-left:-.075
 <!-- ══ 9 · EVOLUÇÃO ══ -->
 <section class="slide" data-sec="Evolução" aria-label="Slide 9: Evolução">
   <div>
-    <p class="eyebrow">Rota de evolução</p>
-    <h2 class="display">Do Colab à infraestrutura institucional. <span class="ver-badge">versão 0.6.17</span></h2>
+    <p class="eyebrow" data-i18n="s9.eyebrow">Rota de evolução</p>
+    <h2 class="display"><span data-i18n="s9.h2">Do Colab à infraestrutura institucional.</span> <span class="ver-badge" data-i18n="s9.badge">versão 0.6.20</span></h2>
     <ol class="evo">
-      <li><span class="n">0.4.0</span><h3>Base sólida</h3><p>Agente via OpenCode · IBGE + DataSUS · 4 idiomas</p></li>
-      <li><span class="n">0.5.x</span><h3>Memória persistente</h3><p>Second brain Obsidian · autopilot · Memorial UFV</p></li>
-      <li><span class="n">0.6.9</span><h3>Offline + LGPD</h3><p>Pacote .deb · consentimento · GA4 opt-out</p></li>
-      <li><span class="n">0.6.17</span><h3>Memória instantânea</h3><p>Singleton + warm-up · 5 idiomas · novas skills BR</p></li>
+      <li><span class="n">0.4.0</span><h3 data-i18n="s9.i1h">Base sólida</h3><p data-i18n="s9.i1p">Agente via OpenCode · IBGE + DataSUS · 4 idiomas</p></li>
+      <li><span class="n">0.5.x</span><h3 data-i18n="s9.i2h">Memória persistente</h3><p data-i18n="s9.i2p">Second brain Obsidian · autopilot · Memorial UFV</p></li>
+      <li><span class="n">0.6.9</span><h3 data-i18n="s9.i3h">Offline + LGPD</h3><p data-i18n="s9.i3p">Pacote .deb · consentimento · GA4 opt-out</p></li>
+      <li><span class="n">0.6.17</span><h3 data-i18n="s9.i4h">Memória instantânea</h3><p data-i18n="s9.i4p">Singleton + warm-up · 5 idiomas · novas skills BR</p></li>
+      <li><span class="n">0.6.20</span><h3 data-i18n="s9.i5h">Boot + SAIR</h3><p data-i18n="s9.i5p">Keep-alive · botão SAIR · skills personalizadas</p></li>
     </ol>
     <div class="evo-line" aria-hidden="true"></div>
-    <p class="lead" style="margin-top:20px">Hoje: acesso aberto via Google Colab e instalação local. Open source · MIT · contribuições abertas.</p>
+    <p class="lead" style="margin-top:20px" data-i18n="s9.lead">Hoje: acesso aberto via Google Colab e instalação local. Open source · MIT · contribuições abertas.</p>
   </div>
 </section>
 
@@ -473,40 +474,40 @@ h1.mega em{font-style:normal;font-weight:600;color:var(--gold);margin-left:-.075
   <div class="closing">
     <p class="wordmark" style="font-size:clamp(2.6rem,5vw,4rem)">UFV<em>AI</em></p>
     <div class="rule" style="margin:22px auto" aria-hidden="true"></div>
-    <h2 class="display" style="max-width:26ch">A ciência brasileira já tem perguntas difíceis. Agora pode ter um agente à altura.</h2>
-    <p class="lead" style="margin-left:auto;margin-right:auto">Procuramos grupos de pesquisa, programas de pós-graduação e instituições para testar, contribuir e construir este ecossistema.</p>
+    <h2 class="display" style="max-width:26ch" data-i18n="s10.h2">A ciência brasileira já tem perguntas difíceis. Agora pode ter um agente à altura.</h2>
+    <p class="lead" style="margin-left:auto;margin-right:auto" data-i18n="s10.lead">Procuramos grupos de pesquisa, programas de pós-graduação e instituições para testar, contribuir e construir este ecossistema.</p>
     <div class="hero-cta" style="justify-content:center">
-      <a class="btn btn--gold" href="https://colab.research.google.com/github/gustavobraga-byte/PesquisAI/blob/main/PesquisAI.ipynb" target="_blank" rel="noopener">Começar agora
+      <a class="btn btn--gold" href="https://colab.research.google.com/github/gustavobraga-byte/PesquisAI/blob/main/PesquisAI.ipynb" target="_blank" rel="noopener"><span data-i18n="s10.cta1">Começar agora</span>
         <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
       <a class="btn btn--ghost" href="https://github.com/gustavobraga-byte/PesquisAI" target="_blank" rel="noopener">github.com/gustavobraga-byte/PesquisAI</a>
     </div>
-    <p class="credits">Gustavo Bastos Braga · Universidade Federal de Viçosa · <a href="mailto:gustavo.braga@ufv.br">gustavo.braga@ufv.br</a> · SisPPG nº 10356285004</p>
+    <p class="credits"><span data-i18n="s10.cred1">Gustavo Bastos Braga · Universidade Federal de Viçosa</span> · <a href="mailto:gustavo.braga@ufv.br">gustavo.braga@ufv.br</a> · <span data-i18n="s10.cred2">SisPPG nº 10356285004</span></p>
   </div>
 </section>
 
 </main>
 
-<nav class="navbar" aria-label="Navegação da apresentação">
+<nav class="navbar" data-i18n-aria="nav.aria" aria-label="Navegação da apresentação">
   <span class="counter" id="counter">01</span>
   <span class="secname" id="secname">Visão</span>
-  <div class="dots" id="dots" role="group" aria-label="Ir para slide"></div>
-  <button class="nav-btn" id="btn-prev" type="button" aria-label="Slide anterior">
+  <div class="dots" id="dots" data-i18n-aria="nav.dots" role="group" aria-label="Ir para slide"></div>
+  <button class="nav-btn" id="btn-prev" type="button" data-i18n-aria="nav.prev" aria-label="Slide anterior">
     <svg viewBox="0 0 24 24"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></button>
-  <button class="nav-btn next" id="btn-next" type="button" aria-label="Próximo slide">
+  <button class="nav-btn next" id="btn-next" type="button" data-i18n-aria="nav.next" aria-label="Próximo slide">
     <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
 </nav>
 
 <div class="modal-ov" id="modal-ov">
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="help-title">
-    <h3 id="help-title">Atalhos</h3>
+    <h3 id="help-title" data-i18n="help.title">Atalhos</h3>
     <table>
-      <tr><td>Próximo slide</td><td><kbd>→</kbd> <kbd>Espaço</kbd></td></tr>
-      <tr><td>Slide anterior</td><td><kbd>←</kbd></td></tr>
-      <tr><td>Primeiro / último</td><td><kbd>Home</kbd> <kbd>End</kbd></td></tr>
-      <tr><td>Tela cheia</td><td><kbd>F</kbd></td></tr>
-      <tr><td>Abrir esta ajuda</td><td><kbd>?</kbd></td></tr>
+      <tr><td data-i18n="help.r1">Próximo slide</td><td><kbd>→</kbd> <kbd data-i18n="help.k1">Espaço</kbd></td></tr>
+      <tr><td data-i18n="help.r2">Slide anterior</td><td><kbd>←</kbd></td></tr>
+      <tr><td data-i18n="help.r3">Primeiro / último</td><td><kbd>Home</kbd> <kbd>End</kbd></td></tr>
+      <tr><td data-i18n="help.r4">Tela cheia</td><td><kbd>F</kbd></td></tr>
+      <tr><td data-i18n="help.r5">Abrir esta ajuda</td><td><kbd>?</kbd></td></tr>
     </table>
-    <button class="btn btn--gold close" id="modal-close" type="button" aria-label="Fechar ajuda">Fechar</button>
+    <button class="btn btn--gold close" id="modal-close" type="button" data-i18n-aria="help.closeAria" aria-label="Fechar ajuda" data-i18n="help.close">Fechar</button>
   </div>
 </div>
 <style>
@@ -535,7 +536,7 @@ h1.mega em{font-style:normal;font-weight:600;color:var(--gold);margin-left:-.075
 .policy li::before{content:"";position:absolute;left:4px;top:13px;width:8px;height:8px;border-radius:50%;background:var(--sage)}
 .policy__foot{margin-top:14px;padding-top:12px;border-top:1px solid var(--line);font-size:.76rem;font-weight:600;letter-spacing:.06em;color:var(--gold-ink)}
 /* ── evolução ── */
-.evo{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:30px}
+.evo{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-top:30px}
 .evo li{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:20px 16px}
 .evo .n{font-family:var(--mono);font-size:.78rem;font-weight:500;color:var(--gold-ink)}
 .evo h3{margin:8px 0 4px;font-size:1rem}
@@ -545,6 +546,9 @@ h1.mega em{font-style:normal;font-weight:600;color:var(--gold);margin-left:-.075
 .closing{text-align:center}
 .credits{margin-top:34px;font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
 .credits a{color:var(--gold-ink);text-decoration:none}
+@media (max-width:1320px){
+  .evo{grid-template-columns:repeat(3,1fr)}
+}
 @media (max-width:1100px){
   .integ{grid-template-columns:1fr}
   .evo{grid-template-columns:repeat(2,1fr)}
@@ -555,9 +559,964 @@ h1.mega em{font-style:normal;font-weight:600;color:var(--gold);margin-left:-.075
 }
 </style>
 <script>
+/* ══ Dicionários do deck · en/es/fr/zh ══
+   Chaves idênticas às data-i18n do documento; o PT-BR vem do próprio HTML.
+   Gerado de deck_keys.json (198 chaves × 4 idiomas). Não editar à mão. */
+window.DECK_I18N_DICT = {
+  "en":   {
+   "d.datasus.head": "DELIVERABLE · outputs-dengue-sul/protocolo.md",
+   "d.datasus.l1": "1 · OBJECTIVE — dengue time series, South Region",
+   "d.datasus.l2": "2 · SOURCES — opendatasus: SINAN-dengue · SIH · SIM",
+   "d.datasus.l3": "3 · METHOD — UF + period + CID-10 A90–A91 · epidemiological week",
+   "d.datasus.l4": "4 · RESULT — protocol + parameters saved to My memory",
+   "d.datasus.l5": "! Series not extracted: no UF/period → [INSUFFICIENT DATA]",
+   "d.datasus.l6": "✓ Next step: provide the slice to run the extraction",
+   "d.datasus.prompt": "Protocol: dengue series in the South Region",
+   "d.ibge.head": "DELIVERABLE · outputs-dinamica-vicosa/artigo.md",
+   "d.ibge.l1": "1 · PLAN — Viçosa (MG) scope · 2022 Census · ABNT writing",
+   "d.ibge.l2": "2 · COLLECTION — ibge-br (SIDRA tab. 9514, var. 93)",
+   "d.ibge.l3": "   Viçosa (MG) .... 76.430 inhab.  [CONFIRMED DATA]",
+   "d.ibge.l4": "   Source: SIDRA (IBGE) · retrieved on 07/09/2026",
+   "d.ibge.l5": "3 · SYNTHESIS — IMRaD section drafted with markers",
+   "d.ibge.l6": "4 · REFERENCES — citation-management (DOI/URL verified)",
+   "d.ibge.l7": "   BRAGA (2026) — UFVAI · official URL verified",
+   "d.ibge.l8": "✓ Human review pending · parameters in My memory",
+   "d.ibge.prompt": "Article: population dynamics of Viçosa (MG)",
+   "d.scientific.head": "DELIVERABLE · outputs-zoneamento/revisao.md",
+   "d.scientific.l1": "1 · SEARCH — 7 bases · dedup by DOI · 2015–2026",
+   "d.scientific.l2": "2 · SCREENING — inclusion: full text · exclusion: no DOI",
+   "d.scientific.l3": "3 · VALIDATION — citation-management before synthesis",
+   "d.scientific.l4": "4 · SYNTHESIS — thematic axes + research gaps",
+   "d.scientific.l5": "   E.g.: BRAGA (2026) — UFVAI · verified reference",
+   "d.scientific.l6": "✓ ABNT draft ready for human review",
+   "d.scientific.prompt": "Review: agricultural zoning in Brazil",
+   "demo.doneAria": "Job complete: {p}",
+   "help.close": "Close",
+   "help.closeAria": "Close help",
+   "help.k1": "Space",
+   "help.r1": "Next slide",
+   "help.r2": "Previous slide",
+   "help.r3": "First / last",
+   "help.r4": "Full screen",
+   "help.r5": "Open this help",
+   "help.title": "Shortcuts",
+   "meta.title": "UFVAI | Pitch — The intelligence that accelerates science",
+   "nav.aria": "Presentation navigation",
+   "nav.dot": "Go to slide {n}: {s}",
+   "nav.dots": "Go to slide",
+   "nav.next": "Next slide",
+   "nav.prev": "Previous slide",
+   "s1.cta1": "Try it on Colab",
+   "s1.cta2": "View repository",
+   "s1.eyebrow": "Brazilian research, in agent mode",
+   "s1.foot": "Sources and steps recorded in My memory",
+   "s1.h2": "From instruction to evidence. With method, sources and traceability.",
+   "s1.lead": "An open AI agent to accelerate scientific research in Brazil.",
+   "s1.mockAria": "Illustrative research session window",
+   "s1.mockTitle": "research session · v0.6.20",
+   "s1.prompt": "“Structure an article on the population dynamics of Viçosa (MG) and suggest validated references.”",
+   "s1.st1": "Structured research plan",
+   "s1.st1s": "completed",
+   "s1.st2": "IBGE / SIDRA query — 76.430 inhab.",
+   "s1.st2s": "[confirmed data]",
+   "s1.st3": "OpenAlex / SciELO screening by DOI",
+   "s1.st3s": "running",
+   "s1.st4": "Article + ABNT references",
+   "s1.st4s": "waiting",
+   "s10.cred1": "Gustavo Bastos Braga · Universidade Federal de Viçosa",
+   "s10.cred2": "SisPPG nº 10356285004",
+   "s10.cta1": "Start now",
+   "s10.h2": "Brazilian science already has hard questions. Now it can have an agent up to them.",
+   "s10.lead": "We are looking for research groups, graduate programs and institutions to test, contribute and build this ecosystem.",
+   "s2.call1": "The bottleneck is not the lack of AI.",
+   "s2.call2": "It is the lack of integration, context and trust.",
+   "s2.eyebrow": "The problem",
+   "s2.h2": "Research still runs in tabs.",
+   "s2.i1h": "Search",
+   "s2.i1p": "databases and literature",
+   "s2.i2h": "Process",
+   "s2.i2p": "files and variables",
+   "s2.i3h": "Analyze",
+   "s2.i3p": "code and methods",
+   "s2.i4h": "Write",
+   "s2.i4p": "article and references",
+   "s2.i5h": "Format",
+   "s2.i5p": "standards and delivery",
+   "s2.lead": "Fragmented sources, raw data, isolated tools and manual formatting divert time from scientific thinking.",
+   "s2.wm": "FRICTION",
+   "s3.eyebrow": "The solution",
+   "s3.flow": "<b>Instruction</b> → plan → sources → execution → validation → files",
+   "s3.h2a": "An agent that does more than answer.",
+   "s3.h2b": "It executes.",
+   "s3.i1h": "Understands",
+   "s3.i1p": "Turns a complex instruction into an explicit action plan.",
+   "s3.i2h": "Orchestrates",
+   "s3.i2p": "Triggers skills, official sources, code and methods in the right order.",
+   "s3.i3h": "Delivers",
+   "s3.i3p": "Produces data, analyses, charts and text in traceable files.",
+   "s3.lead": "Agentic AI specialized in the scientific workflow, from plan to delivery.",
+   "s4.eyebrow": "What UFVAI creates for you",
+   "s4.h2a": "Academic deliverables.",
+   "s4.h2b": "Not just answers.",
+   "s4.i1h": "Scientific Article",
+   "s4.i1p": "Full IMRaD with data and references",
+   "s4.i2h": "Systematic Review",
+   "s4.i2p": "PRISMA, inclusion criteria, narrative synthesis",
+   "s4.i3h": "Meta-Analysis",
+   "s4.i3p": "Combined effects, I², forest plots",
+   "s4.i4h": "Dissertation / Thesis",
+   "s4.i4p": "Full standardized chapters",
+   "s4.i5h": "Project Proposal",
+   "s4.i5p": "Fellowship, call, justification, timeline",
+   "s4.i6h": "Data Report",
+   "s4.i6p": "Statistical analysis + visualizations",
+   "s4.i7h": "Qualitative Analysis",
+   "s4.i7p": "Coding, themes, similarity",
+   "s4.i8h": "Testable Hypotheses",
+   "s4.i8p": "H₀, H₁, variables, test plan",
+   "s4.i9h": "AI Declaration",
+   "s4.i9p": "Ready-made models for dissertations and articles",
+   "s4.lead": "Scientific writing, data analysis, academic standards and agentic flows in artifacts ready for human review.",
+   "s4.wm": "CREATE",
+   "s5.b1": "IBGE Demo",
+   "s5.b2": "DataSUS Demo",
+   "s5.b3": "Scientific Demo",
+   "s5.btnsAria": "Demo examples",
+   "s5.eyebrow": "The real interface",
+   "s5.h2": "UFVAI in action.",
+   "s5.input": "Type your scientific instruction here…",
+   "s5.k1": "Greeting and language",
+   "s5.k1v": "PT-BR",
+   "s5.k2": "Context",
+   "s5.k3": "Working directory",
+   "s5.k5": "Memory",
+   "s5.lead": "Explore the agent flow executed on Google Colab. Tap an example to simulate:",
+   "s5.live": "agent active",
+   "s5.sideAria": "Session context",
+   "s5.tag": "simulated demo",
+   "s5.termAria": "UFVAI simulated terminal",
+   "s5.v5": "My memory active",
+   "s6.call1": "National data first.",
+   "s6.call2": "Meta-search across 7 academic databases with DOI deduplication.",
+   "s6.eyebrow": "Local advantage",
+   "s6.h2a": "Global AI.",
+   "s6.h2b": "Brazilian context.",
+   "s6.i1h": "Census, PNAD, GDP",
+   "s6.i1p": "SIDRA + meshes + localities",
+   "s6.i2h": "Public health",
+   "s6.i2p": "139 datasets · SINAN · SIM · SIH",
+   "s6.i3h": "Production and environment",
+   "s6.i3p": "38+ sources · CONAB · MapBiomas",
+   "s6.i4h": "Official indicators",
+   "s6.i4p": "BCB · TSE · INPE · Portal da Transparência",
+   "s6.lead": "Connections to national public data, scientific methods and Brazilian academic standards in a single flow.",
+   "s7.core": "agentic runtime",
+   "s7.eyebrow": "Modular architecture",
+   "s7.h2a": "174 scientific skills.",
+   "s7.h2b": "+100 databases. Brazil integrated.",
+   "s7.lead": "Brazilian modules on top of the Scientific Agent Skills library, with documented paths for scientific flows.",
+   "s7.n2": "100+ scientific databases",
+   "s7.n8": "Qualitative",
+   "s7.n9": "Memory",
+   "s7.orbitAria": "Ecosystem modules",
+   "s8.eyebrow": "Scientific integrity",
+   "s8.h2a": "Trust is not a detail.",
+   "s8.h2b": "It is the architecture.",
+   "s8.l1": "Primary source consulted",
+   "s8.l2": "Method declared",
+   "s8.l3": "No invention",
+   "s8.lead": "Guardrails make the level of evidence visible and keep the researcher in control of final validation.",
+   "s8.li1": "Do not invent data, authors, DOIs or references",
+   "s8.li2": "Report source, year and methodological note",
+   "s8.li3": "Declare uncertainty when the evidence is insufficient",
+   "s8.li4": "Require human review of results",
+   "s8.pf": "Support tool. Mandatory human curation.",
+   "s8.ph": "Zero-fabrication policy",
+   "s9.badge": "version 0.6.20",
+   "s9.eyebrow": "Evolution path",
+   "s9.h2": "From Colab to institutional infrastructure.",
+   "s9.i1h": "Solid base",
+   "s9.i1p": "Agent via OpenCode · IBGE + DataSUS · 4 languages",
+   "s9.i2h": "Persistent memory",
+   "s9.i2p": "Second brain Obsidian · autopilot · Memorial UFV",
+   "s9.i3h": "Offline + LGPD",
+   "s9.i3p": ".deb package · consent · GA4 opt-out",
+   "s9.i4h": "Instant memory",
+   "s9.i4p": "Singleton + warm-up · 5 languages · new BR skills",
+   "s9.i5h": "Boot + EXIT",
+   "s9.i5p": "Keep-alive · EXIT button · custom skills",
+   "s9.lead": "Today: open access via Google Colab and local installation. Open source · MIT · open contributions.",
+   "sec.arquitetura": "Architecture",
+   "sec.brasil": "Brazil",
+   "sec.convite": "Invitation",
+   "sec.entregas": "Deliverables",
+   "sec.evolucao": "Evolution",
+   "sec.experiencia": "Experience",
+   "sec.integridade": "Integrity",
+   "sec.problema": "Problem",
+   "sec.solucao": "Solution",
+   "sec.visao": "Vision",
+   "slide.aria": "Slide {n}: {s}",
+   "top.brand": "UFVAI — go to top",
+   "top.full": "Enter full screen",
+   "top.fullExit": "Exit full screen",
+   "top.help": "View shortcuts",
+   "top.main": "UFVAI Presentation"
+  },
+  "es":   {
+   "d.datasus.head": "ENTREGA · outputs-dengue-sul/protocolo.md",
+   "d.datasus.l1": "1 · OBJETIVO — serie temporal de dengue, Región Sur",
+   "d.datasus.l2": "2 · FUENTES — opendatasus: SINAN-dengue · SIH · SIM",
+   "d.datasus.l3": "3 · MÉTODO — UF + período + CID-10 A90–A91 · semana epidemiológica",
+   "d.datasus.l4": "4 · RESULTADO — protocolo + parámetros guardados en Mi memoria",
+   "d.datasus.l5": "! Serie no extraída: sin UF/período → [SIN DATOS SUFICIENTES]",
+   "d.datasus.l6": "✓ Próximo paso: indicar el recorte para ejecutar la extracción",
+   "d.datasus.prompt": "Protocolo: serie de dengue en la Región Sur",
+   "d.ibge.head": "ENTREGA · outputs-dinamica-vicosa/artigo.md",
+   "d.ibge.l1": "1 · PLAN — alcance Viçosa (MG) · Censo 2022 · redacción ABNT",
+   "d.ibge.l2": "2 · RECOLECCIÓN — ibge-br (SIDRA tab. 9514, var. 93)",
+   "d.ibge.l3": "   Viçosa (MG) .... 76.430 hab.  [DATO CONFIRMADO]",
+   "d.ibge.l4": "   Fuente: SIDRA (IBGE) · consultado el 07/09/2026",
+   "d.ibge.l5": "3 · SÍNTESIS — sección IMRAD redactada con marcadores",
+   "d.ibge.l6": "4 · REFERENCIAS — citation-management (DOI/URL verificados)",
+   "d.ibge.l7": "   BRAGA (2026) — UFVAI · URL oficial verificada",
+   "d.ibge.l8": "✓ Revisión humana pendiente · parámetros en Mi memoria",
+   "d.ibge.prompt": "Artículo: dinámica poblacional de Viçosa (MG)",
+   "d.scientific.head": "ENTREGA · outputs-zoneamento/revisao.md",
+   "d.scientific.l1": "1 · BÚSQUEDA — 7 bases · dedup por DOI · 2015–2026",
+   "d.scientific.l2": "2 · TRIAJE — inclusión: texto completo · exclusión: sin DOI",
+   "d.scientific.l3": "3 · VALIDACIÓN — citation-management antes de la síntesis",
+   "d.scientific.l4": "4 · SÍNTESIS — ejes temáticos + lagunas de investigación",
+   "d.scientific.l5": "   Ej.: BRAGA (2026) — UFVAI · referencia verificada",
+   "d.scientific.l6": "✓ Borrador ABNT listo para revisión humana",
+   "d.scientific.prompt": "Revisión: zonificación agrícola en Brasil",
+   "demo.doneAria": "Trabajo completo: {p}",
+   "help.close": "Cerrar",
+   "help.closeAria": "Cerrar la ayuda",
+   "help.k1": "Espacio",
+   "help.r1": "Siguiente diapositiva",
+   "help.r2": "Diapositiva anterior",
+   "help.r3": "Primera / última",
+   "help.r4": "Pantalla completa",
+   "help.r5": "Abrir esta ayuda",
+   "help.title": "Atajos",
+   "meta.title": "UFVAI | Pitch — La inteligencia que acelera la ciencia",
+   "nav.aria": "Navegación de la presentación",
+   "nav.dot": "Ir a la diapositiva {n}: {s}",
+   "nav.dots": "Ir a la diapositiva",
+   "nav.next": "Siguiente diapositiva",
+   "nav.prev": "Diapositiva anterior",
+   "s1.cta1": "Probar en Colab",
+   "s1.cta2": "Ver repositorio",
+   "s1.eyebrow": "Investigación brasileña, en modo agente",
+   "s1.foot": "Fuentes y etapas registradas en Mi memoria",
+   "s1.h2": "De la instrucción a la evidencia. Con método, fuentes y trazabilidad.",
+   "s1.lead": "Un agente abierto de IA para acelerar la investigación científica en Brasil.",
+   "s1.mockAria": "Ventana ilustrativa de sesión de investigación",
+   "s1.mockTitle": "sesión de investigación · v0.6.20",
+   "s1.prompt": "“Estructura un artículo sobre la dinámica poblacional de Viçosa (MG) y sugiere referencias validadas.”",
+   "s1.st1": "Plan de investigación estructurado",
+   "s1.st1s": "completado",
+   "s1.st2": "Consulta IBGE / SIDRA — 76.430 hab.",
+   "s1.st2s": "[dato confirmado]",
+   "s1.st3": "Triaje OpenAlex / SciELO por DOI",
+   "s1.st3s": "ejecutando",
+   "s1.st4": "Artículo + referencias ABNT",
+   "s1.st4s": "en espera",
+   "s10.cred1": "Gustavo Bastos Braga · Universidade Federal de Viçosa",
+   "s10.cred2": "SisPPG nº 10356285004",
+   "s10.cta1": "Comenzar ahora",
+   "s10.h2": "La ciencia brasileña ya tiene preguntas difíciles. Ahora puede tener un agente a la altura.",
+   "s10.lead": "Buscamos grupos de investigación, programas de posgrado e instituciones para probar, contribuir y construir este ecosistema.",
+   "s2.call1": "El cuello de botella no es la falta de IA.",
+   "s2.call2": "Es la falta de integración, contexto y confianza.",
+   "s2.eyebrow": "El problema",
+   "s2.h2": "La investigación todavía opera en pestañas.",
+   "s2.i1h": "Buscar",
+   "s2.i1p": "bases y literatura",
+   "s2.i2h": "Tratar",
+   "s2.i2p": "archivos y variables",
+   "s2.i3h": "Analizar",
+   "s2.i3p": "código y métodos",
+   "s2.i4h": "Escribir",
+   "s2.i4p": "artículo y referencias",
+   "s2.i5h": "Dar formato",
+   "s2.i5p": "normas y entrega",
+   "s2.lead": "Fuentes fragmentadas, datos en bruto, herramientas aisladas y formato manual desvían tiempo del pensamiento científico.",
+   "s2.wm": "FRICCIÓN",
+   "s3.eyebrow": "La solución",
+   "s3.flow": "<b>Instrucción</b> → plan → fuentes → ejecución → validación → archivos",
+   "s3.h2a": "Un agente que no solo responde.",
+   "s3.h2b": "Ejecuta.",
+   "s3.i1h": "Comprende",
+   "s3.i1p": "Transforma una instrucción compleja en un plan de acción explícito.",
+   "s3.i2h": "Orquesta",
+   "s3.i2p": "Activa skills, fuentes oficiales, código y métodos en el orden correcto.",
+   "s3.i3h": "Entrega",
+   "s3.i3p": "Genera datos, análisis, gráficos y texto en archivos rastreables.",
+   "s3.lead": "IA agéntica especializada en el flujo de trabajo científico, del plan a la entrega.",
+   "s4.eyebrow": "Lo que UFVAI crea para ti",
+   "s4.h2a": "Entregables académicos.",
+   "s4.h2b": "No solo respuestas.",
+   "s4.i1h": "Artículo Científico",
+   "s4.i1p": "IMRaD completo con datos y referencias",
+   "s4.i2h": "Revisión Sistemática",
+   "s4.i2p": "PRISMA, criterios de inclusión, síntesis narrativa",
+   "s4.i3h": "Meta-Análisis",
+   "s4.i3p": "Efectos combinados, I², forest plots",
+   "s4.i4h": "Disertación / Tesis",
+   "s4.i4p": "Capítulos completos normalizados",
+   "s4.i5h": "Propuesta de Proyecto",
+   "s4.i5p": "Beca, convocatoria, justificación, cronograma",
+   "s4.i6h": "Informe de Datos",
+   "s4.i6p": "Análisis estadístico + visualizaciones",
+   "s4.i7h": "Análisis Cualitativo",
+   "s4.i7p": "Codificación, temas, similitud",
+   "s4.i8h": "Hipótesis Testables",
+   "s4.i8p": "H₀, H₁, variables, plan de prueba",
+   "s4.i9h": "Declaración de IA",
+   "s4.i9p": "Modelos listos para TCC y artículo",
+   "s4.lead": "Escritura científica, análisis de datos, normas académicas y flujos agénticos en artefactos listos para revisión humana.",
+   "s4.wm": "CREAR",
+   "s5.b1": "Demo IBGE",
+   "s5.b2": "Demo DataSUS",
+   "s5.b3": "Demo Scientific",
+   "s5.btnsAria": "Ejemplos de demostración",
+   "s5.eyebrow": "La interfaz real",
+   "s5.h2": "UFVAI en acción.",
+   "s5.input": "Escribe tu instrucción científica aquí…",
+   "s5.k1": "Saludo e idioma",
+   "s5.k1v": "PT-BR",
+   "s5.k2": "Context",
+   "s5.k3": "Working directory",
+   "s5.k5": "Memoria",
+   "s5.lead": "Explora el flujo del agente ejecutado en Google Colab. Toca un ejemplo para simular:",
+   "s5.live": "agente activo",
+   "s5.sideAria": "Contexto de la sesión",
+   "s5.tag": "demostración simulada",
+   "s5.termAria": "Terminal simulado de UFVAI",
+   "s5.v5": "Mi memoria activa",
+   "s6.call1": "Datos nacionales primero.",
+   "s6.call2": "Meta-búsqueda en 7 bases académicas con deduplicación por DOI.",
+   "s6.eyebrow": "Ventaja local",
+   "s6.h2a": "IA global.",
+   "s6.h2b": "Contexto brasileño.",
+   "s6.i1h": "Censo, PNAD, PIB",
+   "s6.i1p": "SIDRA + mallas + localidades",
+   "s6.i2h": "Salud pública",
+   "s6.i2p": "139 datasets · SINAN · SIM · SIH",
+   "s6.i3h": "Producción y ambiente",
+   "s6.i3p": "38+ fuentes · CONAB · MapBiomas",
+   "s6.i4h": "Indicadores oficiales",
+   "s6.i4p": "BCB · TSE · INPE · Portal de la Transparencia",
+   "s6.lead": "Conexiones con datos públicos nacionales, métodos científicos y normas académicas brasileñas en un solo flujo.",
+   "s7.core": "runtime agéntico",
+   "s7.eyebrow": "Arquitectura modular",
+   "s7.h2a": "174 skills científicas.",
+   "s7.h2b": "+100 bases. Brasil integrado.",
+   "s7.lead": "Módulos brasileños sobre la biblioteca Scientific Agent Skills, con rutas documentadas para flujos científicos.",
+   "s7.n2": "100+ bases científicas",
+   "s7.n8": "Cualitativa",
+   "s7.n9": "Memoria",
+   "s7.orbitAria": "Módulos del ecosistema",
+   "s8.eyebrow": "Integridad científica",
+   "s8.h2a": "La confianza no es un detalle.",
+   "s8.h2b": "Es la arquitectura.",
+   "s8.l1": "Fuente primaria consultada",
+   "s8.l2": "Método declarado",
+   "s8.l3": "Sin invención",
+   "s8.lead": "Los guardrails hacen visible el nivel de evidencia y mantienen al investigador en control de la validación final.",
+   "s8.li1": "No inventar datos, autores, DOIs ni referencias",
+   "s8.li2": "Informar fuente, año y nota metodológica",
+   "s8.li3": "Declarar la incertidumbre cuando la evidencia no basta",
+   "s8.li4": "Exigir revisión humana de los resultados",
+   "s8.pf": "Herramienta de apoyo. Curaduría humana obligatoria.",
+   "s8.ph": "Política de cero fabricación",
+   "s9.badge": "versión 0.6.20",
+   "s9.eyebrow": "Ruta de evolución",
+   "s9.h2": "De Colab a la infraestructura institucional.",
+   "s9.i1h": "Base sólida",
+   "s9.i1p": "Agente vía OpenCode · IBGE + DataSUS · 4 idiomas",
+   "s9.i2h": "Memoria persistente",
+   "s9.i2p": "Second brain Obsidian · autopilot · Memorial UFV",
+   "s9.i3h": "Offline + LGPD",
+   "s9.i3p": "Paquete .deb · consentimiento · GA4 opt-out",
+   "s9.i4h": "Memoria instantánea",
+   "s9.i4p": "Singleton + warm-up · 5 idiomas · nuevas skills BR",
+   "s9.i5h": "Boot + SAIR",
+   "s9.i5p": "Keep-alive · botón SAIR · skills personalizadas",
+   "s9.lead": "Hoy: acceso abierto vía Google Colab e instalación local. Open source · MIT · contribuciones abiertas.",
+   "sec.arquitetura": "Arquitectura",
+   "sec.brasil": "Brasil",
+   "sec.convite": "Invitación",
+   "sec.entregas": "Entregas",
+   "sec.evolucao": "Evolución",
+   "sec.experiencia": "Experiencia",
+   "sec.integridade": "Integridad",
+   "sec.problema": "Problema",
+   "sec.solucao": "Solución",
+   "sec.visao": "Visión",
+   "slide.aria": "Diapositiva {n}: {s}",
+   "top.brand": "UFVAI — ir al inicio",
+   "top.full": "Poner en pantalla completa",
+   "top.fullExit": "Salir de pantalla completa",
+   "top.help": "Ver atajos",
+   "top.main": "Presentación UFVAI"
+  },
+  "fr":   {
+   "d.datasus.head": "LIVRAISON · outputs-dengue-sul/protocolo.md",
+   "d.datasus.l1": "1 · OBJECTIF — série temporelle de dengue, Région Sud",
+   "d.datasus.l2": "2 · SOURCES — opendatasus: SINAN-dengue · SIH · SIM",
+   "d.datasus.l3": "3 · MÉTHODE — UF + période + CID-10 A90–A91 · semaine épidémiologique",
+   "d.datasus.l4": "4 · RÉSULTAT — protocole + paramètres enregistrés dans Ma mémoire",
+   "d.datasus.l5": "! Série non extraite : sans UF/période → [DONNÉES INSUFFISANTES]",
+   "d.datasus.l6": "✓ Étape suivante : indiquer le périmètre pour exécuter l'extraction",
+   "d.datasus.prompt": "Protocole : série de dengue dans la Région Sud",
+   "d.ibge.head": "LIVRAISON · outputs-dinamica-vicosa/artigo.md",
+   "d.ibge.l1": "1 · PLAN — périmètre Viçosa (MG) · Recensement 2022 · rédaction ABNT",
+   "d.ibge.l2": "2 · COLLECTE — ibge-br (SIDRA tab. 9514, var. 93)",
+   "d.ibge.l3": "   Viçosa (MG) .... 76.430 hab.  [DONNÉE CONFIRMÉE]",
+   "d.ibge.l4": "   Source : SIDRA (IBGE) · consulté le 07/09/2026",
+   "d.ibge.l5": "3 · SYNTHÈSE — section IMRAD rédigée avec marqueurs",
+   "d.ibge.l6": "4 · RÉFÉRENCES — citation-management (DOI/URL vérifiés)",
+   "d.ibge.l7": "   BRAGA (2026) — UFVAI · URL officielle vérifiée",
+   "d.ibge.l8": "✓ Révision humaine en attente · paramètres dans Ma mémoire",
+   "d.ibge.prompt": "Article : dynamique populationnelle de Viçosa (MG)",
+   "d.scientific.head": "LIVRAISON · outputs-zoneamento/revisao.md",
+   "d.scientific.l1": "1 · RECHERCHE — 7 bases · dédup par DOI · 2015–2026",
+   "d.scientific.l2": "2 · TRI — inclusion : texte intégral · exclusion : sans DOI",
+   "d.scientific.l3": "3 · VALIDATION — citation-management avant la synthèse",
+   "d.scientific.l4": "4 · SYNTHÈSE — axes thématiques + lacunes de recherche",
+   "d.scientific.l5": "   Ex. : BRAGA (2026) — UFVAI · référence vérifiée",
+   "d.scientific.l6": "✓ Brouillon ABNT prêt pour révision humaine",
+   "d.scientific.prompt": "Revue : zonage agricole au Brésil",
+   "demo.doneAria": "Travail terminé : {p}",
+   "help.close": "Fermer",
+   "help.closeAria": "Fermer l'aide",
+   "help.k1": "Espace",
+   "help.r1": "Diapositive suivante",
+   "help.r2": "Diapositive précédente",
+   "help.r3": "Premier / dernier",
+   "help.r4": "Plein écran",
+   "help.r5": "Ouvrir cette aide",
+   "help.title": "Raccourcis",
+   "meta.title": "UFVAI | Pitch — L'intelligence qui accélère la science",
+   "nav.aria": "Navigation de la présentation",
+   "nav.dot": "Aller à la diapositive {n} : {s}",
+   "nav.dots": "Aller à la diapositive",
+   "nav.next": "Diapositive suivante",
+   "nav.prev": "Diapositive précédente",
+   "s1.cta1": "Essayer dans Colab",
+   "s1.cta2": "Voir le dépôt",
+   "s1.eyebrow": "Recherche brésilienne, en mode agent",
+   "s1.foot": "Sources et étapes enregistrées dans Ma mémoire",
+   "s1.h2": "De l'instruction à l'évidence. Avec méthode, sources et traçabilité.",
+   "s1.lead": "Un agent IA open source pour accélérer la recherche scientifique au Brésil.",
+   "s1.mockAria": "Fenêtre illustrative d'une session de recherche",
+   "s1.mockTitle": "session de recherche · v0.6.20",
+   "s1.prompt": "“Structurez un article sur la dynamique populationnelle de Viçosa (MG) et suggérez des références validées.”",
+   "s1.st1": "Plan de recherche structuré",
+   "s1.st1s": "terminé",
+   "s1.st2": "Interrogation IBGE / SIDRA — 76.430 hab.",
+   "s1.st2s": "[donnée confirmée]",
+   "s1.st3": "Tri OpenAlex / SciELO par DOI",
+   "s1.st3s": "en cours",
+   "s1.st4": "Article + références ABNT",
+   "s1.st4s": "en attente",
+   "s10.cred1": "Gustavo Bastos Braga · Universidade Federal de Viçosa",
+   "s10.cred2": "SisPPG nº 10356285004",
+   "s10.cta1": "Commencer maintenant",
+   "s10.h2": "La science brésilienne a déjà des questions difficiles. Elle peut maintenant avoir un agent à la hauteur.",
+   "s10.lead": "Nous recherchons des groupes de recherche, des programmes de cycle supérieur et des institutions pour tester, contribuer et bâtir cet écosystème.",
+   "s2.call1": "Le goulot d'étranglement n'est pas le manque d'IA.",
+   "s2.call2": "C'est le manque d'intégration, de contexte et de confiance.",
+   "s2.eyebrow": "Le problème",
+   "s2.h2": "La recherche opère encore en onglets.",
+   "s2.i1h": "Chercher",
+   "s2.i1p": "bases et littérature",
+   "s2.i2h": "Traiter",
+   "s2.i2p": "fichiers et variables",
+   "s2.i3h": "Analyser",
+   "s2.i3p": "code et méthodes",
+   "s2.i4h": "Écrire",
+   "s2.i4p": "article et références",
+   "s2.i5h": "Mettre en forme",
+   "s2.i5p": "normes et livraison",
+   "s2.lead": "Sources fragmentées, données brutes, outils isolés et mise en forme manuelle détournent le temps de la pensée scientifique.",
+   "s2.wm": "FRICTION",
+   "s3.eyebrow": "La solution",
+   "s3.flow": "<b>Instruction</b> → plan → sources → exécution → validation → fichiers",
+   "s3.h2a": "Un agent qui ne se contente pas de répondre.",
+   "s3.h2b": "Il exécute.",
+   "s3.i1h": "Comprend",
+   "s3.i1p": "Transforme une instruction complexe en plan d'action explicite.",
+   "s3.i2h": "Orchestre",
+   "s3.i2p": "Déclenche skills, sources officielles, code et méthodes dans le bon ordre.",
+   "s3.i3h": "Livre",
+   "s3.i3p": "Génère données, analyses, graphiques et texte dans des fichiers traçables.",
+   "s3.lead": "IA agentic dédiée au flux de travail scientifique, du plan à la livraison.",
+   "s4.eyebrow": "Ce que l'UFVAI crée pour vous",
+   "s4.h2a": "Livrables académiques.",
+   "s4.h2b": "Pas seulement des réponses.",
+   "s4.i1h": "Article scientifique",
+   "s4.i1p": "IMRaD complet avec données et références",
+   "s4.i2h": "Revue systématique",
+   "s4.i2p": "PRISMA, critères d'inclusion, synthèse narrative",
+   "s4.i3h": "Méta-analyse",
+   "s4.i3p": "Effets combinés, I², forest plots",
+   "s4.i4h": "Mémoire / Thèse",
+   "s4.i4p": "Chapitres complets normalisés",
+   "s4.i5h": "Proposition de projet",
+   "s4.i5p": "Bourse, appel à projets, justification, calendrier",
+   "s4.i6h": "Rapport de données",
+   "s4.i6p": "Analyse statistique + visualisations",
+   "s4.i7h": "Analyse qualitative",
+   "s4.i7p": "Codification, thèmes, similitude",
+   "s4.i8h": "Hypothèses testables",
+   "s4.i8p": "H₀, H₁, variables, plan de test",
+   "s4.i9h": "Déclaration d'IA",
+   "s4.i9p": "Modèles prêts pour mémoire et article",
+   "s4.lead": "Rédaction scientifique, analyse de données, normes académiques et flux agentic en artefacts prêts pour la révision humaine.",
+   "s4.wm": "CRÉER",
+   "s5.b1": "Démo IBGE",
+   "s5.b2": "Démo DataSUS",
+   "s5.b3": "Démo Scientific",
+   "s5.btnsAria": "Exemples de démonstration",
+   "s5.eyebrow": "L'interface réelle",
+   "s5.h2": "UFVAI en action.",
+   "s5.input": "Saisissez votre instruction scientifique ici…",
+   "s5.k1": "Salutation et langue",
+   "s5.k1v": "PT-BR",
+   "s5.k2": "Context",
+   "s5.k3": "Working directory",
+   "s5.k5": "Mémoire",
+   "s5.lead": "Explorez le flux de l'agent exécuté dans Google Colab. Cliquez sur un exemple pour simuler :",
+   "s5.live": "agent actif",
+   "s5.sideAria": "Contexte de la session",
+   "s5.tag": "démonstration simulée",
+   "s5.termAria": "Terminal simulé de l'UFVAI",
+   "s5.v5": "Ma mémoire active",
+   "s6.call1": "Les données nationales d'abord.",
+   "s6.call2": "Méta-recherche dans 7 bases académiques avec déduplication par DOI.",
+   "s6.eyebrow": "Avantage local",
+   "s6.h2a": "IA mondiale.",
+   "s6.h2b": "Contexte brésilien.",
+   "s6.i1h": "Recensement, PNAD, PIB",
+   "s6.i1p": "SIDRA + maillages + localités",
+   "s6.i2h": "Santé publique",
+   "s6.i2p": "139 datasets · SINAN · SIM · SIH",
+   "s6.i3h": "Production et environnement",
+   "s6.i3p": "38+ sources · CONAB · MapBiomas",
+   "s6.i4h": "Indicateurs officiels",
+   "s6.i4p": "BCB · TSE · INPE · Portal da Transparência",
+   "s6.lead": "Connexions aux données publiques nationales, méthodes scientifiques et normes académiques brésiliennes en un seul flux.",
+   "s7.core": "runtime agentic",
+   "s7.eyebrow": "Architecture modulaire",
+   "s7.h2a": "174 skills scientifiques.",
+   "s7.h2b": "+100 bases. Brésil intégré.",
+   "s7.lead": "Modules brésiliens sur la bibliothèque Scientific Agent Skills, avec des chemins documentés pour les flux scientifiques.",
+   "s7.n2": "100+ bases scientifiques",
+   "s7.n8": "Qualitative",
+   "s7.n9": "Mémoire",
+   "s7.orbitAria": "Modules de l'écosystème",
+   "s8.eyebrow": "Intégrité scientifique",
+   "s8.h2a": "La confiance n'est pas un détail.",
+   "s8.h2b": "C'est l'architecture.",
+   "s8.l1": "Source primaire consultée",
+   "s8.l2": "Méthode déclarée",
+   "s8.l3": "Sans invention",
+   "s8.lead": "Les guardrails rendent le niveau de preuve visible et maintiennent le chercheur aux commandes de la validation finale.",
+   "s8.li1": "Ne pas inventer de données, auteurs, DOIs ou références",
+   "s8.li2": "Indiquer source, année et note méthodologique",
+   "s8.li3": "Déclarer l'incertitude lorsque la preuve est insuffisante",
+   "s8.li4": "Exiger la révision humaine des résultats",
+   "s8.pf": "Outil d'appui. Curation humaine obligatoire.",
+   "s8.ph": "Politique de zéro fabrication",
+   "s9.badge": "version 0.6.20",
+   "s9.eyebrow": "Trajectoire d'évolution",
+   "s9.h2": "Du Colab à l'infrastructure institutionnelle.",
+   "s9.i1h": "Base solide",
+   "s9.i1p": "Agent via OpenCode · IBGE + DataSUS · 4 langues",
+   "s9.i2h": "Mémoire persistante",
+   "s9.i2p": "Second brain Obsidian · autopilot · Memorial UFV",
+   "s9.i3h": "Offline + LGPD",
+   "s9.i3p": "Paquet .deb · consentement · GA4 opt-out",
+   "s9.i4h": "Mémoire instantanée",
+   "s9.i4p": "Singleton + warm-up · 5 langues · nouvelles skills BR",
+   "s9.i5h": "Boot + QUITTER",
+   "s9.i5p": "Keep-alive · bouton QUITTER · skills personnalisées",
+   "s9.lead": "Aujourd'hui : accès ouvert via Google Colab et installation locale. Open source · MIT · contributions ouvertes.",
+   "sec.arquitetura": "Architecture",
+   "sec.brasil": "Brésil",
+   "sec.convite": "Invitation",
+   "sec.entregas": "Livrables",
+   "sec.evolucao": "Évolution",
+   "sec.experiencia": "Expérience",
+   "sec.integridade": "Intégrité",
+   "sec.problema": "Problème",
+   "sec.solucao": "Solution",
+   "sec.visao": "Vision",
+   "slide.aria": "Diapositive {n} : {s}",
+   "top.brand": "UFVAI — aller au début",
+   "top.full": "Passer en plein écran",
+   "top.fullExit": "Quitter le plein écran",
+   "top.help": "Voir les raccourcis",
+   "top.main": "Présentation UFVAI"
+  },
+  "zh":   {
+   "d.datasus.head": "交付 · outputs-dengue-sul/protocolo.md",
+   "d.datasus.l1": "1 · 目标 — 登革热时间序列，南部地区",
+   "d.datasus.l2": "2 · 来源 — opendatasus: SINAN-dengue · SIH · SIM",
+   "d.datasus.l3": "3 · 方法 — UF + 时段 + CID-10 A90–A91 · 流行病学周",
+   "d.datasus.l4": "4 · 结果 — 协议 + 参数已保存至“我的记忆”",
+   "d.datasus.l5": "! 序列未提取：缺少 UF/时段 → [数据不足]",
+   "d.datasus.l6": "✓ 下一步：告知筛选范围以执行提取",
+   "d.datasus.prompt": "协议：南部地区的登革热序列",
+   "d.ibge.head": "交付 · outputs-dinamica-vicosa/artigo.md",
+   "d.ibge.l1": "1 · 计划 — 范围 Viçosa (MG) · 普查 2022 · ABNT 撰写",
+   "d.ibge.l2": "2 · 采集 — ibge-br (SIDRA tab. 9514, var. 93)",
+   "d.ibge.l3": "   Viçosa (MG) .... 76.430 hab.  [已确认数据]",
+   "d.ibge.l4": "   来源：SIDRA (IBGE) · 查询于 07/09/2026",
+   "d.ibge.l5": "3 · 综合 — 已按标记撰写 IMRAD 章节",
+   "d.ibge.l6": "4 · 参考文献 — citation-management (DOI/URL 已核验)",
+   "d.ibge.l7": "   BRAGA (2026) — UFVAI · 官方 URL 已核验",
+   "d.ibge.l8": "✓ 待人工复核 · 参数存于“我的记忆”",
+   "d.ibge.prompt": "文章：Viçosa (MG) 的人口动态",
+   "d.scientific.head": "交付 · outputs-zoneamento/revisao.md",
+   "d.scientific.l1": "1 · 检索 — 7 个数据库 · 按 DOI 去重 · 2015–2026",
+   "d.scientific.l2": "2 · 筛选 — 纳入：全文 · 排除：无 DOI",
+   "d.scientific.l3": "3 · 验证 — 综合之前执行 citation-management",
+   "d.scientific.l4": "4 · 综合 — 主题脉络 + 研究空白",
+   "d.scientific.l5": "   例：BRAGA (2026) — UFVAI · 文献已核验",
+   "d.scientific.l6": "✓ ABNT 草稿已就绪，待人工复核",
+   "d.scientific.prompt": "综述：巴西农业区划",
+   "demo.doneAria": "任务完成：{p}",
+   "help.close": "关闭",
+   "help.closeAria": "关闭帮助",
+   "help.k1": "空格",
+   "help.r1": "下一页",
+   "help.r2": "上一页",
+   "help.r3": "首页 / 末页",
+   "help.r4": "全屏",
+   "help.r5": "打开本帮助",
+   "help.title": "快捷键",
+   "meta.title": "UFVAI | Pitch — 加速科学的智能",
+   "nav.aria": "演示文稿导航",
+   "nav.dot": "跳转到第 {n} 页：{s}",
+   "nav.dots": "跳转到页",
+   "nav.next": "下一页",
+   "nav.prev": "上一页",
+   "s1.cta1": "在 Colab 上试用",
+   "s1.cta2": "查看仓库",
+   "s1.eyebrow": "巴西科研，智能体模式",
+   "s1.foot": "来源与步骤记录于“我的记忆”",
+   "s1.h2": "从指令到证据。有方法、有来源、可追溯。",
+   "s1.lead": "一个开放的 AI 智能体，加速巴西的科学研究。",
+   "s1.mockAria": "研究会话示意窗口",
+   "s1.mockTitle": "研究会话 · v0.6.20",
+   "s1.prompt": "“请构建一篇关于 Viçosa (MG) 人口动态的文章，并推荐已核验的参考文献。”",
+   "s1.st1": "研究计划已结构化",
+   "s1.st1s": "已完成",
+   "s1.st2": "查询 IBGE / SIDRA — 76.430 hab.",
+   "s1.st2s": "[已确认数据]",
+   "s1.st3": "按 DOI 筛选 OpenAlex / SciELO",
+   "s1.st3s": "执行中",
+   "s1.st4": "文章 + ABNT 参考文献",
+   "s1.st4s": "等待中",
+   "s10.cred1": "Gustavo Bastos Braga · Universidade Federal de Viçosa",
+   "s10.cred2": "SisPPG nº 10356285004",
+   "s10.cta1": "立即开始",
+   "s10.h2": "巴西科学从不缺难题。现在，它可以拥有一个配得上难题的智能体。",
+   "s10.lead": "我们正在寻找研究团队、研究生项目与机构，共同测试、贡献并建设这一生态。",
+   "s2.call1": "瓶颈不是缺少 AI。",
+   "s2.call2": "而是缺少整合、上下文与信任。",
+   "s2.eyebrow": "问题",
+   "s2.h2": "科研仍被分割在标签页里。",
+   "s2.i1h": "检索",
+   "s2.i1p": "数据库与文献",
+   "s2.i2h": "处理",
+   "s2.i2p": "文件与变量",
+   "s2.i3h": "分析",
+   "s2.i3p": "代码与方法",
+   "s2.i4h": "写作",
+   "s2.i4p": "文章与参考文献",
+   "s2.i5h": "排版",
+   "s2.i5p": "规范与交付",
+   "s2.lead": "来源碎片化、原始数据、孤立工具与手工排版，正在挤占科学思考的时间。",
+   "s2.wm": "摩擦",
+   "s3.eyebrow": "解决方案",
+   "s3.flow": "<b>指令</b> → 计划 → 来源 → 执行 → 验证 → 文件",
+   "s3.h2a": "一个不只作答的智能体。",
+   "s3.h2b": "它会执行。",
+   "s3.i1h": "理解",
+   "s3.i1p": "把复杂指令转化为明确的行动计划。",
+   "s3.i2h": "编排",
+   "s3.i2p": "按正确顺序调用 skills、官方数据源、代码与方法。",
+   "s3.i3h": "交付",
+   "s3.i3p": "生成数据、分析、图表与文本，输出为可追溯的文件。",
+   "s3.lead": "专精科研工作流的智能体 AI，从计划到交付。",
+   "s4.eyebrow": "UFVAI 为你创造什么",
+   "s4.h2a": "学术交付物。",
+   "s4.h2b": "不只是回答。",
+   "s4.i1h": "科研论文",
+   "s4.i1p": "完整 IMRaD，含数据与参考文献",
+   "s4.i2h": "系统综述",
+   "s4.i2p": "PRISMA、纳入标准、叙述性综合",
+   "s4.i3h": "Meta 分析",
+   "s4.i3p": "合并效应量、I²、森林图",
+   "s4.i4h": "硕士论文 / 博士论文",
+   "s4.i4p": "按规范完成的各章节",
+   "s4.i5h": "项目申请书",
+   "s4.i5p": "资助、征集公告、论证、进度安排",
+   "s4.i6h": "数据报告",
+   "s4.i6p": "统计分析 + 可视化",
+   "s4.i7h": "定性分析",
+   "s4.i7p": "编码、主题、相似度",
+   "s4.i8h": "可检验假设",
+   "s4.i8p": "H₀、H₁、变量、检验方案",
+   "s4.i9h": "AI 声明",
+   "s4.i9p": "适用于 TCC 与论文的现成模板",
+   "s4.lead": "科学写作、数据分析、学术规范与智能体流程，汇成可直接进入人工复核的成果。",
+   "s4.wm": "创造",
+   "s5.b1": "Demo IBGE",
+   "s5.b2": "Demo DataSUS",
+   "s5.b3": "Demo Scientific",
+   "s5.btnsAria": "演示示例",
+   "s5.eyebrow": "真实界面",
+   "s5.h2": "UFVAI 实战。",
+   "s5.input": "在此输入你的科研指令…",
+   "s5.k1": "问候与语言",
+   "s5.k1v": "PT-BR",
+   "s5.k2": "Context",
+   "s5.k3": "Working directory",
+   "s5.k5": "记忆",
+   "s5.lead": "探索在 Google Colab 中运行的智能体流程。点选一个示例进行模拟：",
+   "s5.live": "智能体运行中",
+   "s5.sideAria": "会话上下文",
+   "s5.tag": "模拟演示",
+   "s5.termAria": "UFVAI 模拟终端",
+   "s5.v5": "“我的记忆”已启用",
+   "s6.call1": "国家数据优先。",
+   "s6.call2": "7 个学术数据库元搜索，按 DOI 去重。",
+   "s6.eyebrow": "本土优势",
+   "s6.h2a": "全球 AI。",
+   "s6.h2b": "巴西语境。",
+   "s6.i1h": "普查、PNAD、PIB",
+   "s6.i1p": "SIDRA + 统计网格 + 地方单位",
+   "s6.i2h": "公共卫生",
+   "s6.i2p": "139 datasets · SINAN · SIM · SIH",
+   "s6.i3h": "生产与环境",
+   "s6.i3p": "38+ 来源 · CONAB · MapBiomas",
+   "s6.i4h": "官方指标",
+   "s6.i4p": "BCB · TSE · INPE · 透明门户",
+   "s6.lead": "国家公共数据、科学方法与巴西学术规范，整合在同一个流程中。",
+   "s7.core": "智能体 runtime",
+   "s7.eyebrow": "模块化架构",
+   "s7.h2a": "174 个科研 skills。",
+   "s7.h2b": "+100 个数据库。巴西已整合。",
+   "s7.lead": "在 Scientific Agent Skills 库之上构建巴西模块，并配有科研流程的文档化路径。",
+   "s7.n2": "100+ 科研数据库",
+   "s7.n8": "定性",
+   "s7.n9": "记忆",
+   "s7.orbitAria": "生态模块",
+   "s8.eyebrow": "科研诚信",
+   "s8.h2a": "信任不是细节。",
+   "s8.h2b": "它是架构。",
+   "s8.l1": "已查阅一手来源",
+   "s8.l2": "方法已声明",
+   "s8.l3": "杜绝编造",
+   "s8.lead": "Guardrails 让证据等级清晰可见，并让研究者掌控最终验证。",
+   "s8.li1": "不编造数据、作者、DOI 或参考文献",
+   "s8.li2": "注明来源、年份与方法说明",
+   "s8.li3": "证据不足时明确声明不确定性",
+   "s8.li4": "结果必须经人工复核",
+   "s8.pf": "辅助工具。人工审校必不可少。",
+   "s8.ph": "零捏造政策",
+   "s9.badge": "版本 0.6.20",
+   "s9.eyebrow": "演进路线",
+   "s9.h2": "从 Colab 到机构级基础设施。",
+   "s9.i1h": "坚实基础",
+   "s9.i1p": "经 OpenCode 的智能体 · IBGE + DataSUS · 4 种语言",
+   "s9.i2h": "持久记忆",
+   "s9.i2p": "Second brain Obsidian · autopilot · Memorial UFV",
+   "s9.i3h": "Offline + LGPD",
+   "s9.i3p": ".deb 安装包 · 授权同意 · GA4 opt-out",
+   "s9.i4h": "即时记忆",
+   "s9.i4p": "Singleton + warm-up · 5 种语言 · 新增 BR skills",
+   "s9.i5h": "Boot + SAIR",
+   "s9.i5p": "Keep-alive · SAIR 按钮 · 自定义 skills",
+   "s9.lead": "当前：通过 Google Colab 开放访问与本地安装。开源 · MIT · 欢迎贡献。",
+   "sec.arquitetura": "架构",
+   "sec.brasil": "巴西",
+   "sec.convite": "邀请",
+   "sec.entregas": "交付",
+   "sec.evolucao": "演进",
+   "sec.experiencia": "体验",
+   "sec.integridade": "诚信",
+   "sec.problema": "问题",
+   "sec.solucao": "方案",
+   "sec.visao": "愿景",
+   "slide.aria": "第 {n} 页：{s}",
+   "top.brand": "UFVAI — 返回顶部",
+   "top.full": "进入全屏",
+   "top.fullExit": "退出全屏",
+   "top.help": "查看快捷键",
+   "top.main": "UFVAI 演示"
+  }
+};
+</script>
+<script>
+/* ══════════ i18n do deck ══════════
+   Idioma vem do site (postMessage do iframe) · localStorage · ?lang · navegador.
+   O PT-BR é o texto original do HTML (capturado na carga); os demais idiomas
+   vêm de window.DECK_I18N_DICT (mesmas chaves data-i18n do documento). */
+window.DECK_I18N_DICT = window.DECK_I18N_DICT || {};
+window.DECK_I18N = (function () {
+'use strict';
+var LANGS = ['pt','en','es','fr','zh'];
+var HTML_LANG = { pt:'pt-BR', en:'en', es:'es', fr:'fr', zh:'zh' };
+var CODE = { pt:'PT', en:'EN', es:'ES', fr:'FR', zh:'ZH' };
+var SECK = ['sec.visao','sec.problema','sec.solucao','sec.entregas','sec.experiencia',
+            'sec.brasil','sec.arquitetura','sec.integridade','sec.evolucao','sec.convite'];
+var SECV = ['Visão','Problema','Solução','Entregas','Experiência','Brasil','Arquitetura','Integridade','Evolução','Convite'];
+
+/* Strings de PT que não existem no HTML (demos do terminal simulado). */
+var PT = {
+  'meta.title': 'UFVAI | Pitch — A inteligência que acelera a ciência',
+  'nav.dot': 'Ir para slide {n}: {s}',
+  'nav.dots': 'Ir para slide',
+  'slide.aria': 'Slide {n}: {s}',
+  'demo.doneAria': 'Trabalho completo: {p}',
+  'top.fullExit': 'Sair da tela cheia',
+  'd.ibge.prompt': 'Artigo: dinâmica populacional de Viçosa (MG)',
+  'd.ibge.head': 'ENTREGA · outputs-dinamica-vicosa/artigo.md',
+  'd.ibge.l1': '1 · PLANO — escopo Viçosa (MG) · Censo 2022 · redação ABNT',
+  'd.ibge.l2': '2 · COLETA — ibge-br (SIDRA tab. 9514, var. 93)',
+  'd.ibge.l3': '   Viçosa (MG) .... 76.430 hab.  [DADO CONFIRMADO]',
+  'd.ibge.l4': '   Fonte: SIDRA (IBGE) · consultado em 07/09/2026',
+  'd.ibge.l5': '3 · SÍNTESE — seção IMRAD redigida com marcadores',
+  'd.ibge.l6': '4 · REFERÊNCIAS — citation-management (DOI/URL verificados)',
+  'd.ibge.l7': '   BRAGA (2026) — UFVAI · URL oficial verificada',
+  'd.ibge.l8': '✓ Revisão humana pendente · parâmetros na Minha memória',
+  'd.datasus.prompt': 'Protocolo: série de dengue na Região Sul',
+  'd.datasus.head': 'ENTREGA · outputs-dengue-sul/protocolo.md',
+  'd.datasus.l1': '1 · OBJETIVO — série temporal de dengue, Região Sul',
+  'd.datasus.l2': '2 · FONTES — opendatasus: SINAN-dengue · SIH · SIM',
+  'd.datasus.l3': '3 · MÉTODO — UF + período + CID-10 A90–A91 · semana epidemiológica',
+  'd.datasus.l4': '4 · RESULTADO — protocolo + parâmetros salvos na Minha memória',
+  'd.datasus.l5': '! Série não extraída: sem UF/período → [SEM DADOS SUFICIENTES]',
+  'd.datasus.l6': '✓ Próximo passo: informar o recorte para executar a extração',
+  'd.scientific.prompt': 'Revisão: zoneamento agrícola no Brasil',
+  'd.scientific.head': 'ENTREGA · outputs-zoneamento/revisao.md',
+  'd.scientific.l1': '1 · BUSCA — 7 bases · dedup por DOI · 2015–2026',
+  'd.scientific.l2': '2 · TRIAGEM — inclusão: texto completo · exclusão: sem DOI',
+  'd.scientific.l3': '3 · VALIDAÇÃO — citation-management antes da síntese',
+  'd.scientific.l4': '4 · SÍNTESE — eixos temáticos + lacunas de pesquisa',
+  'd.scientific.l5': '   Ex.: BRAGA (2026) — UFVAI · referência verificada',
+  'd.scientific.l6': '✓ Rascunho ABNT pronto para revisão humana'
+};
+
+var lang = 'pt';
+var origText = new Map(), origHtml = new Map(), origAria = new Map();
+var listeners = [];
+
+function capture() {
+  document.querySelectorAll('[data-i18n]').forEach(function (el) {
+    if (!origText.has(el)) origText.set(el, el.textContent);
+  });
+  document.querySelectorAll('[data-i18n-html]').forEach(function (el) {
+    if (!origHtml.has(el)) origHtml.set(el, el.innerHTML);
+  });
+  document.querySelectorAll('[data-i18n-aria]').forEach(function (el) {
+    if (!origAria.has(el)) origAria.set(el, el.getAttribute('aria-label') || '');
+  });
+}
+function tpl(s, vars) {
+  if (!s) return s;
+  Object.keys(vars || {}).forEach(function (k) { s = s.split('{' + k + '}').join(vars[k]); });
+  return s;
+}
+function t(key, vars) {
+  var v;
+  if (lang !== 'pt' && window.DECK_I18N_DICT[lang] && window.DECK_I18N_DICT[lang][key] !== undefined) {
+    v = window.DECK_I18N_DICT[lang][key];
+  } else if (PT[key] !== undefined) { v = PT[key]; }
+  else { v = key; }
+  return tpl(v, vars);
+}
+function secName(i) {
+  if (lang === 'pt') return SECV[i];
+  var d = window.DECK_I18N_DICT[lang] || {};
+  return d[SECK[i]] !== undefined ? d[SECK[i]] : SECV[i];
+}
+function dotAria(i) { return t('nav.dot', { n: i + 1, s: secName(i) }); }
+function code() { return CODE[lang] || 'PT'; }
+
+function apply(next) {
+  if (LANGS.indexOf(next) < 0) next = 'pt';
+  lang = next;
+  document.querySelectorAll('[data-i18n]').forEach(function (el) {
+    var k = el.getAttribute('data-i18n');
+    var d = lang === 'pt' ? null : (window.DECK_I18N_DICT[lang] || {});
+    el.textContent = (d && d[k] !== undefined) ? d[k] : origText.get(el);
+  });
+  document.querySelectorAll('[data-i18n-html]').forEach(function (el) {
+    var k = el.getAttribute('data-i18n-html');
+    var d = lang === 'pt' ? null : (window.DECK_I18N_DICT[lang] || {});
+    el.innerHTML = (d && d[k] !== undefined) ? d[k] : origHtml.get(el);
+  });
+  document.querySelectorAll('[data-i18n-aria]').forEach(function (el) {
+    var k = el.getAttribute('data-i18n-aria');
+    var d = lang === 'pt' ? null : (window.DECK_I18N_DICT[lang] || {});
+    el.setAttribute('aria-label', (d && d[k] !== undefined) ? d[k] : origAria.get(el));
+  });
+  document.documentElement.setAttribute('lang', HTML_LANG[lang] || 'pt-BR');
+  try { document.title = t('meta.title'); } catch (e) {}
+  var tl = document.getElementById('term-lang');
+  if (tl) tl.textContent = code();
+  var sl = document.querySelectorAll('.slide');
+  for (var j = 0; j < sl.length; j++) sl[j].setAttribute('aria-label', t('slide.aria', { n: j + 1, s: secName(j) }));
+  for (var i = 0; i < listeners.length; i++) { try { listeners[i](lang); } catch (e) {} }
+  try { localStorage.setItem('ufvai-lang', lang); } catch (e) {}
+  return lang;
+}
+
+function detect() {
+  var q = '';
+  try { q = (location.search.match(/[?&]lang=([a-zA-Z-]+)/) || [])[1] || ''; } catch (e) {}
+  q = q.toLowerCase().slice(0, 2);
+  if (LANGS.indexOf(q) >= 0) return q;
+  var ls = '';
+  try { ls = (localStorage.getItem('ufvai-lang') || '').toLowerCase().slice(0, 2); } catch (e) {}
+  if (LANGS.indexOf(ls) >= 0) return ls;
+  var nv = '';
+  try { nv = (navigator.language || '').toLowerCase().slice(0, 2); } catch (e) {}
+  if (LANGS.indexOf(nv) >= 0) return nv;
+  return 'pt';
+}
+
+/* idioma enviado pelo site (iframe pai) */
+window.addEventListener('message', function (ev) {
+  var d = ev && ev.data;
+  if (d && (d.type === 'ufvai-lang' || d.type === 'ufvaiLang') && d.lang) apply(d.lang);
+});
+
+capture();
+apply(detect());
+return {
+  get lang() { return lang; },
+  t: t, secName: secName, dotAria: dotAria, code: code,
+  apply: apply,
+  onChange: function (fn) { listeners.push(fn); }
+};
+})();
+</script>
+<script>
 (function(){
 'use strict';
 var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+var I18N = window.DECK_I18N;
+function t(k, v) { return I18N ? I18N.t(k, v) : k; }
 var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
 var dotsBox = document.getElementById('dots');
 var counter = document.getElementById('counter');
@@ -571,7 +1530,7 @@ var cur = 0, dir = 1;
 var dots = slides.map(function(s, i){
   var b = document.createElement('button');
   b.type = 'button';
-  b.setAttribute('aria-label', 'Ir para slide ' + (i+1) + ': ' + s.getAttribute('data-sec'));
+  b.setAttribute('aria-label', I18N ? I18N.dotAria(i) : 'Ir para slide ' + (i+1) + ': ' + s.getAttribute('data-sec'));
   b.addEventListener('click', function(){ go(i); });
   dotsBox.appendChild(b);
   return b;
@@ -600,7 +1559,7 @@ function go(n){
     if (i === cur) d.setAttribute('aria-current','step'); else d.removeAttribute('aria-current');
   });
   counter.textContent = String(cur+1).padStart(2,'0');
-  secname.textContent = s.getAttribute('data-sec');
+  secname.textContent = I18N ? I18N.secName(cur) : s.getAttribute('data-sec');
   progress.style.width = ((cur+1)/slides.length*100) + '%';
   btnPrev.disabled = cur === 0;
   btnNext.disabled = cur === slides.length - 1;
@@ -625,7 +1584,7 @@ modalOv.addEventListener('click', function(e){ if (e.target === modalOv) closeMo
 var btnFull = document.getElementById('btn-full');
 function syncFull(){
   var fs = !!(document.fullscreenElement);
-  btnFull.setAttribute('aria-label', fs ? 'Sair da tela cheia' : 'Entrar em tela cheia');
+  btnFull.setAttribute('aria-label', fs ? t('top.fullExit') : t('top.full'));
 }
 function toggleFull(){
   if (document.fullscreenElement) { document.exitFullscreen(); }
@@ -667,49 +1626,53 @@ var demoTimers = [];
 function later(fn, ms){ demoTimers.push(setTimeout(fn, ms)); }
 function clearDemo(){ demoTimers.forEach(clearTimeout); demoTimers = []; }
 
+/* Chaves resolvidas pelo i18n embutido (PT-BR é o texto original; en/es/fr/zh
+   vêm de DECK_I18N_DICT). Nenhum número é alterado entre idiomas. */
 var DEMOS = {
   ibge: {
-    prompt: 'Artigo: dinâmica populacional de Viçosa (MG)',
-    head: 'ENTREGA · outputs-dinamica-vicosa/artigo.md',
+    prompt: 'd.ibge.prompt',
+    head: 'd.ibge.head',
     lines: [
-      ['dim', '1 · PLANO — escopo Viçosa (MG) · Censo 2022 · redação ABNT'],
-      ['dim', '2 · COLETA — ibge-br (SIDRA tab. 9514, var. 93)'],
-      ['ok', '   Viçosa (MG) .... 76.430 hab.  [DADO CONFIRMADO]'],
-      ['src', '   Fonte: SIDRA (IBGE) · consultado em 07/09/2026'],
-      ['dim', '3 · SÍNTESE — seção IMRAD redigida com marcadores'],
-      ['dim', '4 · REFERÊNCIAS — citation-management (DOI/URL verificados)'],
-      ['ok', '   BRAGA (2026) — UFVAI · URL oficial verificada'],
-      ['warn', '✓ Revisão humana pendente · parâmetros na Minha memória']
+      ['dim', 'd.ibge.l1'],
+      ['dim', 'd.ibge.l2'],
+      ['ok', 'd.ibge.l3'],
+      ['src', 'd.ibge.l4'],
+      ['dim', 'd.ibge.l5'],
+      ['dim', 'd.ibge.l6'],
+      ['ok', 'd.ibge.l7'],
+      ['warn', 'd.ibge.l8']
     ]
   },
   datasus: {
-    prompt: 'Protocolo: série de dengue na Região Sul',
-    head: 'ENTREGA · outputs-dengue-sul/protocolo.md',
+    prompt: 'd.datasus.prompt',
+    head: 'd.datasus.head',
     lines: [
-      ['dim', '1 · OBJETIVO — série temporal de dengue, Região Sul'],
-      ['dim', '2 · FONTES — opendatasus: SINAN-dengue · SIH · SIM'],
-      ['dim', '3 · MÉTODO — UF + período + CID-10 A90–A91 · semana epidemiológica'],
-      ['dim', '4 · RESULTADO — protocolo + parâmetros salvos na Minha memória'],
-      ['warn', '! Série não extraída: sem UF/período → [SEM DADOS SUFICIENTES]'],
-      ['ok', '✓ Próximo passo: informar o recorte para executar a extração']
+      ['dim', 'd.datasus.l1'],
+      ['dim', 'd.datasus.l2'],
+      ['dim', 'd.datasus.l3'],
+      ['dim', 'd.datasus.l4'],
+      ['warn', 'd.datasus.l5'],
+      ['ok', 'd.datasus.l6']
     ]
   },
   scientific: {
-    prompt: 'Revisão: zoneamento agrícola no Brasil',
-    head: 'ENTREGA · outputs-zoneamento/revisao.md',
+    prompt: 'd.scientific.prompt',
+    head: 'd.scientific.head',
     lines: [
-      ['dim', '1 · BUSCA — 7 bases · dedup por DOI · 2015–2026'],
-      ['dim', '2 · TRIAGEM — inclusão: texto completo · exclusão: sem DOI'],
-      ['dim', '3 · VALIDAÇÃO — citation-management antes da síntese'],
-      ['dim', '4 · SÍNTESE — eixos temáticos + lacunas de pesquisa'],
-      ['ok', '   Ex.: BRAGA (2026) — UFVAI · referência verificada'],
-      ['warn', '✓ Rascunho ABNT pronto para revisão humana']
+      ['dim', 'd.scientific.l1'],
+      ['dim', 'd.scientific.l2'],
+      ['dim', 'd.scientific.l3'],
+      ['dim', 'd.scientific.l4'],
+      ['ok', 'd.scientific.l5'],
+      ['warn', 'd.scientific.l6']
     ]
   }
 };
 
+var lastDemo = 'ibge';
 function runDemo(name){
   clearDemo();
+  lastDemo = name;
   var d = DEMOS[name];
   if (!d || !termLog) return;
   document.querySelectorAll('.term__btns button').forEach(function(b){
@@ -718,15 +1681,15 @@ function runDemo(name){
   termLog.innerHTML = '';
   var p = document.createElement('div');
   p.className = 'u';
-  p.textContent = d.head || d.prompt;
-  p.setAttribute('aria-label', 'Trabalho completo: ' + d.prompt);
+  p.textContent = t(d.head);
+  p.setAttribute('aria-label', t('demo.doneAria', { p: t(d.prompt) }));
   termLog.appendChild(p);
   var tokens = 0, cost = 0;
   d.lines.forEach(function(line, i){
     later(function(){
       var div = document.createElement('div');
       div.className = line[0];
-      div.textContent = line[1];
+      div.textContent = t(line[1]);
       termLog.appendChild(div);
       tokens += 1200 + i * 900;
       cost += 0.01 + i * 0.008;
@@ -752,7 +1715,7 @@ slides.forEach(function(s){ s.classList.remove('active'); });
     d.classList.toggle('dot', i !== cur);
   });
   counter.textContent = String(cur+1).padStart(2,'0');
-  secname.textContent = s.getAttribute('data-sec');
+  secname.textContent = I18N ? I18N.secName(cur) : s.getAttribute('data-sec');
   progress.style.width = ((cur+1)/slides.length*100) + '%';
   btnPrev.disabled = cur === 0;
   btnNext.disabled = cur === slides.length - 1;
@@ -760,6 +1723,16 @@ slides.forEach(function(s){ s.classList.remove('active'); });
   if (cur === 4) startDemo('ibge');
 })();
 window.addEventListener('hashchange', function(){ go(fromHash()); });
+
+/* idioma trocado pelo site (postMessage): atualiza o que é gerado em JS */
+if (I18N && I18N.onChange) {
+  I18N.onChange(function(){
+    dots.forEach(function(d, i){ d.setAttribute('aria-label', I18N.dotAria(i)); });
+    secname.textContent = I18N.secName(cur);
+    syncFull();
+    if (termLog) runDemo(lastDemo);
+  });
+}
 })();
 </script>
 </body>

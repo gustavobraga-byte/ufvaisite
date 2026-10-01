@@ -18,11 +18,11 @@ reais** (contato, links, depoimentos, registro SisPPG), sem clonagem de layout o
 | `index.html` | Página única (hero, sobre, funcionalidades, novidades, como funciona, casos, FAQ, citar, apresentação, CTA, footer) |
 | `styles.css` | Design system: tokens claro/escuro, componentes, responsivo, `prefers-reduced-motion` |
 | `script.js` | Tema, menu mobile, digitação, contadores, reveal, acordeão, demo animada e player da apresentação |
-| `i18n.js` | Dicionários pt/en/es/fr/zh (138 chaves), detecção automática (`localStorage` > navegador > pt-BR), seletor no header |
+| `i18n.js` | Dicionários pt/en/es/fr/zh (145 chaves), detecção automática (`localStorage` > navegador > pt-BR), seletor no header |
 | `favicon.svg` | Favicon oficial UFVAI (lupa com rede de nós, cópia de `UFVAI-v0.6.9/assets/ico.svg`; anterior mini-constelação preservada em `favicon.svg.constelacao-bak`) |
 | `favicon-64.png` / `favicon-128.png` / `favicon-180.png` | Fallbacks PNG (64/128) + apple-touch-icon (180), do pacote oficial UFVAI |
 | `og-logo.jpg` | Logotipo oficial para Open Graph (cópia byte-idêntica de `registrodemarca/logocerto.jpeg`) |
-| `apresentacao/index.html` | Cópia autocontida do deck UFVAI (10 slides) — permite publicar esta pasta sozinha no GitHub Pages |
+| `apresentacao/index.html` | Cópia autocontida do deck UFVAI (10 slides) — publicável sozinha, **com i18n próprio em 5 idiomas** (ver seção abaixo) |
 | `404.html` | Página de erro 404 no mesmo visual (exigida pelo GitHub Pages) |
 | `robots.txt` / `sitemap.xml` / `.nojekyll` | SEO e deploy estático (sitemap aponta p/ placeholder `https://ufvai.ufv.br/`) |
 
@@ -49,7 +49,7 @@ Sequência em 3 estágios, fiel à tela real do UFVAI (wrapper `launch_app_respo
    terminal interativo (ttyd)", "Iniciando o servidor web") e botão "ABRIR O UFVAI".
 2. **Termos de Uso** — card com resumo LGPD, digitação animada de nome e e-mail,
    checkbox de aceite + checkbox de telemetria anônima e botão "ATIVAR O UFVAI".
-3. **Tela principal (atualização v0.6.17)** — topbar com logo, chip de versão, status
+3. **Tela principal (atualização v0.6.20)** — topbar com logo, chip de versão, status
    "agente ativo", chips memória/pt-BR/tema, e conversa com marcadores de evidência.
 
 Botão "↻" rever a demonstração. Com `prefers-reduced-motion`, a sequência salta direto
@@ -68,6 +68,13 @@ Seletor no header (PT/EN/ES/FR/ZH, mesmos idiomas do UFVAI). Ordem de resoluçã
 é definido antes da pintura. Depoimentos e blocos de código permanecem no original
 (integridade). Trocar o idioma re-executa a digitação da headline e a demo do hero.
 
+**A apresentação acompanha o idioma** (`script.js` → `syncDeckLang`): o site envia
+`postMessage({type:'ufvai-lang', lang})` ao `<iframe>` no carregamento do deck e a
+cada troca de idioma. O deck tem i18n próprio (`window.DECK_I18N` + `DECK_I18N_DICT`,
+198 chaves × 4 idiomas, PT-BR vindo do HTML original) e re-renderiza também o que é
+gerado em JS (nome da seção, aria dos dots, demos do terminal). O deck sozinho, em
+nova aba, resolve o idioma por `?lang=` > `localStorage` > navegador.
+
 ## Seção Apresentação (deck HTML incorporado)
 
 `#apresentacao` incorpora `apresentacao/index.html` (cópia autocontida do deck,
@@ -77,6 +84,11 @@ com capa de play (clique revela e foca o deck), botões Assistir / Tela cheia
 publicável sozinha — sem dependência de `../`.
 
 ## Como publicar (GitHub Pages)
+
+> **Site publicado:** <https://github.com/gustavobraga-byte/ufvaisite> (o conteúdo
+> desta pasta é a fonte do GitHub Pages). Para atualizar: edite aqui, valide
+> (ver "Validação" abaixo) e copie os arquivos alterados para o clone do repositório,
+> commit + push.
 
 1. Crie o repositório do site (ex.: `ufvai-site`) e copie **só o conteúdo desta
    pasta** para a raiz (ou para `docs/`).
@@ -88,7 +100,17 @@ publicável sozinha — sem dependência de `../`.
    (ex.: `https://gustavobraga-byte.github.io/ufvai-site/`).
 4. Opcional: domínio próprio via arquivo `CNAME` com o domínio + ajuste no DNS.
 5. Teste pós-deploy: home 200, `apresentacao/` 200, `404.html`, alternância de tema,
-   seletor PT/EN/ES/FR/ZH, demo do hero, player do deck e validação mobile.
+   seletor PT/EN/ES/FR/ZH, demo do hero, player do deck (**trocar idioma e conferir
+   o deck**) e validação mobile.
+
+## Validação (01/10/2026 — atualização 0.6.20 + deck multilíngue)
+
+- `node --check` em `script.js`, `i18n.js` e nos 3 blocos `<script>` inline do deck.
+- Cobertura i18n do site: 145 chaves do HTML presentes nos 5 dicionários (0 faltando).
+- Cobertura i18n do deck: 198 chaves × 4 idiomas, placeholders/números/marcadores idênticos ao PT.
+- HTML balanceado (deck e página), `grep ../outputs` = 0, HTTP 200 em 15 rotas (porta 8097).
+- Testes jsdom: motor do deck (24 asserções), ponte site→deck e integração ao vivo
+  (site servido → iframe troca en/fr/pt/zh) — todos verdes.
 
 ## Proveniência dos dados exibidos (zero fabricação)
 
@@ -99,10 +121,10 @@ publicável sozinha — sem dependência de `../`.
 | 139 datasets de saúde pública | Descrição oficial da skill `opendatasus` (Ministério da Saúde) |
 | 38+ fontes do agro | Descrição oficial da skill `agrobr` |
 | 7 bases acadêmicas | Descrição oficial da skill `meta-search-br` |
-| Changelog 0.6.9–0.6.17 (datas e títulos) | `UFVAI-v0.6.9/CHANGELOG.md` (árvore de release canônica) |
-| Novas ferramentas (cep-ufv, BR-DWGD, meta-search-br, grant-finder) | Catálogo de skills do `AGENTS.md` v0.6.17 (§2.1.6) |
+| Changelog 0.6.9–0.6.20 (datas e títulos) | `UFVAI-v0.6.20/CHANGELOG.md` (árvore de release canônica) |
+| Novas ferramentas (cep-ufv, BR-DWGD, meta-search-br, grant-finder) | Catálogo de skills do `AGENTS.md` v0.6.20 (§2.1.6) |
 | Depoimentos (A. C./UFV, D. I./IF Baiano, I. B./Unicamp) | Depoimentos reais de usuários, reproduzidos com iniciais e instituição; nome da marca atualizado para UFVAI a pedido (07/09/2026) |
-| Citação ABNT e BibTeX (`braga2026ufvai`, v0.6.17) | `UFVAI-v0.6.9/citacao_pesquisai.md` e `README.md` do repositório |
+| Citação ABNT e BibTeX (`braga2026ufvai`, v0.6.20) | `UFVAI-v0.6.20/citacao_pesquisai.md` e `README.md` do repositório |
 | Contato `gustavo.braga@ufv.br`, links GitHub/Colab/YouTube/manual/apresentação, SisPPG nº 10356285004 | Site anterior do projeto e rodapé oficial do `AGENTS.md` |
 
 ## Acessibilidade e SEO
@@ -126,6 +148,7 @@ Publicação sugerida (pendente de aprovação): GitHub Pages, como substituto d
 ## Pendências
 
 - [x] Revisão técnica 08/09/2026: bundle autocontido (`apresentacao/`), 404/robots/sitemap/nojekyll, og:image absoluta, HTML balanceado, JS `node --check` OK, HTTP 200 em todos os assets.
-- [ ] Revisão visual humana (claro/escuro, mobile).
+- [x] Atualização 01/10/2026: conteúdo em **v0.6.20** (timeline 0.6.18/0.6.19/0.6.20, citação/BibTeX, rodapé, demo) + **apresentação em 5 idiomas** sincronizada com o site.
+- [ ] Revisão visual humana (claro/escuro, mobile) **e nos 5 idiomas**.
 - [ ] Definir URL canônica real (hoje placeholder `https://ufvai.ufv.br/`) e trocar nos 4 lugares indicados acima.
-- [ ] Publicar (GitHub Pages) quando aprovado.
+- [x] Publicar (GitHub Pages) — repositório `gustavobraga-byte/ufvaisite`; atualização pendente de `git push` (credencial do usuário).

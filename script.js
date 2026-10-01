@@ -164,7 +164,7 @@
   /* Roteiro da demo: fluxo científico (autores, revisão de artigo) por idioma.
      Sem números inventados: só o dado verificado de Viçosa + citação real do projeto. */
   var SCRIPT_FALLBACK = [
-    { who: 'sys',  text: 'UFVAI pronto! · atualização v0.6.17 aplicada · Minha memória instantânea ativada' },
+    { who: 'sys',  text: 'UFVAI pronto! · atualização v0.6.20 aplicada · Minha memória instantânea ativada' },
     { who: 'user', text: 'Estruture um artigo sobre a dinâmica populacional de Viçosa (MG) e sugira referências.' },
     { who: 'ai',   text: 'Plano de pesquisa estruturado: ① pergunta e escopo · ② coleta IBGE/SIDRA · ③ triagem OpenAlex/SciELO · ④ validação de cada afirmação · ⑤ redação ABNT.' },
     { who: 'ai',   text: 'Coleta concluída: Viçosa (MG) — população residente de 76.430 pessoas (Censo 2022).',
@@ -406,6 +406,17 @@
   document.addEventListener('fullscreenchange', syncFullBtn);
   document.addEventListener('webkitfullscreenchange', syncFullBtn);
 
+  /* ── Idioma da apresentação: repassa a escolha ao deck (iframe) ─────
+     O deck (apresentacao/index.html) também tem i18n próprio; o site envia
+     o idioma via postMessage no carregamento do iframe e a cada troca. */
+  function syncDeckLang(lang) {
+    if (!deckFrame || !deckFrame.contentWindow) return;
+    var L = lang || (window.UFVAI_I18N && window.UFVAI_I18N.lang) || 'pt';
+    try { deckFrame.contentWindow.postMessage({ type: 'ufvai-lang', lang: L }, '*'); } catch (e) {}
+  }
+  if (deckFrame) deckFrame.addEventListener('load', function () { syncDeckLang(); });
+  try { syncDeckLang(); } catch (e) {}
+
   /* ── Pular ao topo (considerando header sticky) ────────────────────── */
   function scrollToTop() {
     var headerHeight = 70; // altura do .topbar em px
@@ -426,12 +437,13 @@
   /* ── Troca de idioma: re-digita a frase, atualiza rótulos e reinicia a demo */
   try {
     if (window.UFVAI_I18N && window.UFVAI_I18N.onChange) {
-      window.UFVAI_I18N.onChange(function () {
+      window.UFVAI_I18N.onChange(function (lang) {
         typePhrase();
         setNavAria();
         syncFullBtn();
         applyTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light');
         if (panelBoot && panelTerms && panelApp) runDemo();
+        syncDeckLang(lang);
       });
     }
   } catch (e) {}
