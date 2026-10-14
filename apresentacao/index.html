@@ -10,6 +10,19 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>
+/* Aplica o tema ANTES do primeiro paint (evita o "flash" branco ao abrir
+   em modo escuro). Se não houver preferência salva, deixa sem atributo e o
+   CSS segue a preferência do sistema via prefers-color-scheme. */
+(function () {
+  try {
+    var saved = localStorage.getItem('ufvai-deck-theme');
+    if (saved === 'dark' || saved === 'light') {
+      document.documentElement.setAttribute('data-theme', saved);
+    }
+  } catch (e) { /* localStorage bloqueado: segue o sistema */ }
+}());
+</script>
 <style>
 /* ══ UFVAI Pitch · identidade do logo oficial ══
    navy #2E3242 · dourado #C9A227 · off-white #F2F2F0
@@ -22,6 +35,32 @@
   --font:'Montserrat','Segoe UI',system-ui,-apple-system,sans-serif;
   --mono:'DM Mono',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
 }
+/* ── Modo escuro ────────────────────────────────────────────────
+   Mesma paleta do site (tokens espelhados), aplicado por atributo no
+   <html> para não depender de JS: sem JS o deck respeita `system`.
+   O botão da topbar alterna entre "dark" e "light" explícito. */
+[data-theme="dark"]{
+  --bg:#171A24; --surface:#212634; --ink:#EDEBE6; --body:#C6C9D2; --muted:#9AA0AE;
+  --line:rgba(237,235,230,.14); --line-strong:rgba(237,235,230,.32);
+  --gold:#C9A227; --gold-ink:#D9B441; --wine:#B98089; --sage:#9DB38F; --sage-ink:#A9BD9B;
+  --shadow:0 24px 60px -30px rgba(0,0,0,.65);
+  color-scheme:dark;
+}
+/* Sem escolha explícita, segue a preferência do sistema. */
+@media (prefers-color-scheme:dark){
+  html:not([data-theme="light"]){
+    --bg:#171A24; --surface:#212634; --ink:#EDEBE6; --body:#C6C9D2; --muted:#9AA0AE;
+    --line:rgba(237,235,230,.14); --line-strong:rgba(237,235,230,.32);
+    --gold:#C9A227; --gold-ink:#D9B441; --wine:#B98089; --sage:#9DB38F; --sage-ink:#A9BD9B;
+    --shadow:0 24px 60px -30px rgba(0,0,0,.65);
+    color-scheme:dark;
+  }
+}
+[data-theme="dark"] ::selection{background:var(--gold);color:#171A24}
+[data-theme="dark"] .btn--gold,[data-theme="dark"] .nav-btn{color:#171A24}
+[data-theme="dark"] .btn--ghost{color:var(--ink)}
+[data-theme="dark"] .orbit__node,[data-theme="dark"] .chip{background:var(--surface)}
+
 *,*::before,*::after{box-sizing:border-box}
 html,body{height:100%}
 body{
@@ -205,7 +244,73 @@ h1.mega em{font-style:normal;font-weight:600;color:var(--gold);margin-left:-.075
 @media (max-height:720px) and (min-width:1100px){
   .slide>div{transform:scale(.92);transform-origin:center}
 }
+
+/* ── Responsivo (v0.6.21) ───────────────────────────────────────
+   O deck antes assumia largura de desktop. Em telas estreitas o
+   conteúdo estourava a altura do slide (que é position:absolute) e
+   ficava cortado. Aqui os slides viram fluxo normal com scroll,
+   que é o comportamento correto fora de tela cheia. */
+
+/* Qualquer largura estreita: o slide deixa de ser fixo e passa a rolar. */
+@media (max-width:1100px){
+  html,body{overflow:auto}
+  body{height:auto;min-height:100%}
+  .slide{
+    position:relative; inset:auto;
+    display:none; max-width:none;
+    min-height:100vh; min-height:100dvh;
+    padding:92px 22px 120px;
+    justify-content:flex-start!important;
+  }
+  .slide.active{display:block}
+  .slide>div{transform:none}
+}
+
+/* Telas pequenas: tipografia e blocos em coluna única. */
+@media (max-width:760px){
+  .slide{padding:84px 16px 116px}
+  .topbar{height:64px;padding:0 14px;gap:10px}
+  .ver-badge{font-size:9px;padding:2px 9px}
+  .icon-btn{width:34px;height:34px}
+  .icon-btn svg{width:15px;height:15px}
+  .hero-split{gap:20px}
+  .fric,.deliv,.integ,.orbit-wrap{grid-template-columns:1fr!important}
+  .term{grid-template-columns:1fr}
+  .evo li{padding:14px 12px}
+  .evo p,.evo h3{font-size:.78rem}
+  /* evolução em 1 coluna no celular: 6 cards de 170px ficariam ilegíveis */
+  .evo{grid-template-columns:1fr}
+  .nav-btn{width:44px;height:44px}
+  .modal{padding:18px}
+}
+
+/* Mobile estreito: evita quebra feia de palavras e alinha blocos. */
+@media (max-width:420px){
+  .slide{padding:78px 12px 108px}
+  .display{font-size:clamp(1.6rem,7vw,2.2rem)}
+  .lead{font-size:.94rem}
+  .wordmark{font-size:1.05rem}
+  .brand{font-size:1.05rem!important}
+}
+
+/* Paisagem baixa (celular deitado): reduz respiros verticais. */
+@media (max-height:560px) and (max-width:1100px){
+  .slide{padding:70px 16px 92px}
+  .slide.active{font-size:.94rem}
+}
+
+/* Telas largas: evita que o conteúdo estique demais. */
+@media (min-width:1800px){
+  .slide{max-width:1600px}
+}
+
+/* Toque: alvos de clique maiores e sem destaque azul no mobile. */
+@media (hover:none){
+  .icon-btn,.nav-btn{min-width:44px;min-height:44px}
+  .btn{min-height:44px}
+}
 @media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
   *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
 }
 </style>
@@ -235,8 +340,11 @@ h1.mega em{font-style:normal;font-weight:600;color:var(--gold);margin-left:-.075
 
 <header class="topbar">
   <a class="brand wordmark" href="#/1" id="brand-home" data-i18n-aria="top.brand" aria-label="UFVAI — ir para o início" style="text-decoration:none;font-size:1.25rem">UFV<em>AI</em></a>
-  <span class="ver-badge" id="ver-badge">v0.6.20</span>
+  <span class="ver-badge" id="ver-badge">v0.6.21</span>
   <span class="spacer"></span>
+  <button class="icon-btn" id="btn-theme" type="button" data-i18n-aria="top.theme" aria-label="Alternar modo escuro">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.4v2.2M12 19.4v2.2M4.2 12H2M22 12h-2.2M5.6 5.6 4 4M20 20l-1.6-1.6M18.4 5.6 20 4M4 20l1.6-1.6"/></svg>
+  </button>
   <button class="icon-btn" id="btn-help" type="button" data-i18n-aria="top.help" aria-label="Ver atalhos">?</button>
   <button class="icon-btn" id="btn-full" type="button" data-i18n-aria="top.full" aria-label="Entrar em tela cheia">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3H5a2 2 0 0 0-2 2v3M16 3h3a2 2 0 0 1 2 2v3M8 21H5a2 2 0 0 1-2-2v-3M16 21h3a2 2 0 0 0 2-2v-3"/></svg>
@@ -265,7 +373,7 @@ h1.mega em{font-style:normal;font-weight:600;color:var(--gold);margin-left:-.075
     <div class="mock" data-i18n-aria="s1.mockAria" aria-label="Janela ilustrativa de sessão de pesquisa">
       <div class="mock__bar">
         <span class="dot dot--wine"></span><span class="dot dot--gold"></span><span class="dot dot--sage"></span>
-        <span class="mock__title" data-i18n="s1.mockTitle">sessão de pesquisa · v0.6.20</span>
+        <span class="mock__title" data-i18n="s1.mockTitle">sessão de pesquisa · v0.6.21</span>
       </div>
       <div class="mock__body">
         <p class="mock__prompt" data-i18n="s1.prompt">“Estruture um artigo sobre a dinâmica populacional de Viçosa (MG) e sugira referências validadas.”</p>
@@ -325,7 +433,7 @@ h1.mega em{font-style:normal;font-weight:600;color:var(--gold);margin-left:-.075
   <div>
     <p class="eyebrow" data-i18n="s4.eyebrow">O que o UFVAI cria para você</p>
     <h2 class="display"><span data-i18n="s4.h2a">Entregáveis acadêmicos.</span> <span class="gold" data-i18n="s4.h2b">Não só respostas.</span></h2>
-    <p class="lead"><span data-i18n="s4.lead">Escrita científica, análise de dados, normas acadêmicas e fluxos agênticos em artefatos prontos para revisão humana.</span> <span class="ver-badge">v0.6.20</span></p>
+    <p class="lead"><span data-i18n="s4.lead">Escrita científica, análise de dados, normas acadêmicas e fluxos agênticos em artefatos prontos para revisão humana.</span> <span class="ver-badge">v0.6.21</span></p>
     <ol class="deliv">
       <li><span class="n">01</span><h3 data-i18n="s4.i1h">Artigo Científico</h3><p data-i18n="s4.i1p">IMRaD completo com dados e referências</p></li>
       <li><span class="n">02</span><h3 data-i18n="s4.i2h">Revisão Sistemática</h3><p data-i18n="s4.i2p">PRISMA, critérios de inclusão, síntese narrativa</p></li>
@@ -351,7 +459,7 @@ h1.mega em{font-style:normal;font-weight:600;color:var(--gold);margin-left:-.075
         <div class="term__bar">
           <span class="t-dot" style="background:#7B3B44"></span><span class="t-dot" style="background:#C9A227"></span><span class="t-dot" style="background:#8FA382"></span>
           <span class="term__brand">UFV<em>AI</em></span>
-          <span class="term__ver"><span id="term-ver">v0.6.20</span> · <span id="term-lang">PT</span></span>
+          <span class="term__ver"><span id="term-ver">v0.6.21</span> · <span id="term-lang">PT</span></span>
           <span class="term__live"><i></i><span data-i18n="s5.live">agente ativo</span></span>
         </div>
         <div class="term__btns" data-i18n-aria="s5.btnsAria" role="group" aria-label="Exemplos de demonstração">
@@ -461,6 +569,7 @@ h1.mega em{font-style:normal;font-weight:600;color:var(--gold);margin-left:-.075
       <li><span class="n">0.6.9</span><h3 data-i18n="s9.i3h">Offline + LGPD</h3><p data-i18n="s9.i3p">Pacote .deb · consentimento · GA4 opt-out</p></li>
       <li><span class="n">0.6.17</span><h3 data-i18n="s9.i4h">Memória instantânea</h3><p data-i18n="s9.i4p">Singleton + warm-up · 5 idiomas · novas skills BR</p></li>
       <li><span class="n">0.6.20</span><h3 data-i18n="s9.i5h">Boot + SAIR</h3><p data-i18n="s9.i5p">Keep-alive · botão SAIR · skills personalizadas</p></li>
+      <li><span class="n">0.6.21</span><h3 data-i18n="s9.i6h">OpenCode V2</h3><p data-i18n="s9.i6p">Motor V2 · aviso de cookies · keep-alive no kernel</p></li>
     </ol>
     <div class="evo-line" aria-hidden="true"></div>
     <p class="lead" style="margin-top:20px" data-i18n="s9.lead">Hoje: acesso aberto via Google Colab e instalação local. Open source · MIT · contribuições abertas.</p>
@@ -535,8 +644,11 @@ h1.mega em{font-style:normal;font-weight:600;color:var(--gold);margin-left:-.075
 .policy li{font-size:.86rem;padding:6px 0 6px 22px;position:relative}
 .policy li::before{content:"";position:absolute;left:4px;top:13px;width:8px;height:8px;border-radius:50%;background:var(--sage)}
 .policy__foot{margin-top:14px;padding-top:12px;border-top:1px solid var(--line);font-size:.76rem;font-weight:600;letter-spacing:.06em;color:var(--gold-ink)}
-/* ── evolução ── */
-.evo{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-top:30px}
+/* ── evolução ──
+   6 marcos desde a v0.6.21. `auto-fit` + `minmax` deixa a grade se ajustar ao
+   nº de itens em vez de fixar colunas: sem item órfão em 2ª linha e sem card
+   estreito demais quando a lista cresce de novo. */
+.evo{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin-top:30px}
 .evo li{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:20px 16px}
 .evo .n{font-family:var(--mono);font-size:.78rem;font-weight:500;color:var(--gold-ink)}
 .evo h3{margin:8px 0 4px;font-size:1rem}
@@ -547,11 +659,10 @@ h1.mega em{font-style:normal;font-weight:600;color:var(--gold);margin-left:-.075
 .credits{margin-top:34px;font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
 .credits a{color:var(--gold-ink);text-decoration:none}
 @media (max-width:1320px){
-  .evo{grid-template-columns:repeat(3,1fr)}
+  .evo{grid-template-columns:repeat(auto-fit,minmax(170px,1fr))}
 }
 @media (max-width:1100px){
   .integ{grid-template-columns:1fr}
-  .evo{grid-template-columns:repeat(2,1fr)}
   .orbit{width:min(340px,86vw)}
   .orbit span:nth-of-type(odd){--r:200px}
   .orbit span:nth-of-type(even){--r:138px}
@@ -613,7 +724,7 @@ window.DECK_I18N_DICT = {
    "s1.h2": "From instruction to evidence. With method, sources and traceability.",
    "s1.lead": "An open AI agent to accelerate scientific research in Brazil.",
    "s1.mockAria": "Illustrative research session window",
-   "s1.mockTitle": "research session · v0.6.20",
+   "s1.mockTitle": "research session · v0.6.21",
    "s1.prompt": "“Structure an article on the population dynamics of Viçosa (MG) and suggest validated references.”",
    "s1.st1": "Structured research plan",
    "s1.st1s": "completed",
@@ -732,7 +843,7 @@ window.DECK_I18N_DICT = {
    "s8.li4": "Require human review of results",
    "s8.pf": "Support tool. Mandatory human curation.",
    "s8.ph": "Zero-fabrication policy",
-   "s9.badge": "version 0.6.20",
+   "s9.badge": "version 0.6.21",
    "s9.eyebrow": "Evolution path",
    "s9.h2": "From Colab to institutional infrastructure.",
    "s9.i1h": "Solid base",
@@ -745,6 +856,8 @@ window.DECK_I18N_DICT = {
    "s9.i4p": "Singleton + warm-up · 5 languages · new BR skills",
    "s9.i5h": "Boot + EXIT",
    "s9.i5p": "Keep-alive · EXIT button · custom skills",
+   "s9.i6h": "OpenCode V2",
+   "s9.i6p": "V2 engine · cookie notice · kernel keep-alive",
    "s9.lead": "Today: open access via Google Colab and local installation. Open source · MIT · open contributions.",
    "sec.arquitetura": "Architecture",
    "sec.brasil": "Brazil",
@@ -761,7 +874,10 @@ window.DECK_I18N_DICT = {
    "top.full": "Enter full screen",
    "top.fullExit": "Exit full screen",
    "top.help": "View shortcuts",
-   "top.main": "UFVAI Presentation"
+   "top.main": "UFVAI Presentation",
+   "top.theme": "Toggle dark mode",
+   "top.themeDark": "Enable dark mode",
+   "top.themeLight": "Enable light mode",
   },
   "es":   {
    "d.datasus.head": "ENTREGA · outputs-dengue-sul/protocolo.md",
@@ -813,7 +929,7 @@ window.DECK_I18N_DICT = {
    "s1.h2": "De la instrucción a la evidencia. Con método, fuentes y trazabilidad.",
    "s1.lead": "Un agente abierto de IA para acelerar la investigación científica en Brasil.",
    "s1.mockAria": "Ventana ilustrativa de sesión de investigación",
-   "s1.mockTitle": "sesión de investigación · v0.6.20",
+   "s1.mockTitle": "sesión de investigación · v0.6.21",
    "s1.prompt": "“Estructura un artículo sobre la dinámica poblacional de Viçosa (MG) y sugiere referencias validadas.”",
    "s1.st1": "Plan de investigación estructurado",
    "s1.st1s": "completado",
@@ -932,7 +1048,7 @@ window.DECK_I18N_DICT = {
    "s8.li4": "Exigir revisión humana de los resultados",
    "s8.pf": "Herramienta de apoyo. Curaduría humana obligatoria.",
    "s8.ph": "Política de cero fabricación",
-   "s9.badge": "versión 0.6.20",
+   "s9.badge": "versión 0.6.21",
    "s9.eyebrow": "Ruta de evolución",
    "s9.h2": "De Colab a la infraestructura institucional.",
    "s9.i1h": "Base sólida",
@@ -945,6 +1061,8 @@ window.DECK_I18N_DICT = {
    "s9.i4p": "Singleton + warm-up · 5 idiomas · nuevas skills BR",
    "s9.i5h": "Boot + SAIR",
    "s9.i5p": "Keep-alive · botón SAIR · skills personalizadas",
+   "s9.i6h": "OpenCode V2",
+   "s9.i6p": "Motor V2 · aviso de cookies · keep-alive en el kernel",
    "s9.lead": "Hoy: acceso abierto vía Google Colab e instalación local. Open source · MIT · contribuciones abiertas.",
    "sec.arquitetura": "Arquitectura",
    "sec.brasil": "Brasil",
@@ -961,7 +1079,10 @@ window.DECK_I18N_DICT = {
    "top.full": "Poner en pantalla completa",
    "top.fullExit": "Salir de pantalla completa",
    "top.help": "Ver atajos",
-   "top.main": "Presentación UFVAI"
+   "top.main": "Presentación UFVAI",
+   "top.theme": "Alternar modo oscuro",
+   "top.themeDark": "Activar modo oscuro",
+   "top.themeLight": "Activar modo claro",
   },
   "fr":   {
    "d.datasus.head": "LIVRAISON · outputs-dengue-sul/protocolo.md",
@@ -1013,7 +1134,7 @@ window.DECK_I18N_DICT = {
    "s1.h2": "De l'instruction à l'évidence. Avec méthode, sources et traçabilité.",
    "s1.lead": "Un agent IA open source pour accélérer la recherche scientifique au Brésil.",
    "s1.mockAria": "Fenêtre illustrative d'une session de recherche",
-   "s1.mockTitle": "session de recherche · v0.6.20",
+   "s1.mockTitle": "session de recherche · v0.6.21",
    "s1.prompt": "“Structurez un article sur la dynamique populationnelle de Viçosa (MG) et suggérez des références validées.”",
    "s1.st1": "Plan de recherche structuré",
    "s1.st1s": "terminé",
@@ -1132,7 +1253,7 @@ window.DECK_I18N_DICT = {
    "s8.li4": "Exiger la révision humaine des résultats",
    "s8.pf": "Outil d'appui. Curation humaine obligatoire.",
    "s8.ph": "Politique de zéro fabrication",
-   "s9.badge": "version 0.6.20",
+   "s9.badge": "version 0.6.21",
    "s9.eyebrow": "Trajectoire d'évolution",
    "s9.h2": "Du Colab à l'infrastructure institutionnelle.",
    "s9.i1h": "Base solide",
@@ -1145,6 +1266,8 @@ window.DECK_I18N_DICT = {
    "s9.i4p": "Singleton + warm-up · 5 langues · nouvelles skills BR",
    "s9.i5h": "Boot + QUITTER",
    "s9.i5p": "Keep-alive · bouton QUITTER · skills personnalisées",
+   "s9.i6h": "OpenCode V2",
+   "s9.i6p": "Moteur V2 · avertissement cookies · keep-alive dans le noyau",
    "s9.lead": "Aujourd'hui : accès ouvert via Google Colab et installation locale. Open source · MIT · contributions ouvertes.",
    "sec.arquitetura": "Architecture",
    "sec.brasil": "Brésil",
@@ -1161,7 +1284,10 @@ window.DECK_I18N_DICT = {
    "top.full": "Passer en plein écran",
    "top.fullExit": "Quitter le plein écran",
    "top.help": "Voir les raccourcis",
-   "top.main": "Présentation UFVAI"
+   "top.main": "Présentation UFVAI",
+   "top.theme": "Basculer le mode sombre",
+   "top.themeDark": "Activer le mode sombre",
+   "top.themeLight": "Activer le mode clair",
   },
   "zh":   {
    "d.datasus.head": "交付 · outputs-dengue-sul/protocolo.md",
@@ -1213,7 +1339,7 @@ window.DECK_I18N_DICT = {
    "s1.h2": "从指令到证据。有方法、有来源、可追溯。",
    "s1.lead": "一个开放的 AI 智能体，加速巴西的科学研究。",
    "s1.mockAria": "研究会话示意窗口",
-   "s1.mockTitle": "研究会话 · v0.6.20",
+   "s1.mockTitle": "研究会话 · v0.6.21",
    "s1.prompt": "“请构建一篇关于 Viçosa (MG) 人口动态的文章，并推荐已核验的参考文献。”",
    "s1.st1": "研究计划已结构化",
    "s1.st1s": "已完成",
@@ -1332,7 +1458,7 @@ window.DECK_I18N_DICT = {
    "s8.li4": "结果必须经人工复核",
    "s8.pf": "辅助工具。人工审校必不可少。",
    "s8.ph": "零捏造政策",
-   "s9.badge": "版本 0.6.20",
+   "s9.badge": "版本 0.6.21",
    "s9.eyebrow": "演进路线",
    "s9.h2": "从 Colab 到机构级基础设施。",
    "s9.i1h": "坚实基础",
@@ -1345,6 +1471,8 @@ window.DECK_I18N_DICT = {
    "s9.i4p": "Singleton + warm-up · 5 种语言 · 新增 BR skills",
    "s9.i5h": "Boot + SAIR",
    "s9.i5p": "Keep-alive · SAIR 按钮 · 自定义 skills",
+   "s9.i6h": "OpenCode V2",
+   "s9.i6p": "V2 引擎 · Cookie 提示 · 内核保活",
    "s9.lead": "当前：通过 Google Colab 开放访问与本地安装。开源 · MIT · 欢迎贡献。",
    "sec.arquitetura": "架构",
    "sec.brasil": "巴西",
@@ -1361,7 +1489,10 @@ window.DECK_I18N_DICT = {
    "top.full": "进入全屏",
    "top.fullExit": "退出全屏",
    "top.help": "查看快捷键",
-   "top.main": "UFVAI 演示"
+   "top.main": "UFVAI 演示",
+   "top.theme": "切换深色模式",
+   "top.themeDark": "启用深色模式",
+   "top.themeLight": "启用浅色模式",
   }
 };
 </script>
@@ -1514,7 +1645,12 @@ return {
 <script>
 (function(){
 'use strict';
-var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+/* matchMedia pode não existir (navegador antigo, iframe restrito, jsdom).
+   Sem proteção, isso derrubava TODO o script do deck. */
+var reduceMotion = false;
+try {
+  reduceMotion = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+} catch (e) { reduceMotion = false; }
 var I18N = window.DECK_I18N;
 function t(k, v) { return I18N ? I18N.t(k, v) : k; }
 var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
@@ -1592,6 +1728,78 @@ function toggleFull(){
 }
 btnFull.addEventListener('click', toggleFull);
 document.addEventListener('fullscreenchange', syncFull);
+
+/* ── Tema claro/escuro (v0.6.21) ───────────────────────────────
+   A preferência é aplicada no <head> (antes do paint). Aqui ficam só
+   o botão e o espelhamento com o site quando o deck roda em iframe. */
+var THEME_KEY = 'ufvai-deck-theme'; /* chave separada da do site ('ufvai-theme') */
+var btnTheme = document.getElementById('btn-theme');
+
+function savedDeckTheme(){
+  try { return localStorage.getItem(THEME_KEY); } catch (e) { return null; }
+}
+function deckTheme(){
+  return document.documentElement.getAttribute('data-theme');
+}
+function applyDeckTheme(theme){
+  if (theme === 'dark' || theme === 'light') {
+    document.documentElement.setAttribute('data-theme', theme);
+  } else {
+    document.documentElement.removeAttribute('data-theme'); /* volta a seguir o sistema */
+  }
+  syncThemeBtn();
+  /* avisa o site-pai, se houver */
+  try {
+    if (window.parent && window.parent !== window) {
+      window.parent.postMessage({ type: 'ufvai-deck-theme', theme: theme || '' }, '*');
+    }
+  } catch (e) { /* cross-origin bloqueado: segue independente */ }
+}
+function prefersDark(){
+  /* matchMedia não existe em alguns ambientes (navegador antigo, jsdom,
+     iframe restrito). Nesse caso, assumimos claro: o CSS sozinho já respeita
+     prefers-color-scheme, então só o rótulo do botão fica impreciso. */
+  try {
+    return !!(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  } catch (e) { return false; }
+}
+function syncThemeBtn(){
+  if (!btnTheme) return;
+  /* Com prefers-color-scheme e sem atributo, o effective pode ser escuro. */
+  var eff = deckTheme() || (prefersDark() ? 'dark' : 'light');
+  var dark = (eff === 'dark');
+  btnTheme.setAttribute('aria-label', dark ? t('top.themeLight') : t('top.themeDark'));
+  btnTheme.setAttribute('aria-pressed', dark ? 'true' : 'false');
+  /* Barra do navegador acompanha o fundo do deck. */
+  var meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) meta.setAttribute('content', dark ? '#171A24' : '#F2F2F0');
+}
+if (btnTheme) {
+  applyDeckTheme(savedDeckTheme());
+  btnTheme.addEventListener('click', function(){
+    var next = deckTheme() === 'dark' ? 'light' : 'dark';
+    try { localStorage.setItem(THEME_KEY, next); } catch (e) { /* sem storage */ }
+    applyDeckTheme(next);
+  });
+  /* Espelha o tema quando o site manda (deck embutido em iframe). */
+  window.addEventListener('message', function(ev){
+    var d = ev.data;
+    if (d && d.type === 'ufvai-deck-theme' && (d.theme === 'dark' || d.theme === 'light')) {
+      applyDeckTheme(d.theme);
+    }
+  });
+  /* Se o sistema muda e não há escolha explícita, acompanha. */
+  try {
+    var mq = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)');
+    if (mq) {
+      var onMQ = function(){ if (!deckTheme()) syncThemeBtn(); };
+      if (mq.addEventListener) mq.addEventListener('change', onMQ);
+      else if (mq.addListener) mq.addListener(onMQ);
+    }
+  } catch (e) { /* ambiente sem matchMedia: o botão segue funcionando */ }
+}
+/* Mantém o aria-label coerente ao trocar de idioma (registrado mais abaixo,
+   junto dos demais callbacks de troca de idioma). */
 
 /* teclado */
 document.addEventListener('keydown', function(e){
@@ -1730,6 +1938,7 @@ if (I18N && I18N.onChange) {
     dots.forEach(function(d, i){ d.setAttribute('aria-label', I18N.dotAria(i)); });
     secname.textContent = I18N.secName(cur);
     syncFull();
+    syncThemeBtn();
     if (termLog) runDemo(lastDemo);
   });
 }
