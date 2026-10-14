@@ -40,6 +40,39 @@
     });
   }
 
+  /* ── Tema do deck embutido (v0.6.21) ─────────────────────────────────
+     O deck roda em iframe e tem chave própria ('ufvai-deck-theme'), para
+     funcionar standalone. Aqui só sincronizamos: mudar no site espelha no
+     deck, e o deck avisa de volta quando o usuário troca lá dentro. */
+  var deckFrame = document.getElementById('deck-frame');
+  function pushThemeToDeck() {
+    if (!deckFrame || !deckFrame.contentWindow) return;
+    try {
+      deckFrame.contentWindow.postMessage({
+        type: 'ufvai-deck-theme',
+        theme: document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light'
+      }, '*');
+    } catch (e) { /* cross-origin: o deck segue com o tema dele */ }
+  }
+  if (deckFrame) {
+    /* Quando o iframe carregar, envia o tema atual. */
+    deckFrame.addEventListener('load', pushThemeToDeck);
+    window.addEventListener('message', function (ev) {
+      /* Só aceita mensagem do próprio deck. */
+      if (!ev.data || ev.data.type !== 'ufvai-deck-theme') return;
+      if (ev.source !== deckFrame.contentWindow) return;
+      var th = ev.data.theme;
+      if (th === 'dark' || th === 'light') {
+        applyTheme(th);
+        try { localStorage.setItem('ufvai-theme', th); } catch (e) { /* sem storage */ }
+      }
+    });
+  }
+  /* O toggle do site também espalha no deck. */
+  if (toggle) {
+    toggle.addEventListener('click', function () { setTimeout(pushThemeToDeck, 0); });
+  }
+
   /* ── Menu mobile ──────────────────────────────────────────────────── */
   var navToggle = document.getElementById('nav-toggle');
   var nav = document.getElementById('nav-principal');
@@ -164,7 +197,7 @@
   /* Roteiro da demo: fluxo científico (autores, revisão de artigo) por idioma.
      Sem números inventados: só o dado verificado de Viçosa + citação real do projeto. */
   var SCRIPT_FALLBACK = [
-    { who: 'sys',  text: 'UFVAI pronto! · atualização v0.6.20 aplicada · Minha memória instantânea ativada' },
+    { who: 'sys',  text: 'UFVAI pronto! · atualização v0.6.21 aplicada · Minha memória instantânea ativada' },
     { who: 'user', text: 'Estruture um artigo sobre a dinâmica populacional de Viçosa (MG) e sugira referências.' },
     { who: 'ai',   text: 'Plano de pesquisa estruturado: ① pergunta e escopo · ② coleta IBGE/SIDRA · ③ triagem OpenAlex/SciELO · ④ validação de cada afirmação · ⑤ redação ABNT.' },
     { who: 'ai',   text: 'Coleta concluída: Viçosa (MG) — população residente de 76.430 pessoas (Censo 2022).',

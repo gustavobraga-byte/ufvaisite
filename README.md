@@ -49,7 +49,7 @@ Sequência em 3 estágios, fiel à tela real do UFVAI (wrapper `launch_app_respo
    terminal interativo (ttyd)", "Iniciando o servidor web") e botão "ABRIR O UFVAI".
 2. **Termos de Uso** — card com resumo LGPD, digitação animada de nome e e-mail,
    checkbox de aceite + checkbox de telemetria anônima e botão "ATIVAR O UFVAI".
-3. **Tela principal (atualização v0.6.20)** — topbar com logo, chip de versão, status
+3. **Tela principal (atualização v0.6.21)** — topbar com logo, chip de versão, status
    "agente ativo", chips memória/pt-BR/tema, e conversa com marcadores de evidência.
 
 Botão "↻" rever a demonstração. Com `prefers-reduced-motion`, a sequência salta direto
@@ -103,6 +103,25 @@ publicável sozinha — sem dependência de `../`.
    seletor PT/EN/ES/FR/ZH, demo do hero, player do deck (**trocar idioma e conferir
    o deck**) e validação mobile.
 
+## Validação (13/10/2026 — atualização 0.6.21, site + deck)
+
+- `node --check` OK em `script.js`, `i18n.js` e nos 3 blocos `<script>` inline do deck.
+- Cobertura i18n do site: 142 chaves `data-i18n` do HTML presentes nos 5 dicionários (0 faltando); a chave nova `nov.v621` existe nos **5** idiomas.
+- Cobertura i18n do deck: 144 chaves `data-i18n` presentes nos 4 dicionários (0 faltando); `s9.i6h`/`s9.i6p` presentes nos 4 idiomas.
+- HTML do deck balanceado: `section` 10/10, `div` 49/49, `ol` 4/4, `li` 28/28, `span` 103/103, `p` 54/54.
+- Nenhum `0.6.20` remanescente em `index.html`, `i18n.js` ou `script.js`; as duas ocorrências remanescentes são **marcos históricos** (timeline do site e rota de evolução do deck), o que é correto.
+- **Teste anti-reuso de tradução** (o que pegou os bugs): percorrer os 5 idiomas pela API real (`apply()` + `t()`) e conferir que `nov.v621` devolve **5 textos distintos** — sem isso, uma tradução pode ser escrita no bloco errado e ninguém percebe, porque a chave existe e o arquivo é sintaticamente válido.
+- **Grade da rota de evolução do deck** conferida em 10 larguras (1920→375px): 6 colunas no desktop, degradação sem item órfão; altura útil de 694px em viewport de 900px, sem risco de overflow.
+- HTTP 200 em **9 rotas** com servidor real, incluindo `/robots.txt` e `/sitemap.xml`.
+
+## Modo escuro e responsivo do deck (13/10/2026)
+
+- **Tema** — execução real via jsdom: clique 1 → `data-theme="dark"` + `aria-pressed="true"`; clique 2 → `light`. `localStorage['ufvai-deck-theme']` persistido, `meta[theme-color]` alternando `#F2F2F0` ↔ `#171A24`. **0 erros de runtime.**
+- **Chaves novas** `top.theme`, `top.themeDark`, `top.themeLight` nos **4 dicionários** (203 chaves cada, 0 duplicada). O PT é o HTML literal, como no resto do deck.
+- **Sincronia com o site** — `postMessage` nos dois sentidos; mensagem conferida: `{"type":"ufvai-deck-theme","theme":"dark"}`.
+- **Responsivo** — 10 media queries; `overflow:auto` e `min-height:100dvh` abaixo de 1100px; `.evo` em 1 coluna abaixo de 760px.
+- `node --check` OK nos **4 blocos `<script>`** do deck (o 4º é o novo script anti-flash no `<head>`).
+
 ## Validação (01/10/2026 — atualização 0.6.20 + deck multilíngue)
 
 - `node --check` em `script.js`, `i18n.js` e nos 3 blocos `<script>` inline do deck.
@@ -121,10 +140,10 @@ publicável sozinha — sem dependência de `../`.
 | 139 datasets de saúde pública | Descrição oficial da skill `opendatasus` (Ministério da Saúde) |
 | 38+ fontes do agro | Descrição oficial da skill `agrobr` |
 | 7 bases acadêmicas | Descrição oficial da skill `meta-search-br` |
-| Changelog 0.6.9–0.6.20 (datas e títulos) | `UFVAI-v0.6.20/CHANGELOG.md` (árvore de release canônica) |
-| Novas ferramentas (cep-ufv, BR-DWGD, meta-search-br, grant-finder) | Catálogo de skills do `AGENTS.md` v0.6.20 (§2.1.6) |
+| Changelog 0.6.9–0.6.21 (datas e títulos) | `UFVAI-v0.6.20/CHANGELOG.md`, entrada `[0.6.21]` de 13/10/2026 (árvore de release canônica; a pasta em disco ainda é `UFVAI-v0.6.20/`) |
+| Novas ferramentas (cep-ufv, BR-DWGD, meta-search-br, grant-finder) | Catálogo de skills do `AGENTS.md` (§2.1.6) |
 | Depoimentos (A. C./UFV, D. I./IF Baiano, I. B./Unicamp) | Depoimentos reais de usuários, reproduzidos com iniciais e instituição; nome da marca atualizado para UFVAI a pedido (07/09/2026) |
-| Citação ABNT e BibTeX (`braga2026ufvai`, v0.6.20) | `UFVAI-v0.6.20/citacao_pesquisai.md` e `README.md` do repositório |
+| Citação ABNT e BibTeX (`braga2026ufvai`, v0.6.21) | `citacao_pesquisai.md` e `README.md` do repositório |
 | Contato `gustavo.braga@ufv.br`, links GitHub/Colab/YouTube/manual/apresentação, SisPPG nº 10356285004 | Site anterior do projeto e rodapé oficial do `AGENTS.md` |
 
 ## Acessibilidade e SEO
@@ -149,6 +168,11 @@ Publicação sugerida (pendente de aprovação): GitHub Pages, como substituto d
 
 - [x] Revisão técnica 08/09/2026: bundle autocontido (`apresentacao/`), 404/robots/sitemap/nojekyll, og:image absoluta, HTML balanceado, JS `node --check` OK, HTTP 200 em todos os assets.
 - [x] Atualização 01/10/2026: conteúdo em **v0.6.20** (timeline 0.6.18/0.6.19/0.6.20, citação/BibTeX, rodapé, demo) + **apresentação em 5 idiomas** sincronizada com o site.
+- [x] Atualização 13/10/2026: conteúdo em **v0.6.21** — chip da demo, timeline (nova entrada 0.6.21), citação ABNT, BibTeX, rodapé e a primeira mensagem da demo, nos **5 idiomas** (chave nova `nov.v621`). Backup prévio em `backups/site-antes-0621-20261013-202x/`.
+- [x] Deck `apresentacao/index.html` sincronizado no mesmo dia: badges de versão atual, `s1.mockTitle` e `s9.badge` nos **4 idiomas**, mais a nova entrada `s9.i6h`/`s9.i6p` na rota de evolução. **O marco 0.6.20 foi preservado** como entrada histórica, como no timeline do site.
+- [x] **CSS da rota de evolução do deck ajustado** ao 6º item (v0.6.21): `grid-template-columns: repeat(auto-fit, minmax(190px,1fr))` com `minmax(170px,1fr)` abaixo de 1320px. Sem isso, o 6º card caía numa segunda linha órfã e os cards ficavam com 175px de área de texto.
+- [x] **Modo escuro no deck** (v0.6.21): tokens `[data-theme="dark"]` espelhando a paleta do site, com fallback `prefers-color-scheme` quando não há escolha explícita. Botão de sol/lua na topbar, persistido em `localStorage['ufvai-deck-theme']` (chave **separada** da do site, para o deck funcionar standalone), aplicado **antes do primeiro paint** por script no `<head>` para não piscar. `aria-pressed`/`aria-label` sincronizados e `meta[theme-color]` acompanha o fundo. O **site sincroniza o deck por `postMessage`** (`ufvai-deck-theme`), nos dois sentidos.
+- [x] **Deck responsivo** (v0.6.21): até 1100px o slide deixa de ser `position:absolute` e passa a **rolar** (`overflow:auto` + `min-height:100dvh`), porque o conteúdo estourava a altura da viewport e ficava cortado. Breakpoints em 1100 / 760 / 420px, mais `max-height:560px` (celular deitado) e `min-width:1800px`. No celular os cards de evolução vão a 1 coluna e os alvos de toque têm 44px.
 - [ ] Revisão visual humana (claro/escuro, mobile) **e nos 5 idiomas**.
 - [ ] Definir URL canônica real (hoje placeholder `https://ufvai.ufv.br/`) e trocar nos 4 lugares indicados acima.
 - [x] Publicar (GitHub Pages) — repositório `gustavobraga-byte/ufvaisite`; atualização pendente de `git push` (credencial do usuário).
