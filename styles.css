@@ -163,7 +163,7 @@ button { font-family: inherit; }
 .btn--ghost:hover { border-color: var(--gold); color: var(--gold-ink); transform: translateY(-2px); }
 .btn--ghost-inv { border-color: rgba(242, 242, 240, .42); color: #F2F2F0; }
 .btn--ghost-inv:hover { border-color: var(--gold); color: var(--gold); }
-.btn--sm { padding: 9px 18px; font-size: .84rem; }
+.btn--sm { padding: 9px 18px; font-size: .84rem; white-space: nowrap; }
 
 /* ── Header ─────────────────────────────────────────────────────────── */
 .topbar {
@@ -175,12 +175,15 @@ button { font-family: inherit; }
 }
 .topbar__inner {
   display: flex; align-items: center; justify-content: space-between;
-  gap: 28px; height: 70px;
+  gap: 22px; height: 70px;
+  /* header um pouco mais largo que o conteúdo (1120px): é o único jeito de
+     os 8 itens do menu caberem em UMA linha, em todos os idiomas */
+  width: min(1200px, 100% - 48px);
 }
-.nav ul { display: flex; gap: 30px; }
+.nav ul { display: flex; flex-wrap: nowrap; gap: 14px; }
 .nav a {
-  text-decoration: none; font-size: .9rem; font-weight: 500; color: var(--body);
-  position: relative; padding: 6px 0;
+  text-decoration: none; font-size: .83rem; font-weight: 500; color: var(--body);
+  position: relative; padding: 6px 0; white-space: nowrap;
 }
 .nav a::after {
   content: ""; position: absolute; left: 0; right: 0; bottom: 0;
@@ -191,7 +194,7 @@ button { font-family: inherit; }
 .nav a:hover::after, .nav a:focus-visible::after { transform: scaleX(1); }
 .nav a:hover { color: var(--ink); }
 
-.topbar__actions { display: flex; align-items: center; gap: 14px; }
+.topbar__actions { display: flex; align-items: center; gap: 12px; }
 
 .theme-toggle {
   width: 40px; height: 40px; border-radius: 50%;
@@ -698,6 +701,26 @@ button { font-family: inherit; }
 .cards > .reveal:nth-child(4) { transition-delay: .1s; }
 .cards > .reveal:nth-child(5) { transition-delay: .2s; }
 .cards > .reveal:nth-child(6) { transition-delay: .3s; }
+
+/* ── Menu: 8 itens só cabem em UMA linha acima de 1240px ────────────── */
+/* Antes de 17/10/2026 o menu tinha 7 itens e cabia em 1120px. Com o 8º
+   ("Tutorial") o texto passou a quebrar em duas linhas e o header
+   transbordava. O pior caso é o espanhol (precisa de ~1171px). Aqui o
+   menu colapsa (hambúrguer) ANTES de quebrar, em todos os idiomas. */
+@media (max-width: 1240px) {
+  .nav {
+    position: absolute;
+    top: 70px; left: 0; right: 0;
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
+    display: none;
+  }
+  .nav.open { display: block; }
+  .nav ul { flex-direction: column; gap: 0; padding: 10px 24px 18px; }
+  .nav a { display: block; padding: 13px 0; font-size: 1rem; border-bottom: 1px solid var(--line); }
+  .nav li:last-child a { border-bottom: 0; }
+  .nav-toggle { display: inline-flex; }
+}
 
 /* ── Responsivo ─────────────────────────────────────────────────────── */
 @media (max-width: 980px) {
