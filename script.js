@@ -197,7 +197,7 @@
   /* Roteiro da demo: fluxo científico (autores, revisão de artigo) por idioma.
      Sem números inventados: só o dado verificado de Viçosa + citação real do projeto. */
   var SCRIPT_FALLBACK = [
-    { who: 'sys',  text: 'UFVAI pronto! · atualização v0.6.21 aplicada · Minha memória instantânea ativada' },
+    { who: 'sys',  text: 'UFVAI pronto! · atualização v0.6.24 aplicada · Minha memória instantânea ativada' },
     { who: 'user', text: 'Estruture um artigo sobre a dinâmica populacional de Viçosa (MG) e sugira referências.' },
     { who: 'ai',   text: 'Plano de pesquisa estruturado: ① pergunta e escopo · ② coleta IBGE/SIDRA · ③ triagem OpenAlex/SciELO · ④ validação de cada afirmação · ⑤ redação ABNT.' },
     { who: 'ai',   text: 'Coleta concluída: Viçosa (MG) — população residente de 76.430 pessoas (Censo 2022).',

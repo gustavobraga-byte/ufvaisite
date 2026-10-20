@@ -5,6 +5,25 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title> tutorial do UFVAI — do primeiro clique ao artigo pronto</title>
+<script>
+/* Segue o site institucional antes da pintura:
+   · tema  → chave 'ufvai-theme'  (sem escolha salva: claro, como no site)
+   · idioma → chave 'ufvai-lang'  (pt | en | es | fr | zh) */
+(function () {
+  var root = document.documentElement;
+  try {
+    root.dataset.ttheme = (localStorage.getItem('ufvai-theme') === 'dark') ? 'dark' : 'light';
+  } catch (e) { root.dataset.ttheme = 'light'; }
+  try {
+    var codes = { pt: 'pt-BR', en: 'en-US', es: 'es-ES', fr: 'fr-FR', zh: 'zh-CN' };
+    var l = String(localStorage.getItem('ufvai-lang') || '').toLowerCase();
+    var key = l.indexOf('zh') === 0 ? 'zh' : l.indexOf('en') === 0 ? 'en'
+            : l.indexOf('es') === 0 ? 'es' : l.indexOf('fr') === 0 ? 'fr'
+            : l.indexOf('pt') === 0 ? 'pt' : null;
+    if (key) root.lang = codes[key];
+  } catch (e) { /* mantém pt-BR do HTML */ }
+})();
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -969,12 +988,25 @@ function showHot(n){
 document.addEventListener('click',e=>{
   const h=e.target.closest('.hot'); if(h){ e.preventDefault(); showHot(h.dataset.n); }
 });
-/* ================= tema do tutorial ================= */
+/* ================= tema do tutorial — MESMO tema do site =================
+   Usa a chave compartilhada 'ufvai-theme' (a mesma de index.html): abrir o
+   tutorial segue o tema do site e trocar aqui também vale para o site.
+   Sem escolha salva → claro, como no site. Compatível com a chave antiga. */
 const tbtn=document.getElementById('theme-btn');
-function setTheme(t){document.documentElement.dataset.ttheme=t;tbtn.textContent=t==='dark'?'🌙':'☀️';
-  localStorage.setItem('ufvai_tutorial_tema',t);}
+function setTheme(t, persist){
+  document.documentElement.dataset.ttheme=t;
+  tbtn.textContent=t==='dark'?'🌙':'☀️';
+  tbtn.setAttribute('title', t==='dark' ? 'Tema claro' : 'Tema escuro');
+  if(persist!==false){ try{ localStorage.setItem('ufvai-theme',t); }catch(e){} }
+  try{ localStorage.setItem('ufvai_tutorial_tema',t); }catch(e){}
+}
 tbtn.onclick=()=>setTheme(document.documentElement.dataset.ttheme==='dark'?'light':'dark');
-setTheme(localStorage.getItem('ufvai_tutorial_tema')||'light');
+(function(){ /* escolha do site > escolha antiga do tutorial > claro */
+  let t=null;
+  try{ t=localStorage.getItem('ufvai-theme'); }catch(e){}
+  if(t!=='dark' && t!=='light'){ try{ t=localStorage.getItem('ufvai_tutorial_tema'); }catch(e){} }
+  setTheme(t==='dark'?'dark':'light', false);
+})();
 document.getElementById('menu-toggle').onclick=()=>document.getElementById('nav').classList.toggle('open');
 document.getElementById('topo-btn').onclick=()=>window.scrollTo({top:0,behavior:'smooth'});
 /* ================= busca ================= */
@@ -1017,9 +1049,44 @@ function applyLang(lg){
     document.title=d.m.title; document.getElementById('busca').placeholder=d.m.busca_ph;
     PCT_TPL=d.m.pct; document.documentElement.lang=lg;
   }
-  localStorage.setItem('ufvai_tutorial_lang',lg); render();
+  try{ localStorage.setItem('ufvai_tutorial_lang',lg); }catch(e){}
+  /* devolve a escolha ao site (mesma chave 'ufvai-lang') */
+  try{ if(TUT_TO_SITE[lg]) localStorage.setItem('ufvai-lang',TUT_TO_SITE[lg]); }catch(e){}
+  render();
 }
-/* seletor de idioma na topbar */
+/* seletor de idioma na topbar — o tutorial SEGUE o idioma do site
+   ('ufvai-lang', a mesma chave de index.html) e devolve a escolha ao site. */
+/* site: pt-BR | en-US | es-ES | fr-FR | zh-CN  →  tutorial: pt-br | en | es | fr | zh */
+function siteLangToTut(v){
+  const s=String(v||'').toLowerCase();
+  if(s.indexOf('zh')===0) return 'zh';
+  if(s.indexOf('en')===0) return 'en';
+  if(s.indexOf('es')===0) return 'es';
+  if(s.indexOf('fr')===0) return 'fr';
+  if(s.indexOf('pt')===0) return 'pt-br';
+  return null;
+}
+/* tutorial: pt-br | en | es | fr | zh  →  site: pt | en | es | fr | zh
+   (o site grava o código curto em 'ufvai-lang'; o <html lang> é derivado dele) */
+const TUT_TO_SITE={'pt-br':'pt','en':'en','es':'es','fr':'fr','zh':'zh'};
+function preferredLang(){
+  /* 0º: ?lang=zh-CN (link compartilhado) */
+  try{
+    const q=new URLSearchParams(location.search).get('lang');
+    const fromUrl=siteLangToTut(q);
+    if(fromUrl) return fromUrl;
+  }catch(e){}
+  let site=null;
+  try{ site=localStorage.getItem('ufvai-lang'); }catch(e){}
+  const fromSite=siteLangToTut(site);
+  if(fromSite) return fromSite;                        /* 1º: idioma do site */
+  let own=null;
+  try{ own=localStorage.getItem('ufvai_tutorial_lang'); }catch(e){}
+  if(own && TUT_TO_SITE[own]) return own;              /* 2º: última escolha do tutorial */
+  let nav='';
+  try{ nav=(navigator.languages&&navigator.languages[0])||navigator.language||''; }catch(e){}
+  return siteLangToTut(nav)||'pt-br';                  /* 3º: idioma do navegador */
+}
 (function(){
   const sel=document.createElement('select');
   sel.id='lang-sel'; sel.title='Idioma / Language / Langue / 语言';
@@ -1027,12 +1094,12 @@ function applyLang(lg){
   [["pt-br","PT"],["en","EN"],["es","ES"],["fr","FR"],["zh","ZH"]].forEach(([v,t])=>{
     const o=document.createElement('option'); o.value=v; o.textContent=t; sel.appendChild(o);
   });
-  sel.value=localStorage.getItem('ufvai_tutorial_lang')||'pt-br';
   sel.addEventListener('change',e=>applyLang(sel.value));
   const tbtn=document.getElementById('theme-btn');
   tbtn.parentNode.insertBefore(sel,tbtn);
-  const saved=localStorage.getItem('ufvai_tutorial_lang');
-  if(saved && saved!=='pt-br'){ applyLang(saved); sel.value=saved; }
+  const lg=preferredLang();
+  sel.value=lg;
+  if(lg!=='pt-br') applyLang(lg);
 })();
 
 render();
