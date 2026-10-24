@@ -1,0 +1,52 @@
+{
+  "console_errors": [],
+  "page_errors": [],
+  "request_failures": [],
+  "checks": {
+    "desktop_overflow": true,
+    "hero_size": {
+      "w": 1440,
+      "h": 1000
+    },
+    "hero_photo": {
+      "w": 1440,
+      "h": 960,
+      "complete": true
+    },
+    "campus_visible": true,
+    "topbar_transparent": true,
+    "scroll_button_demo": true,
+    "topbar_solid_after_scroll": true,
+    "dark_theme": true,
+    "translations": {
+      "en": false,
+      "es": false,
+      "fr": false,
+      "zh": true,
+      "pt": false
+    },
+    "faq_opens": true,
+    "mobile_overflow": true,
+    "mobile_hero": {
+      "h": 844,
+      "viewport": 844,
+      "copyBottom": 635.3125
+    },
+    "mobile_menu": true,
+    "reduced_motion": {
+      "typed": "The intelligence that accelerates science.",
+      "photo": "none",
+      "mist": "none",
+      "pass": true
+    },
+    "reduced_demo_app": true
+  },
+  "screenshots": [
+    "preview/v4-desktop-pt-light.png",
+    "preview/v4-desktop-demo.png",
+    "preview/v4-desktop-pt-dark.png",
+    "preview/v4-desktop-en-dark.png",
+    "preview/v4-mobile-pt-light.png",
+    "preview/v4-mobile-menu.png"
+  ]
+}

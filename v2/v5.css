@@ -1,0 +1,872 @@
+/* ═══════════════════════════════════════════════════════════════════
+   UFVAI — Site institucional v5
+   Direção editorial atmosférica: hero fotográfico de Minas Gerais com
+   cena viva de "mar de nuvens" em canvas (gatilho de carga + reação à
+   rolagem/ponteiro, no espírito do hero do Kimi K3.1 Pro), tipografia
+   Lora/Inter e movimento discreto. Funcionalidades da v2/v4 preservadas.
+   Nenhum asset do Kimi é utilizado.
+   ═══════════════════════════════════════════════════════════════════ */
+
+:root {
+  --bg: #F3F1EB;
+  --bg-alt: #E9EAE2;
+  --surface: #FBFAF6;
+  --ink: #192A27;
+  --body: #42534F;
+  --muted: #697872;
+  --line: rgba(25, 42, 39, .13);
+  --line-strong: rgba(25, 42, 39, .28);
+  --gold: #C9A227;
+  --gold-ink: #765A0A;
+  --wine: #7B3B44;
+  --sage: #829D87;
+  --sage-ink: #4D6853;
+  --cta-bg: #142824;
+  --footer-bg: #0D1D1A;
+  --shadow: 0 30px 80px -38px rgba(18, 38, 33, .34);
+  --radius: 18px;
+  --font: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-display: 'Lora', Georgia, 'Times New Roman', serif;
+  color-scheme: light;
+}
+
+[data-theme="dark"] {
+  --bg: #0F1716;
+  --bg-alt: #131E1B;
+  --surface: #192420;
+  --ink: #EEEDE5;
+  --body: #C2CCC5;
+  --muted: #97A69D;
+  --line: rgba(238, 237, 229, .13);
+  --line-strong: rgba(238, 237, 229, .28);
+  --gold: #D5AF36;
+  --gold-ink: #E2C258;
+  --wine: #C38D95;
+  --sage: #9DB49F;
+  --sage-ink: #A8BFA9;
+  --cta-bg: #0A1513;
+  --footer-bg: #081210;
+  --shadow: 0 30px 80px -38px rgba(0, 0, 0, .75);
+  color-scheme: dark;
+}
+
+body {
+  overflow-x: hidden;
+  font-weight: 400;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-weight: 500;
+}
+
+.container { width: min(1160px, 100% - 48px); }
+.container--narrow { width: min(800px, 100% - 48px); }
+section[id], footer[id] { scroll-margin-top: 82px; }
+
+.btn {
+  border-radius: 999px;
+  padding: 13px 25px;
+  font-size: .88rem;
+  font-weight: 500;
+  box-shadow: none;
+}
+.btn--gold { box-shadow: 0 12px 30px -18px rgba(201, 162, 39, .8); }
+.btn--gold:hover { box-shadow: 0 16px 34px -16px rgba(201, 162, 39, .85); }
+.btn--sm { padding: 9px 18px; }
+
+/* ── Header transparente sobre a paisagem; sólido após a rolagem ───── */
+.topbar {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 80;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  border-bottom-color: var(--line);
+  backdrop-filter: blur(16px) saturate(1.1);
+  -webkit-backdrop-filter: blur(16px) saturate(1.1);
+  transition: background-color .35s ease, border-color .35s ease, box-shadow .35s ease;
+}
+.topbar__inner {
+  width: min(1260px, 100% - 48px);
+  height: 74px;
+}
+.topbar.is-solid { box-shadow: 0 8px 32px -28px rgba(0, 0, 0, .45); }
+body.landscape-ready .topbar:not(.is-solid) {
+  background: transparent;
+  border-bottom-color: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: none;
+}
+body.landscape-ready .topbar:not(.is-solid) .brand__word,
+body.landscape-ready .topbar:not(.is-solid) .nav a,
+body.landscape-ready .topbar:not(.is-solid) .theme-toggle,
+body.landscape-ready .topbar:not(.is-solid) .nav-toggle,
+body.landscape-ready .topbar:not(.is-solid) .lang-btn {
+  color: #F7F5EE;
+  text-shadow: 0 1px 16px rgba(0, 0, 0, .35);
+}
+body.landscape-ready .topbar:not(.is-solid) .brand__word em { color: #E7C766; }
+body.landscape-ready .topbar:not(.is-solid) .nav a:hover { color: #E7C766; }
+body.landscape-ready .topbar:not(.is-solid) .theme-toggle,
+body.landscape-ready .topbar:not(.is-solid) .nav-toggle,
+body.landscape-ready .topbar:not(.is-solid) .lang-btn {
+  border-color: rgba(247, 245, 238, .38);
+  background: rgba(11, 28, 25, .12);
+}
+body.landscape-ready .topbar:not(.is-solid) .nav-toggle span { background: #F7F5EE; }
+
+/* ── Hero fotográfico · Serra do Brigadeiro + UFV ───────────────────── */
+.hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  width: 100%;
+  height: 100svh;
+  min-height: 690px;
+  padding: 0;
+  background: #152824;
+  color: #F7F5EE;
+}
+.hero__media,
+.hero__photo,
+.hero__wash,
+.hero__grain,
+.hero__veil {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.hero__media { z-index: -2; overflow: hidden; }
+/* Plano DISTANTE = a própria foto (céu + serras azuladas do horizonte). */
+.hero__photo {
+  object-fit: cover;
+  object-position: 50% 54%;
+  max-width: none;
+  filter: saturate(.92);
+  transform: translate3d(calc(var(--hero-px, 0) * 7px), calc(var(--hero-py, 0) * 4px + var(--hero-photo-y, 0px)), 0) scale(var(--hero-scale, 1.045));
+  transform-origin: 50% 54%;
+  will-change: transform;
+  z-index: 0;
+}
+/* ── Paralaxe em 3 PLANOS a partir da mesma foto ──────────────────────
+   Faixas da imagem isoladas por máscara e transladadas em taxas
+   distintas (ponteiro + rolagem): médio = massa verde principal;
+   próximo = vegetação arbustiva do primeiro plano. Alinhamento
+   pixel-perfeito com a foto base (background-position = object-position). */
+.hero__plane {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: url("assets/hero-minas-serra.webp");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: 50% 54%;
+  filter: saturate(.92);
+  will-change: transform;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+}
+.hero__plane--mid {
+  z-index: 1;
+  -webkit-mask-image: linear-gradient(180deg, transparent 39%, #000 50%, #000 80%, transparent 91%);
+  mask-image: linear-gradient(180deg, transparent 39%, #000 50%, #000 80%, transparent 91%);
+  transform: translate3d(calc(var(--hero-px, 0) * 15px), calc(var(--hero-py, 0) * 9px + var(--hero-photo-y, 0px) * 1.5), 0) scale(1.035);
+}
+.hero__plane--near {
+  z-index: 3;
+  -webkit-mask-image: linear-gradient(180deg, transparent 58%, #000 73%, #000 100%);
+  mask-image: linear-gradient(180deg, transparent 58%, #000 73%, #000 100%);
+  transform: translate3d(calc(var(--hero-px, 0) * 30px), calc(var(--hero-py, 0) * 16px + var(--hero-photo-y, 0px) * 2.3), 0) scale(1.07);
+}
+/* Camada de nuvens viva (canvas) entre o plano médio e o próximo:
+   o mar de nuvens preenche os vales e a vegetação do 1º plano o
+   encobre por baixo — leitura de profundidade. */
+.hero__canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  opacity: .9;
+  transition: opacity 1.4s ease;
+}
+/* Camada frontal: nuvens que passam sobre a marca (controlada por Cobertura) */
+.hero__canvas-front {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  opacity: 0;
+  transition: opacity .7s ease;
+}
+[data-cloud-state="ready"] .hero__canvas-front { opacity: 1; }
+[data-cloud-state="loading"] .hero__canvas { opacity: 0; }
+/* Névoa de carga: dissipa ao revelar a cena */
+.hero__veil {
+  z-index: 6;
+  pointer-events: none;
+  background: linear-gradient(180deg, #16282400, #16282466);
+  opacity: 1;
+  transition: opacity 1.5s cubic-bezier(.22,1,.36,1);
+}
+[data-cloud-state="ready"] .hero__veil { opacity: 0; }
+/* Gatilho de carga: foto ganha foco/scale ao revelar */
+[data-cloud-state="loading"] .hero__photo { filter: saturate(.5) blur(6px); }
+[data-cloud-state="loading"] .hero__plane { opacity: 0; }
+.hero__photo { transition: filter 1.6s cubic-bezier(.22,1,.36,1); }
+.hero__plane { transition: opacity 1.5s cubic-bezier(.22,1,.36,1); }
+.hero__wash {
+  z-index: 4;
+  background:
+    linear-gradient(180deg,
+      rgba(6, 18, 18, .55) 0%,
+      rgba(8, 23, 22, .13) 28%,
+      rgba(7, 22, 20, .24) 55%,
+      rgba(6, 18, 16, .90) 100%),
+    linear-gradient(90deg, rgba(7, 20, 19, .24), transparent 48%, rgba(7, 20, 19, .10));
+}
+.hero__grain {
+  pointer-events: none;
+  z-index: 5;
+  opacity: .055;
+  mix-blend-mode: soft-light;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.86' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.65'/%3E%3C/svg%3E");
+}
+.hero__mist {
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+  width: 130%;
+  height: 30%;
+  left: -15%;
+  filter: blur(26px);
+  opacity: .32;
+  background:
+    radial-gradient(ellipse at 15% 55%, rgba(235, 241, 234, .58) 0 12%, transparent 38%),
+    radial-gradient(ellipse at 50% 45%, rgba(235, 241, 234, .48) 0 16%, transparent 44%),
+    radial-gradient(ellipse at 82% 58%, rgba(235, 241, 234, .46) 0 12%, transparent 38%);
+  will-change: transform;
+}
+.hero__mist--one {
+  bottom: 7%;
+  animation: minasMistOne 24s ease-in-out infinite alternate;
+}
+.hero__mist--two {
+  bottom: 27%;
+  opacity: .16;
+  transform: scaleX(-1);
+  animation: minasMistTwo 31s ease-in-out infinite alternate;
+}
+@keyframes minasMistOne {
+  from { transform: translate3d(-2%, 0, 0); }
+  to { transform: translate3d(5%, -8px, 0); }
+}
+@keyframes minasMistTwo {
+  from { transform: translate3d(3%, 0, 0) scaleX(-1); }
+  to { transform: translate3d(-4%, 10px, 0) scaleX(-1); }
+}
+
+.hero__grid {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100%;
+  padding-top: 96px;
+  padding-bottom: 124px;
+}
+.hero__copy {
+  width: min(920px, 100%);
+  margin-inline: auto;
+  text-align: center;
+  opacity: var(--hero-copy-opacity, 1);
+  transform: translate3d(0, var(--hero-copy-y, 0px), 0);
+  will-change: transform, opacity;
+}
+/* Entrada escalonada da cópia ao revelar a cena (gatilho de carga) */
+.hero .eyebrow,
+.hero .wordmark--xl,
+.hero .hero__typed-line,
+.hero .rule,
+.hero .hero__sub,
+.hero .hero__cta {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity .9s cubic-bezier(.22,1,.36,1), transform .9s cubic-bezier(.22,1,.36,1);
+}
+.hero[data-cloud-state="ready"] .eyebrow { opacity: 1; transform: none; transition-delay: .15s; }
+.hero[data-cloud-state="ready"] .wordmark--xl { opacity: 1; transform: none; transition-delay: .3s; }
+.hero[data-cloud-state="ready"] .hero__typed-line { opacity: 1; transform: none; transition-delay: .5s; }
+.hero[data-cloud-state="ready"] .rule { opacity: 1; transform: none; transition-delay: .68s; }
+.hero[data-cloud-state="ready"] .hero__sub { opacity: 1; transform: none; transition-delay: .8s; }
+.hero[data-cloud-state="ready"] .hero__cta { opacity: 1; transform: none; transition-delay: .95s; }
+.hero .eyebrow {
+  margin-bottom: 22px;
+  color: rgba(247, 245, 238, .78);
+  font-size: .68rem;
+  font-weight: 500;
+  letter-spacing: .27em;
+  text-shadow: 0 2px 18px rgba(0, 0, 0, .48);
+}
+/* Logo da hero: MESMA fonte do menu (Inter 700, tracking do .brand__word),
+   preenchido como uma "nuvem densa e colorida" (gradientes da marca). */
+.hero .wordmark--xl {
+  font-family: var(--font);
+  font-size: clamp(5.2rem, 12vw, 10.2rem);
+  font-weight: 700;
+  letter-spacing: -.02em;
+  line-height: .96;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  -webkit-background-clip: text;
+  background-image:
+    radial-gradient(120% 78% at 18% 24%, rgba(255,255,255,.96), rgba(255,255,255,0) 56%),
+    radial-gradient(92% 66% at 74% 30%, rgba(231,199,102,.94), rgba(231,199,102,0) 60%),
+    radial-gradient(104% 88% at 54% 86%, rgba(157,180,159,.92), rgba(157,180,159,0) 62%),
+    radial-gradient(84% 78% at 92% 74%, rgba(195,141,149,.78), rgba(195,141,149,0) 60%),
+    radial-gradient(70% 70% at 36% 68%, rgba(247,245,238,.72), rgba(247,245,238,0) 58%),
+    linear-gradient(132deg, #F7F5EE 0%, #E7C766 46%, #9DB49F 74%, #C38D95 100%);
+  text-shadow: 0 6px 44px rgba(0, 0, 0, .40);
+}
+.hero .wordmark--xl em {
+  font-style: normal;
+  font-weight: 600;
+  margin-left: -.075em;            /* V/A encaixados, como no menu */
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  -webkit-background-clip: text;
+  background-image:
+    radial-gradient(120% 80% at 30% 25%, rgba(255,255,255,.9), rgba(255,255,255,0) 58%),
+    linear-gradient(135deg, #F7E9B0 0%, #E7C766 52%, #C9A227 100%);
+}
+.hero__typed-line {
+  min-height: 1.55em;
+  margin-top: 18px;
+  color: #F7F5EE;
+  font-family: var(--font-display);
+  font-size: clamp(1.35rem, 3vw, 2.2rem);
+  font-weight: 400;
+  line-height: 1.45;
+  text-shadow: 0 2px 22px rgba(0, 0, 0, .50);
+}
+.hero .caret { background: #E7C766; }
+.hero .rule {
+  width: 124px;
+  margin: 25px auto 26px;
+  background: linear-gradient(90deg, transparent, #E7C766, transparent);
+}
+.hero__sub {
+  max-width: 67ch;
+  margin-inline: auto;
+  color: rgba(247, 245, 238, .86);
+  font-size: .98rem;
+  line-height: 1.78;
+  text-shadow: 0 2px 18px rgba(0, 0, 0, .60), 0 1px 3px rgba(0, 0, 0, .40);
+}
+.hero__cta { justify-content: center; margin-top: 30px; }
+.hero .btn--ghost {
+  border-color: rgba(247, 245, 238, .40);
+  background: rgba(10, 28, 25, .16);
+  color: #F7F5EE;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+.hero .btn--ghost:hover {
+  border-color: #E7C766;
+  color: #E7C766;
+  background: rgba(10, 28, 25, .28);
+}
+.hero__place {
+  position: absolute;
+  z-index: 3;
+  top: 102px;
+  right: 30px;
+  color: rgba(247, 245, 238, .62);
+  font-size: .61rem;
+  font-weight: 500;
+  letter-spacing: .20em;
+  text-transform: uppercase;
+  text-shadow: 0 1px 12px rgba(0, 0, 0, .45);
+}
+.hero__campus {
+  position: absolute;
+  z-index: 4;
+  right: 28px;
+  bottom: 26px;
+  width: 232px;
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid rgba(247, 245, 238, .26);
+  border-radius: 14px;
+  background: rgba(10, 27, 24, .56);
+  color: #F7F5EE;
+  box-shadow: 0 20px 48px -26px rgba(0, 0, 0, .60);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+.hero__campus img {
+  width: 100%;
+  height: 104px;
+  object-fit: cover;
+  object-position: 50% 48%;
+  opacity: .92;
+}
+.hero__campus figcaption { padding: 10px 12px 11px; }
+.hero__campus span {
+  display: block;
+  font-size: .69rem;
+  font-weight: 500;
+  line-height: 1.45;
+}
+.hero__campus small {
+  display: block;
+  margin-top: 3px;
+  color: rgba(247, 245, 238, .64);
+  font-size: .56rem;
+  line-height: 1.45;
+}
+.hero__credits {
+  position: absolute;
+  z-index: 4;
+  left: 28px;
+  bottom: 29px;
+  border-bottom: 1px solid rgba(247, 245, 238, .28);
+  color: rgba(247, 245, 238, .64);
+  font-size: .60rem;
+  letter-spacing: .13em;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: color .2s ease, border-color .2s ease;
+}
+.hero__credits:hover { color: #E7C766; border-color: #E7C766; }
+.hero__scroll {
+  position: absolute;
+  z-index: 4;
+  left: 50%;
+  bottom: 34px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: rgba(247, 245, 238, .82);
+  cursor: pointer;
+  font-size: .65rem;
+  font-weight: 500;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+  transform: translateX(-50%);
+  text-decoration: none;
+}
+.hero__scroll-chev {
+  width: 26px;
+  height: 26px;
+  color: #E7C766;
+  animation: chevBounce 2.2s cubic-bezier(.22, 1, .36, 1) infinite;
+}
+@keyframes chevBounce {
+  0%, 100% { transform: translateY(0); opacity: .55; }
+  50% { transform: translateY(6px); opacity: 1; }
+}
+/* Brilho percorrente no gatilho de rolagem (máscara estilo Kimi) */
+.hero__scroll {
+  -webkit-mask-image: linear-gradient(to top, rgba(255,255,255,.65) 40%, #fff 50%, rgba(255,255,255,.65) 60%);
+  mask-image: linear-gradient(to top, rgba(255,255,255,.65) 40%, #fff 50%, rgba(255,255,255,.65) 60%);
+  -webkit-mask-size: 100% 300%;
+  mask-size: 100% 300%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  animation: heroHintShine 3.2s ease-in-out infinite;
+}
+@keyframes heroHintShine {
+  0% { -webkit-mask-position: 0 100%; mask-position: 0 100%; }
+  50% { -webkit-mask-position: 0 0; mask-position: 0 0; }
+  100% { -webkit-mask-position: 0 100%; mask-position: 0 100%; }
+}
+
+/* ── Controles do hero (sliders no canto inferior direito) ───────────
+   Mesma semântica do data-cloud-controls do Kimi: Nuvens (cloudAmount),
+   Velocidade (flowSpeed), Marca (ink) e Cobertura (immersion). */
+.hero__controls {
+  position: absolute;
+  z-index: 5;
+  right: 28px;
+  bottom: 26px;
+  display: flex;
+  gap: 8px;
+}
+.hero__control {
+  position: relative;
+  width: 42px;
+  height: 42px;
+  border: 1px solid rgba(247, 245, 238, .26);
+  border-radius: 13px;
+  background: rgba(10, 27, 24, .56);
+  overflow: hidden;
+  cursor: ew-resize;
+  display: grid;
+  place-items: center;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: border-color .22s ease, background-color .22s ease, transform .26s cubic-bezier(.34,1.4,.5,1), width .26s cubic-bezier(.34,1.4,.5,1), box-shadow .26s ease;
+}
+.hero__control:hover,
+.hero__control[data-expanded] { border-color: #E7C766; background: rgba(10, 27, 24, .72); }
+/* Selecionado/focado: o controle ENGRANDECE (fica largo, como no Kimi) */
+.hero__control:focus-within,
+.hero__control[data-expanded] {
+  width: 82px;
+  transform: translateY(-2px) scale(1.06);
+  box-shadow: 0 10px 28px -8px rgba(0, 0, 0, .55), 0 0 0 1px rgba(231, 199, 102, .35);
+}
+.hero__control-icon {
+  position: relative;
+  z-index: 2;
+  width: 22px;
+  height: 22px;
+  color: #F7F5EE;
+  pointer-events: none;
+}
+.hero__control-icon svg { width: 100%; height: 100%; display: block; }
+/* Medidor vertical preenchido por --progress */
+.hero__control-fill {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: calc(var(--progress, 0) * 100%);
+  background: linear-gradient(180deg, rgba(231,199,102,.06), rgba(231,199,102,.44));
+  border-top: 1px solid rgba(231,199,102,.9);
+  pointer-events: none;
+  transition: height .18s ease;
+}
+.hero__control-thumb {
+  position: absolute;
+  left: 6px; right: 6px;
+  bottom: calc(var(--progress, 0) * 100% - 1px);
+  height: 2px;
+  border-radius: 2px;
+  background: #E7C766;
+  pointer-events: none;
+  transition: bottom .18s ease;
+}
+.hero__control-label {
+  position: absolute;
+  right: calc(100% + 9px);
+  top: 50%;
+  transform: translate(6px, -50%);
+  padding: 5px 10px;
+  border: 1px solid rgba(247, 245, 238, .22);
+  border-radius: 999px;
+  background: rgba(9, 24, 21, .86);
+  color: #F7F5EE;
+  font-size: .60rem;
+  font-weight: 500;
+  letter-spacing: .10em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s ease, transform .2s ease;
+}
+.hero__control:hover .hero__control-label,
+.hero__control[data-expanded] .hero__control-label { opacity: 1; transform: translate(0, -50%); }
+.hero__control-range {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: ew-resize;
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+}
+
+/* ── Logo UFVAI: revelação com glitch (espírito do layeredTitle do Kimi) ──
+   Canais deslocados + fatias horizontais que se materializam e afinam
+   até a marca nítida, em 3.2 s (smootherstep), preso ao gatilho de carga. */
+.hero .wordmark--xl { position: relative; display: inline-block; }
+.hero .wordmark--xl::before,
+.hero .wordmark--xl::after {
+  content: "UFVAI";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  opacity: 0;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  will-change: transform, opacity, clip-path, filter;
+}
+.hero .wordmark--xl::before {
+  color: #E7C766;
+  -webkit-text-fill-color: #E7C766;
+  background: none;
+}
+.hero .wordmark--xl::after {
+  color: #6FE3D6;
+  -webkit-text-fill-color: #6FE3D6;
+  background: none;
+}
+.hero[data-cloud-state="ready"] .wordmark--xl { animation: logoSharpen 3.2s cubic-bezier(.37, 0, .18, 1) both; }
+.hero[data-cloud-state="ready"] .wordmark--xl::before { animation: glitchGold 3.2s cubic-bezier(.37, 0, .18, 1) both; }
+.hero[data-cloud-state="ready"] .wordmark--xl::after { animation: glitchCyan 3.2s cubic-bezier(.37, 0, .18, 1) both; }
+@keyframes logoSharpen {
+  0% { filter: blur(9px); letter-spacing: .03em; }
+  34% { filter: blur(5px); letter-spacing: .012em; }
+  62% { filter: blur(2.5px); letter-spacing: -.006em; }
+  100% { filter: blur(0); letter-spacing: -.02em; }
+}
+@keyframes glitchGold {
+  0% { opacity: .88; transform: translate3d(-17px, 0, 0) scaleX(1.05); clip-path: inset(4% 0 71% 0); filter: blur(7px); }
+  8% { opacity: .92; transform: translate3d(15px, -2px, 0); clip-path: inset(37% 0 31% 0); filter: blur(6px); }
+  16% { opacity: .82; transform: translate3d(-13px, 2px, 0); clip-path: inset(63% 0 7% 0); filter: blur(6px); }
+  26% { opacity: .86; transform: translate3d(11px, 0, 0); clip-path: inset(18% 0 57% 0); filter: blur(5px); }
+  38% { opacity: .72; transform: translate3d(-9px, -1px, 0); clip-path: inset(51% 0 23% 0); filter: blur(4px); }
+  52% { opacity: .56; transform: translate3d(7px, 0, 0); clip-path: inset(30% 0 45% 0); filter: blur(3px); }
+  66% { opacity: .38; transform: translate3d(-5px, 0, 0); clip-path: inset(11% 0 67% 0); filter: blur(2px); }
+  80% { opacity: .22; transform: translate3d(3px, 0, 0); clip-path: inset(0 0 0 0); filter: blur(1px); }
+  100% { opacity: 0; transform: translate3d(0, 0, 0); clip-path: inset(0 0 0 0); filter: blur(0); }
+}
+@keyframes glitchCyan {
+  0% { opacity: .74; transform: translate3d(16px, 0, 0) scaleX(-1.04); clip-path: inset(57% 0 13% 0); filter: blur(7px); }
+  9% { opacity: .8; transform: translate3d(-14px, 2px, 0); clip-path: inset(11% 0 67% 0); filter: blur(6px); }
+  18% { opacity: .7; transform: translate3d(12px, -2px, 0); clip-path: inset(44% 0 34% 0); filter: blur(6px); }
+  28% { opacity: .76; transform: translate3d(-10px, 0, 0); clip-path: inset(69% 0 4% 0); filter: blur(5px); }
+  40% { opacity: .6; transform: translate3d(8px, 1px, 0); clip-path: inset(24% 0 52% 0); filter: blur(4px); }
+  54% { opacity: .44; transform: translate3d(-6px, 0, 0); clip-path: inset(55% 0 20% 0); filter: blur(3px); }
+  68% { opacity: .3; transform: translate3d(4px, 0, 0); clip-path: inset(8% 0 70% 0); filter: blur(2px); }
+  82% { opacity: .16; transform: translate3d(-2px, 0, 0); clip-path: inset(0 0 0 0); filter: blur(1px); }
+  100% { opacity: 0; transform: translate3d(0, 0, 0); clip-path: inset(0 0 0 0); filter: blur(0); }
+}
+
+/* ── Foto da UFV reposicionada para fora do hero (seção Sobre) ─────── */
+.campus-figure {
+  margin: 50px 0 0;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+.campus-figure img {
+  display: block;
+  width: 100%;
+  height: clamp(230px, 34vw, 400px);
+  object-fit: cover;
+  object-position: 50% 44%;
+}
+.campus-figure figcaption {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 17px 22px 20px;
+}
+.campus-figure span { color: var(--ink); font-size: .88rem; font-weight: 500; }
+.campus-figure small { color: var(--muted); font-size: .73rem; letter-spacing: .03em; }
+
+
+/* ── A superfície editorial sobe sobre o hero ──────────────────────── */
+.demo-stage {
+  position: relative;
+  z-index: 5;
+  margin-top: -28px;
+  padding: clamp(82px, 10vw, 126px) 0;
+  border-radius: 28px 28px 0 0;
+  background: var(--bg);
+  box-shadow: 0 -34px 90px rgba(5, 19, 16, .28);
+}
+.demo-stage__head { max-width: 790px; margin-bottom: 42px; }
+.demo-stage .eyebrow { margin-bottom: 16px; }
+.demo-stage .stats {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0;
+  margin: 0 0 54px;
+  padding: 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.demo-stage .stat {
+  padding: 26px 24px;
+  border-right: 1px solid var(--line);
+}
+.demo-stage .stat:first-child { padding-left: 0; }
+.demo-stage .stat:last-child { border-right: 0; }
+.demo-stage .stat__value {
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 4.2vw, 3.4rem);
+  font-weight: 400;
+  line-height: 1;
+}
+.demo-stage .stat__label {
+  max-width: 24ch;
+  margin-top: 10px;
+  font-size: .65rem;
+  line-height: 1.55;
+  letter-spacing: .12em;
+}
+.demo-stage .hero__demo { max-width: 1160px; margin-inline: auto; }
+.demo-stage .screen {
+  min-height: 600px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+.demo-stage .panel--app { font-size: .70rem; }
+.demo-stage .demo__caption { margin-top: 18px; }
+
+/* ── Sistema editorial das demais seções ───────────────────────────── */
+.section { padding: clamp(84px, 10vw, 132px) 0; }
+.section__title {
+  font-size: clamp(2rem, 4.3vw, 3.35rem);
+  font-weight: 500;
+  letter-spacing: -.032em;
+  line-height: 1.12;
+  text-wrap: balance;
+}
+.section .eyebrow,
+.demo-stage .eyebrow {
+  font-size: .67rem;
+  letter-spacing: .25em;
+}
+.sobre__text p,
+.card p,
+.quote blockquote,
+.faq__a { line-height: 1.82; }
+/* Reseta a margem padrão do blockquote (senão a trilha do grid transborda em telas estreitas) */
+.quote blockquote { margin: 0; }
+.sobre__list li,
+.card,
+.quote,
+.tool,
+.cite {
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--surface) 94%, transparent);
+}
+.card,
+.sobre__list li,
+.quote { transition: border-color .35s ease, transform .35s cubic-bezier(.22, 1, .36, 1), box-shadow .35s ease; }
+.card:hover,
+.sobre__list li:hover,
+.quote:hover { transform: translateY(-3px); }
+.card__icon,
+.sobre__icon { border-radius: 14px; }
+.step__num { font-family: var(--font-display); font-size: 1.35rem; }
+.faq__q { font-family: var(--font); font-weight: 500; }
+.cite__caption { font-family: var(--font); }
+.cta {
+  background:
+    radial-gradient(ellipse at 50% -10%, rgba(201, 162, 39, .15), transparent 58%),
+    var(--cta-bg);
+}
+.cta h2 {
+  font-size: clamp(2rem, 4.6vw, 3.8rem);
+  font-weight: 400;
+  letter-spacing: -.03em;
+}
+.cta p { line-height: 1.8; }
+.footer { background: var(--footer-bg); }
+.reveal { transition: opacity .8s cubic-bezier(.22, 1, .36, 1), transform .8s cubic-bezier(.22, 1, .36, 1); }
+
+/* ── Responsivo ────────────────────────────────────────────────────── */
+@media (max-width: 1240px) {
+  .topbar__inner { height: 72px; }
+  .nav { top: 72px; }
+  body.landscape-ready .topbar:not(.is-solid) .nav a { color: var(--body); text-shadow: none; }
+  body.landscape-ready .topbar:not(.is-solid) .nav a:hover { color: var(--gold-ink); }
+}
+
+@media (max-width: 1100px) {
+  .hero__campus { display: none; }
+  .hero__place { right: 24px; }
+  .demo-stage .panel--app { font-size: .64rem; }
+}
+
+@media (max-width: 980px) {
+  .hero__photo { object-position: 58% 50%; }
+  .demo-stage .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .demo-stage .stat { border-bottom: 1px solid var(--line); }
+  .demo-stage .stat:nth-child(2) { border-right: 0; }
+  .demo-stage .stat:nth-child(3),
+  .demo-stage .stat:nth-child(4) { border-bottom: 0; }
+  .demo-stage .stat:nth-child(3) { padding-left: 0; }
+}
+
+@media (max-width: 760px) {
+  .container { width: min(100% - 36px, 1160px); }
+  .topbar__inner { width: calc(100% - 32px); }
+  .hero__controls { display: none; }
+  .hero {
+    height: auto;
+    min-height: 100svh;
+  }
+  .hero__grid {
+    min-height: 100svh;
+    padding-top: 112px;
+    padding-bottom: 120px;
+  }
+  .hero__place { top: 92px; right: 20px; font-size: .55rem; }
+  .hero .wordmark--xl { font-size: clamp(4.5rem, 19vw, 7rem); }
+  .hero__typed-line { font-size: clamp(1.18rem, 4.8vw, 1.65rem); }
+  .hero__sub { max-width: 54ch; font-size: .90rem; line-height: 1.72; }
+  .hero .eyebrow { max-width: 46ch; margin-inline: auto; line-height: 1.8; }
+  .hero__credits { left: 20px; bottom: 24px; }
+  .hero__scroll { bottom: 38px; }
+  .demo-stage { margin-top: -20px; border-radius: 20px 20px 0 0; }
+  .demo-stage .screen { min-height: 560px; }
+  .demo-stage .panel--app { font-size: .62rem; }
+}
+
+@media (max-width: 640px) {
+  .hero__place, .hero__credits { display: none; }
+  .hero__grid { padding-top: 98px; padding-bottom: 106px; }
+  .hero .rule { margin-block: 21px; }
+  .hero__cta { gap: 10px; margin-top: 26px; }
+  .hero__cta .btn { padding: 11px 18px; font-size: .80rem; }
+  .hero__scroll-line { height: 24px; }
+  .demo-stage .stats { margin-bottom: 38px; }
+  .demo-stage .stat { padding: 21px 14px; }
+  .demo-stage .stat__label { font-size: .60rem; letter-spacing: .08em; }
+  .demo-stage__head { margin-bottom: 32px; }
+  .section { padding-block: 82px; }
+}
+
+@media (max-width: 420px) {
+  .hero__sub { font-size: .85rem; }
+  .hero__typed-line { min-height: 2.8em; }
+  .hero .wordmark--xl { font-size: 4.7rem; }
+  .hero__cta .btn { padding-inline: 15px; }
+  .demo-stage .panel--app { font-size: .56rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__photo { transform: none !important; filter: saturate(.92) !important; }
+  .hero__copy { opacity: 1 !important; transform: none !important; }
+  .hero .eyebrow, .hero .wordmark--xl, .hero .hero__typed-line,
+  .hero .rule, .hero .hero__sub, .hero .hero__cta {
+    opacity: 1 !important; transform: none !important; transition: none !important;
+  }
+  /* Marca já nítida, sem glitch */
+  .hero .wordmark--xl { animation: none !important; filter: none !important; letter-spacing: -.02em; }
+  .hero .wordmark--xl::before, .hero .wordmark--xl::after { animation: none !important; opacity: 0 !important; }
+  .hero__scroll { animation: none !important; -webkit-mask-image: none; mask-image: none; }
+  .hero__mist { display: none; }
+  .hero__veil { display: none; }
+  .hero__canvas { opacity: .55 !important; }
+  .hero__scroll-chev { animation: none; transform: none; opacity: .85; }
+}

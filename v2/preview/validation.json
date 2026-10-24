@@ -1,0 +1,427 @@
+{
+  "checks": {
+    "http_routes": {
+      "pass": true,
+      "details": {
+        "/": 200,
+        "/tutorial.html": 200,
+        "/apresentacao/": 200,
+        "/styles.css": 200,
+        "/v5.css": 200,
+        "/script.js": 200,
+        "/i18n.js": 200,
+        "/hero.js": 200,
+        "/assets/credits.html": 200,
+        "/assets/hero-minas-serra.webp": 200,
+        "/assets/ufv-arthur-bernardes.webp": 200
+      }
+    },
+    "desktop_no_overflow": {
+      "pass": true,
+      "details": null
+    },
+    "hero_full_viewport": {
+      "pass": true,
+      "details": null
+    },
+    "campus_moved_below_hero": {
+      "pass": true,
+      "details": {
+        "inHero": false,
+        "hasFigure": true,
+        "top": 3117
+      }
+    },
+    "hero_images_loaded": {
+      "pass": true,
+      "details": null
+    },
+    "header_initially_transparent": {
+      "pass": true,
+      "details": null
+    },
+    "hero_cloud_scene_ready": {
+      "pass": true,
+      "details": {
+        "ready": true,
+        "hasCanvas": true,
+        "painted": true
+      }
+    },
+    "scroll_cue_not_clipped": {
+      "pass": true,
+      "details": {
+        "cue": {
+          "x": 650.328125,
+          "y": 920,
+          "width": 139.34375,
+          "height": 46
+        },
+        "stage": {
+          "x": 0,
+          "y": 972,
+          "width": 1440,
+          "height": 1291.5625
+        }
+      }
+    },
+    "hero_controls_panel": {
+      "pass": true,
+      "details": {
+        "exists": true,
+        "count": 4,
+        "detail": [
+          {
+            "key": "cloudAmount",
+            "hasInput": true,
+            "range": [
+              0.65,
+              5
+            ],
+            "rangeOk": true,
+            "progressOk": true,
+            "i18n": true,
+            "visible": true
+          },
+          {
+            "key": "flowSpeed",
+            "hasInput": true,
+            "range": [
+              0.2,
+              15
+            ],
+            "rangeOk": true,
+            "progressOk": true,
+            "i18n": true,
+            "visible": true
+          },
+          {
+            "key": "ink",
+            "hasInput": true,
+            "range": [
+              0,
+              1
+            ],
+            "rangeOk": true,
+            "progressOk": true,
+            "i18n": true,
+            "visible": true
+          },
+          {
+            "key": "immersion",
+            "hasInput": true,
+            "range": [
+              0,
+              1
+            ],
+            "rangeOk": true,
+            "progressOk": true,
+            "i18n": true,
+            "visible": true
+          }
+        ],
+        "pass": true
+      }
+    },
+    "hero_controls_interactive": {
+      "pass": true,
+      "details": {
+        "before": "0",
+        "progress": "0.6551724137931035",
+        "aria": "350%",
+        "title": "Nuvens: 350%"
+      }
+    },
+    "hero_controls_format": {
+      "pass": true,
+      "details": {
+        "text": "3.0×",
+        "title": "Speed: 3.0×"
+      }
+    },
+    "hero_logo_matches_menu_font": {
+      "pass": true,
+      "details": {
+        "heroFamily": "Inter, \"Segoe UI\", system-ui, -apple-system, sans-serif",
+        "menuFamily": "Inter, \"Segoe UI\", system-ui, -apple-system, sans-serif",
+        "heroWeight": "700",
+        "menuWeight": "700",
+        "heroTrackEm": "-0.0200",
+        "menuTrackEm": "-0.0200",
+        "fillClip": "text, text, text, text, text, text",
+        "pass": true
+      }
+    },
+    "hero_glitch_reveal": {
+      "pass": true,
+      "details": {
+        "ready": true,
+        "anim": "logoSharpen",
+        "ghostBefore": true,
+        "pass": true
+      }
+    },
+    "hero_front_canvas_painted": {
+      "pass": true,
+      "details": {
+        "pass": true,
+        "painted": true,
+        "opacity": 1,
+        "w": 1440
+      }
+    },
+    "hero_pointer_parallax": {
+      "pass": true,
+      "details": {
+        "left": "0.60px",
+        "right": "-0.63px"
+      }
+    },
+    "scroll_cue_opens_demo": {
+      "pass": true,
+      "details": null
+    },
+    "header_solid_after_scroll": {
+      "pass": true,
+      "details": null
+    },
+    "demo_starts": {
+      "pass": true,
+      "details": null
+    },
+    "dark_theme_and_storage": {
+      "pass": true,
+      "details": null
+    },
+    "five_language_switching": {
+      "pass": true,
+      "details": {
+        "en": {
+          "pass": true,
+          "scroll": "Scroll to explore",
+          "html_lang": "en-US"
+        },
+        "es": {
+          "pass": true,
+          "scroll": "Desplázate para explorar",
+          "html_lang": "es-ES"
+        },
+        "fr": {
+          "pass": true,
+          "scroll": "Faites défiler pour explorer",
+          "html_lang": "fr-FR"
+        },
+        "zh": {
+          "pass": true,
+          "scroll": "滚动探索",
+          "html_lang": "zh-CN"
+        },
+        "pt": {
+          "pass": true,
+          "scroll": "Role para explorar",
+          "html_lang": "pt-BR"
+        }
+      }
+    },
+    "theme_persists_reload": {
+      "pass": true,
+      "details": null
+    },
+    "faq_single_open": {
+      "pass": true,
+      "details": null
+    },
+    "mobile_no_overflow": {
+      "pass": true,
+      "details": null
+    },
+    "mobile_campus_below_hero_and_controls_hidden": {
+      "pass": true,
+      "details": {
+        "inHero": false,
+        "hasFigure": true,
+        "controlsHidden": true
+      }
+    },
+    "mobile_menu_and_header": {
+      "pass": true,
+      "details": null
+    },
+    "reduced_motion": {
+      "pass": true,
+      "details": {
+        "typed": "The intelligence that accelerates science.",
+        "photo": "none",
+        "mist": "none",
+        "pass": true
+      }
+    },
+    "reduced_motion_demo_short_circuit": {
+      "pass": true,
+      "details": null
+    },
+    "responsive_layout_matrix": {
+      "pass": true,
+      "details": [
+        {
+          "width": 320,
+          "height": 700,
+          "pass": true,
+          "viewport": 320,
+          "scrollWidth": 320,
+          "copyLeft": 18,
+          "copyRight": 302,
+          "copyBottom": 614.78125,
+          "cueTop": 636.78125,
+          "cueBottom": 682.78125,
+          "stageTop": 700.78125
+        },
+        {
+          "width": 390,
+          "height": 844,
+          "pass": true,
+          "viewport": 390,
+          "scrollWidth": 390,
+          "copyLeft": 18,
+          "copyRight": 372,
+          "copyBottom": 564.828125,
+          "cueTop": 616,
+          "cueBottom": 662,
+          "stageTop": 680
+        },
+        {
+          "width": 640,
+          "height": 800,
+          "pass": true,
+          "viewport": 640,
+          "scrollWidth": 640,
+          "copyLeft": 18,
+          "copyRight": 622,
+          "copyBottom": 616.671875,
+          "cueTop": 716,
+          "cueBottom": 762,
+          "stageTop": 780
+        },
+        {
+          "width": 768,
+          "height": 900,
+          "pass": true,
+          "viewport": 768,
+          "scrollWidth": 768,
+          "copyLeft": 24,
+          "copyRight": 744,
+          "copyBottom": 636.171875,
+          "cueTop": 820,
+          "cueBottom": 866,
+          "stageTop": 872
+        },
+        {
+          "width": 980,
+          "height": 900,
+          "pass": true,
+          "viewport": 980,
+          "scrollWidth": 980,
+          "copyLeft": 30,
+          "copyRight": 950,
+          "copyBottom": 653.296875,
+          "cueTop": 820,
+          "cueBottom": 866,
+          "stageTop": 872
+        },
+        {
+          "width": 1024,
+          "height": 900,
+          "pass": true,
+          "viewport": 1024,
+          "scrollWidth": 1024,
+          "copyLeft": 52,
+          "copyRight": 972,
+          "copyBottom": 656.859375,
+          "cueTop": 820,
+          "cueBottom": 866,
+          "stageTop": 872
+        },
+        {
+          "width": 1240,
+          "height": 900,
+          "pass": true,
+          "viewport": 1240,
+          "scrollWidth": 1240,
+          "copyLeft": 160,
+          "copyRight": 1080,
+          "copyBottom": 672.78125,
+          "cueTop": 820,
+          "cueBottom": 866,
+          "stageTop": 872
+        },
+        {
+          "width": 1280,
+          "height": 900,
+          "pass": true,
+          "viewport": 1280,
+          "scrollWidth": 1280,
+          "copyLeft": 180,
+          "copyRight": 1100,
+          "copyBottom": 675.078125,
+          "cueTop": 820,
+          "cueBottom": 866,
+          "stageTop": 872
+        },
+        {
+          "width": 1440,
+          "height": 1000,
+          "pass": true,
+          "viewport": 1440,
+          "scrollWidth": 1440,
+          "copyLeft": 260,
+          "copyRight": 1180,
+          "copyBottom": 679.6875,
+          "cueTop": 820,
+          "cueBottom": 866,
+          "stageTop": 872
+        },
+        {
+          "width": 1920,
+          "height": 1080,
+          "pass": true,
+          "viewport": 1920,
+          "scrollWidth": 1920,
+          "copyLeft": 500,
+          "copyRight": 1420,
+          "copyBottom": 679.6875,
+          "cueTop": 820,
+          "cueBottom": 866,
+          "stageTop": 872
+        }
+      ]
+    },
+    "no_console_errors": {
+      "pass": true,
+      "details": []
+    },
+    "no_page_errors": {
+      "pass": true,
+      "details": []
+    },
+    "no_failed_requests": {
+      "pass": true,
+      "details": []
+    }
+  },
+  "console_errors": [],
+  "page_errors": [],
+  "request_failures": [],
+  "screenshots": [
+    "preview/v5-desktop-pt-light.png",
+    "preview/v5-desktop-demo.png",
+    "preview/v5-desktop-pt-dark.png",
+    "preview/v5-desktop-en-dark.png",
+    "preview/v5-mobile-pt-light.png",
+    "preview/v5-mobile-menu.png"
+  ],
+  "summary": {
+    "passed": 31,
+    "failed": 0,
+    "failures": []
+  }
+}
