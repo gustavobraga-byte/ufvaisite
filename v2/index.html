@@ -33,6 +33,8 @@
 <link rel="preload" as="image" href="assets/hero-minas-serra.webp" fetchpriority="high">
 <link rel="stylesheet" href="styles.css">
 <link rel="stylesheet" href="v5.css">
+<link rel="stylesheet" href="v6.css">
+<noscript><style>html.i18n-pending body{opacity:1}</style></noscript>
 <script>
 /* Aplica o tema salvo antes da pintura (evita flash de tema errado). Padrão: claro. */
 (function () {
@@ -44,15 +46,57 @@
 })();
 </script>
 <script>
-/* Idioma inicial antes da pintura: preferência salva > navegador > pt-BR (padrão UFVAI). */
+/* ══ Idioma antes da primeira pintura ═════════════════════════════════
+   Ordem de precedência: escolha salva > idioma do navegador > pt-BR.
+   - Lê a lista navigator.languages (não só a primeira): quem tem
+     pt-BR como 2ª opção e en-US como 1ª fica em inglês, mas quem tem
+     es-419/fr-CA/zh-TW cai no idioma-base certo.
+   - Marca <html data-lang> e data-lang-source para a UI avisar
+     "detectado do navegador".
+   - Enquanto o i18n.js não aplica as traduções, o body fica oculto
+     (html.i18n-pending); há um failsafe para nunca deixar a página em
+     branco se o script falhar. */
 (function () {
+  var root = document.documentElement;
+  root.className += (root.className ? ' ' : '') + 'i18n-pending';
+
+  function base(tag) {
+    var t = String(tag || '').toLowerCase();
+    if (t.indexOf('zh') === 0) return 'zh';
+    if (t.indexOf('en') === 0) return 'en';
+    if (t.indexOf('es') === 0) return 'es';
+    if (t.indexOf('fr') === 0) return 'fr';
+    if (t.indexOf('pt') === 0) return 'pt';
+    return null;
+  }
+  var HTML = { pt: 'pt-BR', en: 'en-US', es: 'es-ES', fr: 'fr-FR', zh: 'zh-CN' };
+
+  var saved = null;
+  try { saved = localStorage.getItem('ufvai-lang'); } catch (e) {}
+  if (saved && !HTML[saved]) saved = null;
+
+  var nav = [];
   try {
-    var s = null;
-    try { s = localStorage.getItem('ufvai-lang'); } catch (e) {}
-    var l = String(s || ((navigator.languages && navigator.languages[0]) || navigator.language || 'pt')).toLowerCase();
-    var m = l.indexOf('zh') === 0 ? 'zh-CN' : l.indexOf('en') === 0 ? 'en-US' : l.indexOf('es') === 0 ? 'es-ES' : l.indexOf('fr') === 0 ? 'fr-FR' : 'pt-BR';
-    document.documentElement.lang = m;
-  } catch (e) { /* mantém pt-BR do HTML */ }
+    if (navigator.languages && navigator.languages.length) nav = Array.prototype.slice.call(navigator.languages);
+    else if (navigator.language) nav = [navigator.language];
+    else if (navigator.userLanguage) nav = [navigator.userLanguage];
+  } catch (e) {}
+
+  var detected = null;
+  for (var i = 0; i < nav.length && !detected; i++) detected = base(nav[i]);
+
+  var lang = saved || detected || 'pt';
+  root.lang = HTML[lang];
+  root.setAttribute('data-lang', lang);
+  root.setAttribute('data-lang-source', saved ? 'saved' : (detected ? 'browser' : 'default'));
+  root.setAttribute('data-lang-detected', detected || 'pt');
+
+  /* Failsafe: se o i18n.js não rodar (rede, erro), libera a página. */
+  window.setTimeout(function () {
+    if (root.className.indexOf('i18n-pending') !== -1) {
+      root.className = root.className.replace(/\s*i18n-pending\b/, '') + ' i18n-ready';
+    }
+  }, 1600);
 })();
 </script>
 <script type="application/ld+json">
@@ -143,21 +187,36 @@
     </nav>
     <div class="topbar__actions">
       <div class="lang-switch" id="lang-switch">
-        <button class="lang-btn" id="lang-btn" type="button" aria-haspopup="true" aria-expanded="false" aria-label="Idioma / Language">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.7 3.8 9S14.5 18.4 12 21c-2.5-2.6-3.8-5.7-3.8-9S9.5 5.6 12 3Z"/></svg>
-          <span id="lang-current">PT</span>
+        <button class="ctrl ctrl--lang" id="lang-btn" type="button" aria-haspopup="true" aria-expanded="false" aria-label="Idioma / Language" title="Idioma da interface">
+          <svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <circle cx="12" cy="12" r="8.4"/>
+            <path d="M3.6 12h16.8"/>
+            <path d="M12 3.6c2.35 2.3 3.6 5.2 3.6 8.4s-1.25 6.1-3.6 8.4c-2.35-2.3-3.6-5.2-3.6-8.4S9.65 5.9 12 3.6Z"/>
+          </svg>
+          <span class="ctrl__text" id="lang-current-name">Português</span>
+          <span class="ctrl__code" id="lang-current">PT</span>
+          <svg class="ctrl__chev" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6.5 9.75 12 15.25l5.5-5.5"/></svg>
         </button>
         <div class="lang-menu" id="lang-menu" role="menu" aria-label="Idioma / Language">
-          <button type="button" role="menuitemradio" aria-checked="true" data-lang="pt"><span>Português</span><span class="lang-code">PT</span></button>
-          <button type="button" role="menuitemradio" aria-checked="false" data-lang="en"><span>English</span><span class="lang-code">EN</span></button>
-          <button type="button" role="menuitemradio" aria-checked="false" data-lang="es"><span>Español</span><span class="lang-code">ES</span></button>
-          <button type="button" role="menuitemradio" aria-checked="false" data-lang="fr"><span>Français</span><span class="lang-code">FR</span></button>
-          <button type="button" role="menuitemradio" aria-checked="false" data-lang="zh"><span>中文</span><span class="lang-code">ZH</span></button>
+          <p class="lang-menu__hint" id="lang-hint" hidden></p>
+          <p class="lang-menu__title" aria-hidden="true">Idioma da interface</p>
+          <button type="button" role="menuitemradio" aria-checked="true" data-lang="pt"><span class="lang-native">Português</span><span class="lang-code">PT</span></button>
+          <button type="button" role="menuitemradio" aria-checked="false" data-lang="en"><span class="lang-native">English</span><span class="lang-code">EN</span></button>
+          <button type="button" role="menuitemradio" aria-checked="false" data-lang="es"><span class="lang-native">Español</span><span class="lang-code">ES</span></button>
+          <button type="button" role="menuitemradio" aria-checked="false" data-lang="fr"><span class="lang-native">Français</span><span class="lang-code">FR</span></button>
+          <button type="button" role="menuitemradio" aria-checked="false" data-lang="zh"><span class="lang-native">中文</span><span class="lang-code">ZH</span></button>
         </div>
       </div>
-      <button class="theme-toggle" id="theme-toggle" type="button" aria-pressed="false" aria-label="Ativar modo escuro">
-        <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.4"/><g stroke-linecap="round"><line x1="12" y1="2.5" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="21.5"/><line x1="2.5" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="21.5" y2="12"/><line x1="5.2" y1="5.2" x2="7" y2="7"/><line x1="17" y1="17" x2="18.8" y2="18.8"/><line x1="5.2" y1="18.8" x2="7" y2="17"/><line x1="17" y1="7" x2="18.8" y2="5.2"/></g></svg>
-        <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z"/></svg>
+      <button class="ctrl ctrl--theme" id="theme-toggle" type="button" aria-pressed="false" aria-label="Ativar modo escuro" title="Alternar tema claro/escuro">
+        <svg class="ico icon-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <circle cx="12" cy="12" r="4.1"/>
+          <path d="M12 2.6v2.1M12 19.3v2.1M2.6 12h2.1M19.3 12h2.1M5.3 5.3l1.5 1.5M17.2 17.2l1.5 1.5M5.3 18.7l1.5-1.5M17.2 6.8l1.5-1.5"/>
+        </svg>
+        <svg class="ico icon-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M20.2 14.1A8.4 8.4 0 0 1 9.9 3.8a8.6 8.6 0 1 0 10.3 10.3Z"/>
+          <path d="M15.6 4.2v1.8M14.7 5.1h1.8"/>
+        </svg>
+        <span class="ctrl__text" id="theme-label">Tema</span>
       </button>
       <a class="btn btn--gold btn--sm" href="https://colab.research.google.com/github/gustavobraga-byte/PesquisAI/blob/main/PesquisAI.ipynb" target="_blank" rel="noopener" data-i18n="cta.start">Começar agora</a>
       <button class="nav-toggle" id="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-principal" aria-label="Abrir menu">
@@ -190,7 +249,7 @@
 
     <canvas class="hero__canvas-front" id="hero-clouds-front" aria-hidden="true"></canvas>
 
-    <p class="hero__place" data-i18n="hero.location">Viçosa · Minas Gerais · Brasil</p>
+    <p class="hero__place" data-i18n="hero.location">Microrregião de Viçosa · Minas Gerais · Brasil</p>
 
     <div class="container hero__grid">
       <div class="hero__copy">
@@ -218,35 +277,93 @@
 
     <a class="hero__credits" href="assets/credits.html" target="_blank" rel="noopener" data-i18n="hero.credits">Créditos das imagens</a>
 
-    <div class="hero__controls" data-cloud-controls="true" role="group" data-i18n-aria="hero.controlsAria" aria-label="Aparência do hero">
-      <label class="hero__control" data-key="cloudAmount" title="Nuvens: 65%" style="--progress: 0">
-        <span class="hero__control-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17 17.2V19H7v-1.8h10Zm3.2-3.2c0-1.77-1.43-3.2-3.2-3.2h-.18c-.84-1.2-2.16-1.99-3.92-1.99-2.71 0-4.94 1.85-5.68 4.33-.04.51-.3.97-.72 1.3-.79.6-1.77.95-2.79.95A4.8 4.8 0 0 1 2 14a4.8 4.8 0 0 1 4.8-4.8c.78 0 1.51.21 2.14.58.27-.64.69-1.2 1.2-1.66A4.78 4.78 0 0 1 14 5.7c2.58 0 4.72 1.75 5.37 4.1h.83c1.77 0 3.2 1.43 3.2 3.2 0 1.77-1.43 3.2-3.2 3.2H7v1.8h13c1.77 0 3.2-1.43 3.2-3.2v-.2Z"/></svg></span>
-        <span class="hero__control-fill" aria-hidden="true"></span>
-        <span class="hero__control-label" aria-hidden="true" data-i18n="hero.cloud">Nuvens</span>
-        <span class="hero__control-thumb" aria-hidden="true"></span>
-        <input class="hero__control-range" type="range" min="0.65" max="5" step="0.05" value="0.65" data-i18n-aria="hero.cloud" aria-label="Nuvens" aria-valuetext="65%">
-      </label>
-      <label class="hero__control" data-key="flowSpeed" title="Velocidade: 3.0×" style="--progress: 0.1892">
-        <span class="hero__control-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.4 16.19c2.12-.41 3.72-.81 6.01-1.61l.78.39c.44.22.62.76.4 1.2-.3.45-.79.62-1.21.4l-.77-.39c-1.72-.85-3.33-.72-5.33.37a7.6 7.6 0 0 1-6.14 1.16l-.78-.39a.8.8 0 0 1-.4-1.05c.22-.45.76-.63 1.2-.4l.78.39c1.04.51 2.06.51 3.07.05l1.33-.62v.73c0 .45.36.81.81.81s.81-.36.81-.81v-1.5c0-.45-.36-.81-.81-.81h-2.8V5.9h-.4c-.49 0-.9-.4-.9-.9s.4-.9.9-.9h3.5c.49 0 .9.4.9.9s-.4.9-.9.9h-.6v.56c0 1.9-.48 3.54-1.76 4.84L9.9 10.76v.84h2.87c1.6 0 2.89 1.3 2.89 2.9v1.06c0 1.06.36 2.06.43 2.87a.81.81 0 0 1-.63.95.8.8 0 0 1-.95-.63 6.9 6.9 0 0 0-.39-1.41 6.87 6.87 0 0 0-1.44-1.97H9.9v1.5c0 1.86-.88 3.6-2.36 4.72a.8.8 0 0 1-1.13-.14.8.8 0 0 1 .14-1.13A5.46 5.46 0 0 0 8.1 15h.42V5.9h-.41a.9.9 0 0 1-.9-.9c0-.49.4-.9.9-.9h3.5c.49 0 .9.4.9.9s-.4.9-.9.9h-.5v3.04Z"/></svg></span>
-        <span class="hero__control-fill" aria-hidden="true"></span>
-        <span class="hero__control-label" aria-hidden="true" data-i18n="hero.speed">Velocidade</span>
-        <span class="hero__control-thumb" aria-hidden="true"></span>
-        <input class="hero__control-range" type="range" min="0.2" max="15" step="0.1" value="3" data-i18n-aria="hero.speed" aria-label="Velocidade" aria-valuetext="3.0×">
-      </label>
-      <label class="hero__control" data-key="ink" title="Marca: 90%" style="--progress: 0.9">
-        <span class="hero__control-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M10.5 4.1c.5 0 .9.4.9.9s-.4.9-.9.9h-.6v3.04l2.45-.4c1.01-.18 1.75-1.05 1.75-2.07V5.9h-.6c-.5 0-.9-.4-.9-.9s.4-.9.9-.9h3.5c.5 0 .9.4.9.9s-.4.9-.9.9h-.6v.56c0 1.9-.48 3.54-1.76 4.84L9.9 10.76v.84h2.87c1.6 0 2.89 1.3 2.89 2.9v1.06c0 1.06.36 2.06.43 2.87a.81.81 0 0 1-.63.95.8.8 0 0 1-.95-.63 6.9 6.9 0 0 0-.39-1.41 6.87 6.87 0 0 0-1.44-1.97H9.9v1.5c0 1.86-.88 3.6-2.36 4.72a.8.8 0 0 1-1.13-.14.8.8 0 0 1 .14-1.13A5.46 5.46 0 0 0 8.1 15h.42V5.9h-.41c-.5 0-.9-.4-.9-.9s.4-.9.9-.9h3.5c.5 0 .9.4.9.9s-.4.9-.9.9h-.5v3.04Z"/></svg></span>
-        <span class="hero__control-fill" aria-hidden="true"></span>
-        <span class="hero__control-label" aria-hidden="true" data-i18n="hero.logo">Marca</span>
-        <span class="hero__control-thumb" aria-hidden="true"></span>
-        <input class="hero__control-range" type="range" min="0" max="1" step="0.01" value="0.9" data-i18n-aria="hero.logo" aria-label="Marca" aria-valuetext="90%">
-      </label>
-      <label class="hero__control" data-key="immersion" title="Cobertura: 100%" style="--progress: 1">
-        <span class="hero__control-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.95 10c2.15 0 3.95.5 4.43 3.5h.12c1.93 0 3.5 1.57 3.5 3.5s-1.57 3.5-3.5 3.5h-7a5.5 5.5 0 0 1-4.5-2.5c-.43.33-.96.56-1.56.69a.8.8 0 0 1-.96-.6.8.8 0 0 1 .6-.96c.47-.1.88-.35 1.2-.72l.02-.01a5.5 5.5 0 0 1-.6-6.35l-.47-.13V5.7a.8.8 0 0 1 .8-.8h.85a.8.8 0 0 1 0 1.6h-.62v2.47l.83-.23c1.72-.47 3.45-.68 5.43-.68Zm0 1.8c-1.44 0-2.63 1.11-2.74 2.53-.04.52-.3.99-.72 1.3-.42.31-.69.81-.69 1.36 0 .94.76 1.7 1.7 1.7h7a1.7 1.7 0 0 0 0-3.4h-.12c-.83 0-1.56-.53-1.85-1.34l-.12-.41-.47.14c-.28.08-.58.12-.87.12l-.45-.02ZM7.54 3.9c.5 0 .9.4.9.9v.01c0 .5-.4.9-.9.9H7.1V8.17l2.05-.35c1.75-.3 3.52-.5 5.45-.5v.8h-.9c-.5 0-.9.4-.9.9s.4.9.9.9h1.7c.5 0 .9-.4.9-.9s-.4-.9-.9-.9h-.66v.4c0 1.74-1.23 3.24-2.97 3.55l-.91.16v.72H9.1c-1.74 0-3.24 1.23-3.55 2.97l-.14.74a.8.8 0 0 1-.96.6.8.8 0 0 1-.6-.96c.33-1.57 1.7-2.72 3.34-2.86l.47-.04V5.7h-.01c0-.5.4-.9.9-.9h2.45Z"/></svg></span>
-        <span class="hero__control-fill" aria-hidden="true"></span>
-        <span class="hero__control-label" aria-hidden="true" data-i18n="hero.coverage">Cobertura</span>
-        <span class="hero__control-thumb" aria-hidden="true"></span>
-        <input class="hero__control-range" type="range" min="0" max="1" step="0.01" value="1" data-i18n-aria="hero.coverage" aria-label="Cobertura" aria-valuetext="100%">
-      </label>
+    <!-- Painel de ajustes do cenário: 4 sliders ROTULADOS, com valor
+         visível e botão de restaurar. A semântica (data-cloud-controls,
+         data-key, hero__control, hero__control-range) é a que o hero.js
+         consome — só a apresentação mudou. -->
+    <div class="hctrl" id="hero-controls">
+      <button class="hctrl__toggle" id="hctrl-toggle" type="button"
+              aria-expanded="false" aria-controls="hctrl-panel"
+              aria-label="Ajustes visuais do cenário" title="Ajustes visuais do cenário">
+        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M4 7h9M17 7h3M4 12h3M11 12h9M4 17h7M15 17h5"/>
+          <circle cx="15" cy="7" r="2.1"/>
+          <circle cx="9" cy="12" r="2.1"/>
+          <circle cx="13" cy="17" r="2.1"/>
+        </svg>
+        <span class="hctrl__label" id="hctrl-label">Ajustes</span>
+        <svg class="hctrl__chev" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6.5 14.5 12 9l5.5 5.5"/></svg>
+      </button>
+
+      <div class="hctrl__panel" id="hctrl-panel" data-cloud-controls="true"
+           role="group" data-i18n-aria="hero.controlsAria" aria-label="Aparência do hero">
+        <div class="hctrl__head">
+          <span class="hctrl__title" id="hctrl-title">Ajustes do cenário</span>
+          <button class="hctrl__reset" id="hctrl-reset" type="button" title="Voltar aos valores padrão">
+            <svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M4.2 10.4A8.2 8.2 0 1 1 4 13.6"/>
+              <path d="M4 5.6v4.9h4.9"/>
+            </svg>
+            <span id="hctrl-reset-label">Restaurar</span>
+          </button>
+          <button class="hctrl__close" id="hctrl-close" type="button" aria-label="Fechar ajustes" title="Fechar">
+            <svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/></svg>
+          </button>
+        </div>
+
+        <label class="hctrl__row hero__control" data-key="cloudAmount" style="--progress: 0" title="Nuvens: 65%">
+          <span class="hctrl__ico" aria-hidden="true">
+            <svg class="ico" viewBox="0 0 24 24" focusable="false">
+              <path d="M7 18.2a4.2 4.2 0 0 1-.3-8.4 5.4 5.4 0 0 1 10.4-.9A3.85 3.85 0 0 1 17.6 18.2Z"/>
+            </svg>
+          </span>
+          <span class="hctrl__name hero__control-label" data-i18n="hero.cloud">Nuvens</span>
+          <output class="hctrl__val" for="rng-cloud">65%</output>
+          <input class="hero__control-range" id="rng-cloud" type="range" min="0.65" max="5" step="0.05" value="0.65"
+                 data-i18n-aria="hero.cloud" aria-label="Nuvens" aria-valuetext="65%">
+        </label>
+
+        <label class="hctrl__row hero__control" data-key="flowSpeed" style="--progress: 0.1892" title="Velocidade: 3.0×">
+          <span class="hctrl__ico" aria-hidden="true">
+            <svg class="ico" viewBox="0 0 24 24" focusable="false">
+              <path d="M4.2 16a8.2 8.2 0 1 1 15.6 0"/>
+              <path d="M12 16l3.9-4.6"/>
+              <circle cx="12" cy="16" r="1.5" class="ico--fill"/>
+            </svg>
+          </span>
+          <span class="hctrl__name hero__control-label" data-i18n="hero.speed">Velocidade</span>
+          <output class="hctrl__val" for="rng-speed">3.0×</output>
+          <input class="hero__control-range" id="rng-speed" type="range" min="0.2" max="15" step="0.1" value="3"
+                 data-i18n-aria="hero.speed" aria-label="Velocidade" aria-valuetext="3.0×">
+        </label>
+
+        <label class="hctrl__row hero__control" data-key="ink" style="--progress: 0.9" title="Marca: 90%">
+          <span class="hctrl__ico" aria-hidden="true">
+            <svg class="ico" viewBox="0 0 24 24" focusable="false">
+              <circle cx="12" cy="12" r="8.2"/>
+              <path d="M12 3.8a8.2 8.2 0 0 1 0 16.4Z" class="ico--fill"/>
+            </svg>
+          </span>
+          <span class="hctrl__name hero__control-label" data-i18n="hero.logo">Marca</span>
+          <output class="hctrl__val" for="rng-ink">90%</output>
+          <input class="hero__control-range" id="rng-ink" type="range" min="0" max="1" step="0.01" value="0.9"
+                 data-i18n-aria="hero.logo" aria-label="Marca" aria-valuetext="90%">
+        </label>
+
+        <label class="hctrl__row hero__control" data-key="immersion" style="--progress: 1" title="Cobertura: 100%">
+          <span class="hctrl__ico" aria-hidden="true">
+            <svg class="ico" viewBox="0 0 24 24" focusable="false">
+              <path d="M12 3.4 3.6 7.6 12 11.8l8.4-4.2Z"/>
+              <path d="M3.6 12.2 12 16.4l8.4-4.2"/>
+              <path d="M3.6 16.6 12 20.8l8.4-4.2"/>
+            </svg>
+          </span>
+          <span class="hctrl__name hero__control-label" data-i18n="hero.coverage">Cobertura</span>
+          <output class="hctrl__val" for="rng-cover">100%</output>
+          <input class="hero__control-range" id="rng-cover" type="range" min="0" max="1" step="0.01" value="1"
+                 data-i18n-aria="hero.coverage" aria-label="Cobertura" aria-valuetext="100%">
+        </label>
+      </div>
     </div>
 
     <button class="hero__scroll" id="hero-scroll" type="button" data-i18n-aria="hero.scrollAria" aria-label="Rolar para a demonstração e o conteúdo do site">
@@ -454,8 +571,14 @@
         </ul>
       </div>
 
-      <figure class="campus-figure reveal" data-i18n-aria="hero.campusAria" aria-label="Edifício Arthur Bernardes, prédio principal da Universidade Federal de Viçosa">
-        <img src="assets/ufv-arthur-bernardes.webp" alt="" loading="lazy" decoding="async">
+      <figure class="campus-figure reveal" data-campus="ufv" data-i18n-aria="hero.campusAria" aria-label="Edifício Arthur Bernardes, prédio principal da Universidade Federal de Viçosa">
+        <div class="campus-frame">
+          <div class="campus-shot">
+            <img src="assets/ufv-arthur-bernardes.webp" alt="" width="800" height="533" loading="lazy" decoding="async">
+          </div>
+          <span class="campus-frame__sweep" aria-hidden="true"></span>
+          <span class="campus-badge" aria-hidden="true">UFV · Campus Viçosa</span>
+        </div>
         <figcaption>
           <span data-i18n="hero.campus">Universidade Federal de Viçosa</span>
           <small data-i18n="hero.campusSub">Edifício Arthur Bernardes · Campus Viçosa</small>
@@ -898,5 +1021,6 @@ Projeto registrado no SisPPG/UFV sob nº 10356285004.</code></pre>
 <script src="i18n.js"></script>
 <script src="script.js"></script>
 <script src="hero.js"></script>
+<script src="v6.js"></script>
 </body>
 </html>

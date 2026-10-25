@@ -125,9 +125,6 @@
     var octx = off.getContext('2d');
     var W = 0, H = 0, FW = 0, FH = 0, DPR = 1;
     var OFFS = 0.6;                                  /* downscale do buffer de nuvens */
-    var noiseTex = null;                             /* textura FBM tileable */
-    var cloudPattern = null;                         /* pattern cacheado (1 criação) */
-    var backLayers = [], frontLayers = [];           /* camadas do campo */
     var wisps = [];                                  /* "bagunço" do ponteiro */
     var t0 = performance.now();
     var raf = null;
@@ -137,6 +134,7 @@
     var hasPointer = false;         /* ponteiro ativo sobre a cena */
     var ptrSpeed = 0;               /* velocidade recente (intensidade do bagunço) */
     var lastPX = null, lastPY = null, lastPT = 0;
+    var spread = 0;                 /* 0..1: quanto a neblina está aberta */
     var running = false;
 
     /* PRNG determinista para nuvens estáveis entre recargas */
@@ -150,62 +148,265 @@
       };
     }
 
-    /* Ruído de valor FBM tileable (4 oitavas) → massa de nuvem contínua. */
-    function makeNoiseTexture(size, seed) {
-      var c = document.createElement('canvas');
-      c.width = c.height = size;
-      var g = c.getContext('2d');
-      var img = g.createImageData(size, size);
-      var d = img.data;
-      var r = prng(seed);
-      var smooth = function (t) { return t * t * (3 - 2 * t); };
-      /* amostra FBM tileable: grades de lattice com wrap-around */
-      function fbm(x, y) {
-        var amp = 1, freq = 4, sum = 0, norm = 0;
-        for (var o = 0; o < 4; o++) {
-          var N = freq;
-          /* lattice aleatório N×N (por oitava) */
-          var lat = new Float32Array(N * N);
-          for (var i = 0; i < N * N; i++) lat[i] = r();
-          var fx = x * N, fy = y * N;
-          var x0 = Math.floor(fx), y0 = Math.floor(fy);
-          var tx = smooth(fx - x0), ty = smooth(fy - y0);
-          var xa = ((x0 % N) + N) % N, ya = ((y0 % N) + N) % N;
-          var xb = (xa + 1) % N, yb = (ya + 1) % N;
-          var v00 = lat[ya * N + xa], v10 = lat[ya * N + xb];
-          var v01 = lat[yb * N + xa], v11 = lat[yb * N + xb];
-          var v0 = v00 + (v10 - v00) * tx;
-          var v1 = v01 + (v11 - v01) * tx;
-          sum += (v0 + (v1 - v0) * ty) * amp;
-          norm += amp;
-          amp *= 0.55; freq *= 2;
-        }
-        return sum / norm;
+    /* ══════════════════════════════════════════════════════════════════
+       NUVENS REALISTAS — sprites cumulus procedurais
+       ──────────────────────────────────────────────────────────────────
+       O campo de ruído contínuo lia como NÉVOA. Aqui cada nuvem é um
+       sprite gerado uma única vez no boot:
+         1. fBm com domain warping  → massa com lóbulos (couve-flor);
+         2. erosão de alta frequência → bordas rendadas;
+         3. sombreamento pelo gradiente de densidade (luz alto-esquerda)
+            → sombras azuladas na base + topos quentes.
+       As nuvens são dispostas em três profundidades, derivam em parallax
+       e a Cobertura regula densidade/opacidade do conjunto.
+       ══════════════════════════════════════════════════════════════════ */
+
+    /* Ruído de valor 2D determinista (hash inteiro + smoothstep). */
+    function hash2(ix, iy, seed) {
+      var n = Math.imul(ix, 374761393) + Math.imul(iy, 668265263) + Math.imul(seed, 144269);
+      n = Math.imul(n ^ (n >>> 13), 1274126177);
+      n = n ^ (n >>> 16);
+      return ((n >>> 0) / 2147483647) - 1;              /* -1..1 */
+    }
+    function vnoise(x, y, seed) {
+      var x0 = Math.floor(x), y0 = Math.floor(y);
+      var tx = x - x0, ty = y - y0;
+      tx = tx * tx * (3 - 2 * tx);
+      ty = ty * ty * (3 - 2 * ty);
+      var v00 = hash2(x0, y0, seed), v10 = hash2(x0 + 1, y0, seed);
+      var v01 = hash2(x0, y0 + 1, seed), v11 = hash2(x0 + 1, y0 + 1, seed);
+      var a = v00 + (v10 - v00) * tx;
+      var b = v01 + (v11 - v01) * tx;
+      return a + (b - a) * ty;
+    }
+    function fbm2(x, y, oct, seed) {
+      var sum = 0, amp = 1, f = 1, norm = 0;
+      for (var i = 0; i < oct; i++) {
+        sum += amp * vnoise(x * f, y * f, seed + i * 131);
+        norm += amp; amp *= 0.5; f *= 2.02;
       }
-      for (var y = 0; y < size; y++) {
-        for (var x = 0; x < size; x++) {
-          var n = fbm(x / size, y / size);
-          /* contraste suave → brancos densos, bordas dissolvidas */
-          var a = Math.pow(Math.max(0, Math.min(1, (n - 0.34) / 0.5)), 1.35);
-          var k = (y * size + x) * 4;
-          d[k] = d[k + 1] = d[k + 2] = 255;
-          d[k + 3] = Math.round(a * 255);
+      return sum / norm;
+    }
+    function smooth01(a, b, x) {
+      var t = Math.max(0, Math.min(1, (x - a) / (b - a)));
+      return t * t * (3 - 2 * t);
+    }
+
+    /* Sprite de cumulus: campo de altura (blobs) + detalhe fBm +
+       sombreamento por gradiente (luz do alto-esquerda). */
+    function makeCloudSprite(w, h, seed, opts) {
+      opts = opts || {};
+      var r = prng(seed);
+      var c = document.createElement('canvas');
+      c.width = w; c.height = h;
+      var g = c.getContext('2d');
+      var img = g.createImageData(w, h);
+      var d = img.data;
+      var dens = new Float32Array(w * h);
+      var hfld = new Float32Array(w * h);
+      var i, x, y, px, py;
+
+      /* corpos: lóbulos grandes na base, pequenos no topo (couve-flor) */
+      var blobs = [];
+      var nb = opts.blobs || 12;
+      for (i = 0; i < nb; i++) {
+        var ang = r() * 6.2832, rad = Math.sqrt(r());
+        var bx = 0.5 + Math.cos(ang) * rad * 0.24;
+        var by = 0.58 + Math.sin(ang) * rad * 0.17;
+        var sz = 0.075 + r() * 0.10;
+        blobs.push({ x: bx, y: by, sx: sz * (1.05 + r() * 0.55), sy: sz * (0.85 + r() * 0.4), amp: 0.55 + r() * 0.6 });
+      }
+      var nt = opts.tops || 8;
+      for (i = 0; i < nt; i++) {
+        var bx2 = 0.5 + (r() - 0.5) * 0.44;
+        var by2 = 0.27 + r() * 0.16;
+        var s2 = 0.045 + r() * 0.05;
+        blobs.push({ x: bx2, y: by2, sx: s2 * 1.2, sy: s2, amp: 0.55 + r() * 0.6 });
+      }
+      /* "couve-flor": esferas miúdas coladas à borda superior.
+         Só entram se houver massa embaixo — evita bolinhas soltas. */
+      function heightAt(qx, qy) {
+        var hh = 0;
+        for (var bi = 0; bi < blobs.length; bi++) {
+          var Bb = blobs[bi];
+          var ddx = (qx - Bb.x) / Bb.sx, ddy = (qy - Bb.y) / Bb.sy;
+          var ee = ddx * ddx + ddy * ddy;
+          if (ee < 9) hh += Bb.amp * Math.exp(-ee * 1.5);
+        }
+        return hh;
+      }
+      var nc = opts.cauli == null ? 22 : opts.cauli;
+      var placed = 0, tries = 0;
+      while (placed < nc && tries < nc * 6) {
+        tries++;
+        var bcx = 0.5 + (r() - 0.5) * 0.58;
+        var bcy = 0.36 + (r() - 0.5) * 0.16;
+        if (heightAt(bcx, bcy) < 0.52) continue;      /* precisa de corpo */
+        var csz = 0.016 + r() * 0.020;
+        blobs.push({ x: bcx, y: bcy, sx: csz, sy: csz, amp: 0.26 + r() * 0.26 });
+        placed++;
+      }
+      var mist = !!opts.mist;
+      if (mist) {
+        /* neblina: corpos LARGOS e baixos, como véus entre as serras */
+        for (i = 0; i < blobs.length; i++) { blobs[i].sx *= 2.35; blobs[i].sy *= 0.92; }
+      }
+      var baseY = opts.baseY == null ? 0.80 : opts.baseY;
+      var baseSoft = opts.baseSoft || 0.14;
+      var lo = opts.lo == null ? (mist ? 0.28 : 0.42) : opts.lo;
+      var band = opts.band == null ? (mist ? 0.58 : 0.34) : opts.band;
+      var thrNoise = opts.thrNoise == null ? (mist ? 0.07 : 0.14) : opts.thrNoise;
+
+      for (y = 0; y < h; y++) {
+        py = y / h;
+        for (x = 0; x < w; x++) {
+          px = x / w;
+          var hgt = 0;
+          for (var b = 0; b < blobs.length; b++) {
+            var B = blobs[b];
+            var dx = (px - B.x) / B.sx, dy = (py - B.y) / B.sy;
+            var e = dx * dx + dy * dy;
+            if (e < 9) hgt += B.amp * Math.exp(-e * 1.5);
+          }
+          hgt += 0.32 * fbm2(px * 6.0, py * 6.0, 4, seed + 3);
+          hgt += 0.22 * fbm2(px * 18.0, py * 18.0, 3, seed + 27);
+          if (py > baseY) hgt *= Math.max(0, 1 - (py - baseY) / baseSoft);
+          hfld[y * w + x] = hgt;
+          /* limiar modulado: recorta a silhueta com detalhe irregular */
+          var thr = lo + thrNoise * fbm2(px * 8.5 + 5.1, py * 8.5 + 2.3, 3, seed + 55);
+          dens[y * w + x] = smooth01(thr, thr + band, hgt);
+        }
+      }
+
+      var shadow = opts.shadow || (mist ? [198, 210, 224] : [172, 186, 204]);
+      var mid = opts.mid || (mist ? [236, 241, 247] : [232, 238, 245]);
+      var light = opts.light || (mist ? [252, 254, 255] : [255, 255, 255]);
+      var alpha = opts.alpha == null ? 1 : opts.alpha;
+      var kx = opts.kx == null ? (mist ? 0.55 : 1.2) : opts.kx;
+      var ky = opts.ky == null ? (mist ? 0.85 : 1.7) : opts.ky;
+
+      for (y = 0; y < h; y++) {
+        py = y / h;
+        for (x = 0; x < w; x++) {
+          i = y * w + x;
+          var a = dens[i];
+          if (a <= 0.004) { d[i * 4 + 3] = 0; continue; }
+          var xm = x > 2 ? x - 2 : 0, xp = x < w - 3 ? x + 2 : w - 1;
+          var ym = y > 2 ? y - 2 : 0, yp = y < h - 3 ? y + 2 : h - 1;
+          var hx = hfld[y * w + xp] - hfld[y * w + xm];
+          var hy = hfld[yp * w + x] - hfld[ym * w + x];
+
+          var lit = 0.66 + hx * kx + hy * ky;
+          lit -= 0.30 * smooth01(0.42, 1.0, py);           /* base em sombra */
+          lit -= 0.12 * a;                                  /* interior fechado */
+          lit += 0.07 * fbm2(x / w * 14, y / h * 14, 3, seed + 9);
+
+          /* bordas: dissolve a sombra (evita contorno de recorte) */
+          var edge = smooth01(0.05, 0.5, a);
+          lit = 0.70 + (lit - 0.70) * edge;
+          lit = Math.max(0, Math.min(1, lit));
+          if (opts.gamma) lit = Math.pow(lit, opts.gamma);
+
+          var r0, g0, b0;
+          if (lit < 0.5) {
+            var t0 = lit * 2;
+            r0 = shadow[0] + (mid[0] - shadow[0]) * t0;
+            g0 = shadow[1] + (mid[1] - shadow[1]) * t0;
+            b0 = shadow[2] + (mid[2] - shadow[2]) * t0;
+          } else {
+            var t1 = (lit - 0.5) * 2;
+            r0 = mid[0] + (light[0] - mid[0]) * t1;
+            g0 = mid[1] + (light[1] - mid[1]) * t1;
+            b0 = mid[2] + (light[2] - mid[2]) * t1;
+          }
+          var k = i * 4;
+          d[k] = r0; d[k + 1] = g0; d[k + 2] = b0;
+          d[k + 3] = Math.round(Math.min(1, a * alpha) * 255);
         }
       }
       g.putImageData(img, 0, 0);
+
+      /* contorno macio: blur curto no alfa remove o "recorte de papel" */
+      var blur = opts.blur == null ? (mist ? 3.4 : 1.0) : opts.blur;
+      if (blur > 0) {
+        var c2 = document.createElement('canvas');
+        c2.width = w; c2.height = h;
+        var g2 = c2.getContext('2d');
+        g2.filter = 'blur(' + blur + 'px)';
+        g2.drawImage(c, 0, 0);
+        g2.filter = 'none';
+        return c2;
+      }
       return c;
     }
 
-    /* Camadas do campo: escala/velocidade/opacidade distintas (profundidade). */
-    function buildLayers() {
-      backLayers = [
-        { s: 0.85, sp: 0.011, a: 0.55, bob: 7, ph: 0.0 },
-        { s: 1.55, sp: 0.020, a: 0.40, bob: 11, ph: 2.1 },
-        { s: 2.70, sp: 0.033, a: 0.28, bob: 16, ph: 4.2 }
+    /* Conjunto de sprites: formas variadas e três temperaturas de luz. */
+    var sprites = [];
+    var spritesReady = false;
+    function buildSprites() {
+      if (spritesReady) return;
+      spritesReady = true;
+      sprites = [
+        /* véu largo entre as serras (neblina) */
+        makeCloudSprite(520, 260, 9137,  { mist: true, blobs: 14, tops: 0, cauli: 0 }),
+        /* neblina mais alta e fina */
+        makeCloudSprite(520, 220, 24221, { mist: true, blobs: 17, tops: 0, cauli: 0, alpha: .85, blur: 4.2 }),
+        /* neblina baixa, densa no vale */
+        makeCloudSprite(560, 260, 55711, { mist: true, blobs: 12, tops: 0, cauli: 0, alpha: .95,
+                                           shadow: [186, 199, 216], blur: 3.0 }),
+        /* cúmulo suave encostado na encosta (quebra a monotonia) */
+        makeCloudSprite(380, 220, 78017, { blobs: 10, tops: 7, cauli: 12, blur: 2.2, alpha: .55,
+                                           shadow: [178, 192, 210] })
       ];
-      frontLayers = [
-        { s: 1.20, sp: 0.014, a: 0.60, bob: 9, ph: 1.3 },
-        { s: 2.20, sp: 0.027, a: 0.34, bob: 14, ph: 3.6 }
+    }
+
+    /* ── Distribuição em profundidade ────────────────────────────────
+       Três faixas: longe (alta, pequena, lenta), média e perto (baixa,
+       grande, rápida). O y é relativo à altura do hero. */
+    var backGroups = [], frontGroups = [];
+
+    function buildGroup(seed, n, o) {
+      var r = prng(seed);
+      var list = [];
+      var extra = o.extra || 0;                 /* nuvens "reserva" do slider */
+      var total = n + extra;
+      for (var i = 0; i < total; i++) {
+        var depth = r();                          /* 0 = longe · 1 = perto */
+        var sc = o.sc0 + (o.sc1 - o.sc0) * depth;
+        var sp = (sprites.length ? sprites[(i + Math.floor(seed)) % 3] : null);
+        /* rank de densidade: as n nuvens base ficam em 0..0.5 e estão
+           SEMPRE visíveis (o visual de partida não muda); as extras
+           ocupam 0.5..1 e só aparecem quando o slider "Nuvens" sobe —
+           paintClouds corta em 0.5 + 0.5·an. */
+        var rank = i < n ? (i / (n || 1)) * 0.49
+                         : 0.5 + ((i - n) / (extra || 1)) * 0.49;
+        list.push({
+          sprite: sp,
+          rank: rank,
+          w: 460 * sc,
+          h: 272 * sc,
+          x0: r(),                                /* posição inicial no laço */
+          y: o.y0 + (o.y1 - o.y0) * r(),           /* 0..1 na altura */
+          a: o.a * (0.72 + 0.28 * r()),
+          vx: (o.vx0 + (o.vx1 - o.vx0) * depth) * (0.85 + 0.3 * r()),
+          bob: o.bob * (0.6 + 0.8 * r()),
+          ph: r() * 6.283
+        });
+      }
+      return { list: list, alpha: o.alpha || 1 };
+    }
+
+    /* Contagem base = a da v5/v6 (8+9+7 de fundo, 3 na frente). O extra
+       é o teto do slider "Nuvens": no máximo (~2×) o mar fica bem mais
+       carregado sem redesenhar sprites. */
+    function buildGroups() {
+      backGroups = [
+        buildGroup(1201, 8, { extra: 7, sc0: .85, sc1: 1.35, y0: .43, y1: .57, a: .34, vx0: .9, vx1: 1.9, bob: 4, alpha: .9 }),
+        buildGroup(2203, 9, { extra: 8, sc0: 1.25, sc1: 1.95, y0: .49, y1: .67, a: .44, vx0: 1.6, vx1: 3.0, bob: 6, alpha: 1 }),
+        buildGroup(3307, 7, { extra: 6, sc0: 1.75, sc1: 2.55, y0: .56, y1: .76, a: .38, vx0: 2.3, vx1: 4.0, bob: 8, alpha: .95 })
+      ];
+      frontGroups = [
+        buildGroup(4409, 3, { extra: 4, sc0: 1.55, sc1: 2.15, y0: .62, y1: .78, a: .18, vx0: 3.2, vx1: 5.2, bob: 7, alpha: .85 })
       ];
     }
 
@@ -225,44 +426,84 @@
         frontCanvas.height = Math.round(FH * DPR);
         fctx.setTransform(DPR, 0, 0, DPR, 0, 0);
       }
-      if (!noiseTex) noiseTex = makeNoiseTexture(256, 9137);
-      if (!cloudPattern) cloudPattern = octx.createPattern(noiseTex, 'repeat');
-      if (!backLayers.length) buildLayers();
+      buildSprites();
+      buildGroups();
     }
 
     /* Derivadas dos sliders (faixas idênticas às do Kimi) */
     function amountN() { return (settings.cloudAmount - 0.65) / (5 - 0.65); } /* 0..1 */
     function driftTime(t) { return t * (settings.flowSpeed / 3); }            /* 3× = base */
 
-    /* Desenha uma camada do campo FBM com deriva (pattern escalado). */
-    function paintField(g, w, h, layers, dt, an) {
+    /* Desenha as nuvens (billboards) com deriva, brisa e paralaxe. */
+    function paintClouds(g, w, h, groupSet, dt, an, front) {
       g.globalCompositeOperation = 'source-over';
-      for (var i = 0; i < layers.length; i++) {
-        var L = layers[i];
-        var ox = -(dt * L.sp * w * 0.06) % (256 * L.s);
-        var oy = Math.sin(dt * 0.10 + L.ph) * L.bob - prog * 26 * (i + 1);
-        g.globalAlpha = Math.min(1, L.a * (0.55 + an * 0.9));
-        g.save();
-        g.setTransform(OFFS, 0, 0, OFFS, 0, 0);
-        g.translate(ox, oy);
-        g.scale(L.s, L.s);
-        g.fillStyle = cloudPattern;
-        g.fillRect(-ox / L.s, -oy / L.s, w / L.s + 2, h / L.s + 2);
-        g.restore();
-        g.setTransform(OFFS, 0, 0, OFFS, 0, 0);
+      var haze = 1.12 + an * 0.28;
+      /* densidade: 0.5 no mínimo (só as nuvens base) → 1 no máximo
+         (base + reserva). an vem do slider "Nuvens" (0..1). */
+      var cut = 0.5 + 0.5 * an;
+      var par = reduce ? 0 : 1;
+      var vs = Math.max(0.42, Math.min(1.1, w / 1440));
+      /* telas estreitas: a faixa desce (fica no vale, longe do texto) e
+         fica um pouco mais discreta */
+      var narrow = Math.max(0, Math.min(1, 1 - w / 1100));
+      /* ponteiro em coordenadas do canvas + raio de influência */
+      var mx = ((ptrX + 1) / 2) * w;
+      var my = ((ptrY + 1) / 2) * h;
+      var R = Math.max(170, h * 0.30);
+      for (var gi = 0; gi < groupSet.length; gi++) {
+        var G = groupSet[gi];
+        var depthShift = (gi + 1) * 9 * ptrX * par;
+        for (var i = 0; i < G.list.length; i++) {
+          var p = G.list[i];
+          if (!p.sprite) continue;
+          if (p.rank >= cut) continue;          /* reserva: entra com a densidade */
+          var pw = p.w * vs, ph = p.h * vs;
+          var span = w + pw;
+          var x = p.x0 * span + dt * p.vx * vs + depthShift;
+          x = ((x % span) + span) % span;               /* laço contínuo */
+          var px = x - pw;
+          var py = p.y * h + Math.sin(dt * 0.11 + p.ph) * p.bob
+                 - prog * (26 + gi * 22) + ptrY * 5 * par
+                 + narrow * h * 0.17;
+          var alpha = p.a * haze * G.alpha * (1 - 0.12 * narrow);
+
+          /* ── ESPALHAR: a neblina se afasta do cursor ──────────────
+             Empurrão radial com queda suave (f²) + leve dilatação e
+             rarefação: o véu "abre" em vez de ganhar um buraco. */
+          if (spread > 0.001) {
+            var cx = px + pw * 0.5, cy = py + ph * 0.5;
+            var dx = cx - mx, dy = cy - my;
+            var d = Math.sqrt(dx * dx + dy * dy);
+            if (d < R && d > 0.5) {
+              var f = 1 - d / R;
+              var push = f * f * (34 + gi * 16) * spread;
+              px += (dx / d) * push;
+              py += (dy / d) * push * 0.55;
+              pw *= 1 + f * 0.09 * spread;
+              ph *= 1 + f * 0.05 * spread;
+              alpha *= 1 - 0.30 * f * spread;
+            }
+          }
+          g.globalAlpha = Math.min(1, alpha);
+          g.drawImage(p.sprite, px, py, pw, ph);
+        }
       }
       g.globalAlpha = 1;
     }
 
-    /* Mascara o campo: denso na base (mar de nuvens), ralo no alto. */
+    /* Máscara vertical: a nuvem só existe na faixa do horizonte — evita
+       "algodão" sobre o céu limpo e sobre o primeiro plano. */
     function maskField(g, w, h, an) {
       g.globalCompositeOperation = 'destination-in';
       var grad = g.createLinearGradient(0, 0, 0, h);
-      var top = 0.06 + (1 - an) * 0.10;
-      grad.addColorStop(0, 'rgba(0,0,0,' + top.toFixed(3) + ')');
-      grad.addColorStop(0.34, 'rgba(0,0,0,0.16)');
-      grad.addColorStop(0.62, 'rgba(0,0,0,0.72)');
-      grad.addColorStop(1, 'rgba(0,0,0,1)');
+      var lo = 0.36 - an * 0.11;                       /* mais cobertura → a faixa sobe */
+      grad.addColorStop(0, 'rgba(0,0,0,0)');
+      grad.addColorStop(Math.max(0, lo - 0.02), 'rgba(0,0,0,0)');
+      grad.addColorStop(lo + 0.10, 'rgba(0,0,0,0.28)');
+      grad.addColorStop(lo + 0.20, 'rgba(0,0,0,0.78)');
+      grad.addColorStop(0.78, 'rgba(0,0,0,0.72)');
+      grad.addColorStop(0.93, 'rgba(0,0,0,0.18)');
+      grad.addColorStop(1, 'rgba(0,0,0,0)');
       g.fillStyle = grad;
       g.setTransform(OFFS, 0, 0, OFFS, 0, 0);
       g.fillRect(0, 0, w, h);
@@ -302,8 +543,9 @@
           vx: Math.cos(ang) * spd,
           vy: Math.sin(ang) * spd - 0.25,
           life: 1,
-          size: 46 + Math.random() * 90,
-          rot: Math.random() * 6.2832
+          size: 70 + Math.random() * 130,
+          rot: Math.random() * 6.2832,
+          si: Math.floor(Math.random() * sprites.length)
         });
       }
     }
@@ -319,13 +561,13 @@
         W2.rot += 0.02 * dtFrame * 60;      /* giro → "bagunçado" */
         W2.life -= dtFrame * 0.85;
         if (W2.life <= 0) { wisps.splice(i, 1); continue; }
+        var spr = sprites[W2.si] || sprites[0];
+        if (!spr) continue;
         g.save();
-        g.globalAlpha = 0.22 * W2.life;
+        g.globalAlpha = 0.20 * W2.life;
         g.translate(W2.x, W2.y);
         g.rotate(W2.rot);
-        g.scale(W2.size / 256, W2.size / 256);
-        g.fillStyle = cloudPattern;
-        g.fillRect(-128, -128, 256, 256);
+        g.drawImage(spr, -W2.size * 0.5, -W2.size * 0.3, W2.size, W2.size * 0.6);
         g.restore();
       }
       g.globalAlpha = 1;
@@ -336,22 +578,24 @@
        Espírito do efeito de escrita do Kimi (writingProgress/inkStarts):
        ao mover o cursor, palavras-chave do UFVAI (no idioma corrente)
        são "escritas" como tinta — revelam-se da esquerda para a
-       direita, borram e se dissolvem na nuvem, subindo com a deriva. */
+       direita, borram e se dissolvem na nuvem, subindo com a deriva.
+       (v6.6: saíram "Viçosa", "Minas Gerais" e "incerteza" + equivalentes
+       nas 5 línguas — o local já aparece no rótulo da hero.) */
     var WORDS = {
       pt: ['integridade', 'reprodutibilidade', 'transparência', 'evidência',
-           'rigor', 'método', 'hipótese', 'incerteza', 'pesquisa', 'ciência',
-           'dados', 'validação', 'UFVAI', 'Viçosa', 'Minas Gerais'],
+           'rigor', 'método', 'hipótese', 'pesquisa', 'ciência',
+           'dados', 'validação', 'UFVAI'],
       en: ['integrity', 'reproducibility', 'transparency', 'evidence',
-           'rigor', 'method', 'hypothesis', 'uncertainty', 'research', 'science',
-           'data', 'validation', 'UFVAI', 'Viçosa', 'Minas Gerais'],
+           'rigor', 'method', 'hypothesis', 'research', 'science',
+           'data', 'validation', 'UFVAI'],
       es: ['integridad', 'reproducibilidad', 'transparencia', 'evidencia',
-           'rigor', 'método', 'hipótesis', 'incertidumbre', 'investigación', 'ciencia',
-           'datos', 'validación', 'UFVAI', 'Viçosa', 'Minas Gerais'],
+           'rigor', 'método', 'hipótesis', 'investigación', 'ciencia',
+           'datos', 'validación', 'UFVAI'],
       fr: ['intégrité', 'reproductibilité', 'transparence', 'preuve',
-           'rigueur', 'méthode', 'hypothèse', 'incertitude', 'recherche', 'science',
-           'données', 'validation', 'UFVAI', 'Viçosa', 'Minas Gerais'],
+           'rigueur', 'méthode', 'hypothèse', 'recherche', 'science',
+           'données', 'validation', 'UFVAI'],
       zh: ['诚信', '可复现', '透明', '证据', '严谨', '方法', '假设',
-           '不确定性', '科研', '科学', '数据', '验证', 'UFVAI', '维索萨', '米纳斯']
+           '科研', '科学', '数据', '验证', 'UFVAI']
     };
     var inkWords = [];        /* palavras ativas na cena */
     var wordIdx = 0;
@@ -437,6 +681,8 @@
       ptrX += (tPtrX - ptrX) * 0.06;
       ptrY += (tPtrY - ptrY) * 0.06;
       ptrSpeed *= 0.94;
+      /* espalhamento: abre ao entrar, fecha devagar ao sair */
+      spread += ((hasPointer ? 1 : 0) - spread) * 0.055;
 
       /* paralaxe da cópia (só o eixo x; o y é da rolagem) */
       if (!reduce && hero) {
@@ -452,10 +698,8 @@
       octx.globalAlpha = 1;
       octx.clearRect(0, 0, off.width, off.height);
       octx.setTransform(OFFS, 0, 0, OFFS, 0, 0);
-      paintField(octx, W, H, backLayers, dt, an);
+      paintClouds(octx, W, H, backGroups, dt, an, false);
       maskField(octx, W, H, an);
-      stirField(octx, W, H);
-      drawWisps(octx, W, H, dtFrame);
       ctx.setTransform(1, 0, 0, 1, 0, 0);
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.drawImage(off, 0, 0, canvas.width, canvas.height);
@@ -477,7 +721,7 @@
           octx.globalAlpha = 1;
           octx.clearRect(0, 0, off.width, off.height);
           octx.setTransform(OFFS, 0, 0, OFFS, 0, 0);
-          paintField(octx, FW, FH, frontLayers, dt, an);
+          paintClouds(octx, FW, FH, frontGroups, dt, an, true);
           /* frontal: faixa central (passa por cima da marca) */
           octx.globalCompositeOperation = 'destination-in';
           var fg = octx.createLinearGradient(0, 0, 0, FH);
@@ -545,7 +789,6 @@
       tPtrX = nx; tPtrY = ny;
       hasPointer = true;
       var cw = W || hero.offsetWidth, ch = H || hero.offsetHeight;
-      spawnWisps(cw, ch);
       /* escreve uma palavra quando o cursor percorre distância suficiente */
       var wpx = ((nx + 1) / 2) * cw, wpy = ((ny + 1) / 2) * ch;
       if (lastInkX === null || Math.hypot(wpx - lastInkX, wpy - lastInkY) > Math.max(120, cw * 0.10)) {
@@ -577,9 +820,11 @@
     var height = Math.max(hero.offsetHeight, 1);
     prog = Math.min(y / height, 1);
     hero.style.setProperty('--hero-photo-y', (prog * 52).toFixed(2) + 'px');
-    hero.style.setProperty('--hero-scale', (1.045 + prog * .035).toFixed(4));
-    hero.style.setProperty('--hero-copy-y', (prog * -48).toFixed(2) + 'px');
-    hero.style.setProperty('--hero-copy-opacity', Math.max(1 - prog * 1.1, 0).toFixed(3));
+    hero.style.setProperty('--hero-scale', (1.045 + prog * .055).toFixed(4));
+    hero.style.setProperty('--hero-copy-y', (prog * -70).toFixed(2) + 'px');
+    hero.style.setProperty('--hero-copy-scale', (1 - prog * .045).toFixed(4));
+    hero.style.setProperty('--hero-copy-blur', (prog * 5).toFixed(2) + 'px');
+    hero.style.setProperty('--hero-copy-opacity', Math.max(1 - prog * 1.15, 0).toFixed(3));
   }
 
   var ticking = false;

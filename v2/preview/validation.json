@@ -29,7 +29,7 @@
       "details": {
         "inHero": false,
         "hasFigure": true,
-        "top": 3117
+        "top": 3123
       }
     },
     "hero_images_loaded": {
@@ -66,7 +66,7 @@
       }
     },
     "hero_controls_panel": {
-      "pass": true,
+      "pass": false,
       "details": {
         "exists": true,
         "count": 4,
@@ -81,7 +81,7 @@
             "rangeOk": true,
             "progressOk": true,
             "i18n": true,
-            "visible": true
+            "visible": false
           },
           {
             "key": "flowSpeed",
@@ -93,7 +93,7 @@
             "rangeOk": true,
             "progressOk": true,
             "i18n": true,
-            "visible": true
+            "visible": false
           },
           {
             "key": "ink",
@@ -105,7 +105,7 @@
             "rangeOk": true,
             "progressOk": true,
             "i18n": true,
-            "visible": true
+            "visible": false
           },
           {
             "key": "immersion",
@@ -117,10 +117,10 @@
             "rangeOk": true,
             "progressOk": true,
             "i18n": true,
-            "visible": true
+            "visible": false
           }
         ],
-        "pass": true
+        "pass": false
       }
     },
     "hero_controls_interactive": {
@@ -136,7 +136,7 @@
       "pass": true,
       "details": {
         "text": "3.0×",
-        "title": "Speed: 3.0×"
+        "title": "Velocidade: 3.0×"
       }
     },
     "hero_logo_matches_menu_font": {
@@ -148,7 +148,7 @@
         "menuWeight": "700",
         "heroTrackEm": "-0.0200",
         "menuTrackEm": "-0.0200",
-        "fillClip": "text, text, text, text, text, text",
+        "fillClip": "text",
         "pass": true
       }
     },
@@ -162,10 +162,10 @@
       }
     },
     "hero_front_canvas_painted": {
-      "pass": true,
+      "pass": false,
       "details": {
-        "pass": true,
-        "painted": true,
+        "pass": false,
+        "painted": false,
         "opacity": 1,
         "w": 1440
       }
@@ -174,7 +174,7 @@
       "pass": true,
       "details": {
         "left": "0.60px",
-        "right": "-0.63px"
+        "right": "-0.04px"
       }
     },
     "scroll_cue_opens_demo": {
@@ -261,20 +261,20 @@
       "details": null
     },
     "responsive_layout_matrix": {
-      "pass": true,
+      "pass": false,
       "details": [
         {
           "width": 320,
           "height": 700,
-          "pass": true,
+          "pass": false,
           "viewport": 320,
-          "scrollWidth": 320,
-          "copyLeft": 18,
-          "copyRight": 302,
-          "copyBottom": 614.78125,
-          "cueTop": 636.78125,
-          "cueBottom": 682.78125,
-          "stageTop": 700.78125
+          "scrollWidth": 324,
+          "copyLeft": 24,
+          "copyRight": 296,
+          "copyBottom": 795.640625,
+          "cueTop": 839.640625,
+          "cueBottom": 885.640625,
+          "stageTop": 891.640625
         },
         {
           "width": 390,
@@ -282,12 +282,12 @@
           "pass": true,
           "viewport": 390,
           "scrollWidth": 390,
-          "copyLeft": 18,
-          "copyRight": 372,
-          "copyBottom": 564.828125,
-          "cueTop": 616,
-          "cueBottom": 662,
-          "stageTop": 680
+          "copyLeft": 24,
+          "copyRight": 366,
+          "copyBottom": 721.234375,
+          "cueTop": 765.234375,
+          "cueBottom": 811.234375,
+          "stageTop": 817.234375
         },
         {
           "width": 640,
@@ -295,12 +295,12 @@
           "pass": true,
           "viewport": 640,
           "scrollWidth": 640,
-          "copyLeft": 18,
-          "copyRight": 622,
-          "copyBottom": 616.671875,
-          "cueTop": 716,
-          "cueBottom": 762,
-          "stageTop": 780
+          "copyLeft": 24,
+          "copyRight": 616,
+          "copyBottom": 647.671875,
+          "cueTop": 691.671875,
+          "cueBottom": 737.671875,
+          "stageTop": 743.671875
         },
         {
           "width": 768,
@@ -420,8 +420,12 @@
     "preview/v5-mobile-menu.png"
   ],
   "summary": {
-    "passed": 31,
-    "failed": 0,
-    "failures": []
+    "passed": 28,
+    "failed": 3,
+    "failures": [
+      "hero_controls_panel",
+      "hero_front_canvas_painted",
+      "responsive_layout_matrix"
+    ]
   }
 }
